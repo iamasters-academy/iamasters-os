@@ -46,6 +46,15 @@ SKILLS_DIR="$CLAUDE_HOME/skills"
 STATE_FILE="$SKILLS_DIR/_install-state.json"
 STATE_TEMPLATE="$SCRIPT_DIR/_install-state.template.json"
 
+# On MSYS/Git Bash, convert POSIX paths to Windows paths for Python/Node
+if [[ -n "$MSYSTEM" ]] && command -v cygpath >/dev/null 2>&1; then
+    _win_path() { cygpath -m "$1"; }
+    WIN_STATE_FILE="$(cygpath -m "$STATE_FILE")"
+else
+    _win_path() { echo "$1"; }
+    WIN_STATE_FILE="$STATE_FILE"
+fi
+
 # ── Flags ──
 RESUME=false
 FORCE_REINSTALL=false
@@ -71,7 +80,18 @@ echo ""
 
 JSON_RUNTIME=""
 detect_json_runtime() {
-    if command -v node >/dev/null 2>&1; then
+    # On MSYS/Git Bash (Windows), node has path issues with POSIX paths — prefer Python
+    if [[ -n "$MSYSTEM" ]]; then
+        if command -v python >/dev/null 2>&1 && python --version 2>&1 | grep -q "Python 3"; then
+            JSON_RUNTIME="python"
+        elif command -v python3 >/dev/null 2>&1; then
+            JSON_RUNTIME="python3"
+        elif command -v node >/dev/null 2>&1; then
+            JSON_RUNTIME="node"
+        else
+            return 1
+        fi
+    elif command -v node >/dev/null 2>&1; then
         JSON_RUNTIME="node"
     elif command -v python3 >/dev/null 2>&1; then
         JSON_RUNTIME="python3"
@@ -89,7 +109,8 @@ json_validate() {
             node -e "JSON.parse(require('fs').readFileSync('$1','utf8'))" 2>/dev/null
             ;;
         python3|python)
-            "$JSON_RUNTIME" -c "import json; json.load(open('$1'))" 2>/dev/null
+            local _p; _p="$(_win_path "$1")"
+            "$JSON_RUNTIME" -c "import json; json.load(open('$_p'))" 2>/dev/null
             ;;
     esac
 }
@@ -104,7 +125,7 @@ json_set_phase() {
         node)
             node -e "
                 const fs = require('fs');
-                const f = '$STATE_FILE';
+                const f = '$WIN_STATE_FILE';
                 const s = JSON.parse(fs.readFileSync(f, 'utf8'));
                 if (!s.phases['$phase']) s.phases['$phase'] = {};
                 s.phases['$phase']['$field'] = $value;
@@ -113,13 +134,13 @@ json_set_phase() {
             "
             ;;
         python3|python)
-            "$JSON_RUNTIME" -c "
-import json, datetime
-f = '$STATE_FILE'
+            IAMASTERS_VAL="$value" "$JSON_RUNTIME" -c "
+import json, os, datetime
+f = '$WIN_STATE_FILE'
 s = json.load(open(f))
 s['phases'].setdefault('$phase', {})
-s['phases']['$phase']['$field'] = $value
-s['lastUpdatedAt'] = datetime.datetime.utcnow().isoformat() + 'Z'
+s['phases']['$phase']['$field'] = json.loads(os.environ['IAMASTERS_VAL'])
+s['lastUpdatedAt'] = datetime.datetime.now(datetime.timezone.utc).isoformat()
 json.dump(s, open(f, 'w'), indent=2)
 "
             ;;
@@ -132,7 +153,7 @@ json_set_root() {
         node)
             node -e "
                 const fs = require('fs');
-                const f = '$STATE_FILE';
+                const f = '$WIN_STATE_FILE';
                 const s = JSON.parse(fs.readFileSync(f, 'utf8'));
                 s['$1'] = $2;
                 s.lastUpdatedAt = new Date().toISOString();
@@ -140,12 +161,12 @@ json_set_root() {
             "
             ;;
         python3|python)
-            "$JSON_RUNTIME" -c "
-import json, datetime
-f = '$STATE_FILE'
+            IAMASTERS_VAL="$2" "$JSON_RUNTIME" -c "
+import json, os, datetime
+f = '$WIN_STATE_FILE'
 s = json.load(open(f))
-s['$1'] = $2
-s['lastUpdatedAt'] = datetime.datetime.utcnow().isoformat() + 'Z'
+s['$1'] = json.loads(os.environ['IAMASTERS_VAL'])
+s['lastUpdatedAt'] = datetime.datetime.now(datetime.timezone.utc).isoformat()
 json.dump(s, open(f, 'w'), indent=2)
 "
             ;;
@@ -157,14 +178,14 @@ json_get_phase_status() {
     case "$JSON_RUNTIME" in
         node)
             node -e "
-                const s = JSON.parse(require('fs').readFileSync('$STATE_FILE','utf8'));
+                const s = JSON.parse(require('fs').readFileSync('$WIN_STATE_FILE','utf8'));
                 console.log(s.phases['$1'] && s.phases['$1'].status || 'pending');
             "
             ;;
         python3|python)
             "$JSON_RUNTIME" -c "
 import json
-s = json.load(open('$STATE_FILE'))
+s = json.load(open('$WIN_STATE_FILE'))
 print(s['phases'].get('$1', {}).get('status', 'pending'))
 "
             ;;
@@ -177,7 +198,7 @@ json_push_error() {
         node)
             node -e "
                 const fs = require('fs');
-                const f = '$STATE_FILE';
+                const f = '$WIN_STATE_FILE';
                 const s = JSON.parse(fs.readFileSync(f, 'utf8'));
                 s.errors.push({ phase: '$1', message: \`$2\`, at: new Date().toISOString() });
                 s.lastUpdatedAt = new Date().toISOString();
@@ -187,7 +208,7 @@ json_push_error() {
         python3|python)
             "$JSON_RUNTIME" -c "
 import json, datetime
-f = '$STATE_FILE'
+f = '$WIN_STATE_FILE'
 s = json.load(open(f))
 s['errors'].append({'phase': '$1', 'message': '''$2''', 'at': datetime.datetime.utcnow().isoformat() + 'Z'})
 s['lastUpdatedAt'] = datetime.datetime.utcnow().isoformat() + 'Z'
@@ -207,7 +228,7 @@ mark_phase_done() {
         node)
             node -e "
                 const fs = require('fs');
-                const f = '$STATE_FILE';
+                const f = '$WIN_STATE_FILE';
                 const s = JSON.parse(fs.readFileSync(f, 'utf8'));
                 if (!s.completedPhases.includes('$1')) s.completedPhases.push('$1');
                 fs.writeFileSync(f, JSON.stringify(s, null, 2));
@@ -216,7 +237,7 @@ mark_phase_done() {
         python3|python)
             "$JSON_RUNTIME" -c "
 import json
-f = '$STATE_FILE'
+f = '$WIN_STATE_FILE'
 s = json.load(open(f))
 if '$1' not in s['completedPhases']:
     s['completedPhases'].append('$1')
@@ -760,7 +781,7 @@ main() {
     case "$JSON_RUNTIME" in
         node)
             node -e "
-const s = JSON.parse(require('fs').readFileSync('$STATE_FILE','utf8'));
+const s = JSON.parse(require('fs').readFileSync('$WIN_STATE_FILE','utf8'));
 for (const [k, v] of Object.entries(s.phases)) {
   const icon = v.status === 'done' ? '✅' : v.status === 'failed' ? '❌' : v.status === 'in-progress' ? '🟡' : '⏳';
   console.log('   ' + icon + ' ' + k + ' · ' + v.status);
@@ -770,7 +791,7 @@ for (const [k, v] of Object.entries(s.phases)) {
         python3|python)
             "$JSON_RUNTIME" -c "
 import json
-s = json.load(open('$STATE_FILE'))
+s = json.load(open('$WIN_STATE_FILE'))
 icons = {'done':'OK','failed':'ERR','in-progress':'WIP','pending':'...','skipped':'SKIP'}
 for k, v in s['phases'].items():
     print('   [' + icons.get(v.get('status','pending'),'?') + '] ' + k + ' . ' + v.get('status','pending'))
