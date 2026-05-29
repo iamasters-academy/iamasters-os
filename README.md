@@ -58,7 +58,7 @@ Y desde dentro de Claude Code: `/install-status` te muestra el dashboard sin toc
 
 1. **Sinapsis v4.5 (engine)** — memoria persistente, instintos auto-aprendidos, skills on-demand. Vendoreado intacto del [repo de Luis Pitik](https://github.com/Luispitik/sinapsis).
 2. **Capa OS** — brand context (voice, positioning, ICP), agent context sectorizado (me, work, team, priorities, goals), proyectos estructurados, multi-cliente con templates por vertical.
-3. **Skills curadas** — 23 skills validadas para marketing, estrategia, automatización, tools, visualización y meta-pensamiento. Todas siguen patrón skill.md + references/ + scripts/. Skills oficiales de Anthropic (docx, xlsx, pdf, pptx) se instalan vía marketplace en el día 4 de `/aprende`.
+3. **Skills curadas** — 26 skills validadas para marketing, estrategia, automatización, tools, visualización y meta-pensamiento. Todas siguen patrón skill.md + references/ + scripts/. Skills oficiales de Anthropic (docx, xlsx, pdf, pptx) se instalan vía marketplace en el día 4 de `/aprende`.
 
 > 🌱 **Sistema vivo**: el catálogo crece con la comunidad. Cuando una skill nueva de IA Masters Academy demuestra valor en producción, entra al repo. Ver [`docs/skills-recommended.md`](docs/skills-recommended.md) para proponer una.
 
@@ -76,7 +76,7 @@ No requiere conocimientos de programación. Sí requiere paciencia para configur
 
 - ✅ Memoria que persiste entre sesiones (no más "explícame tu stack otra vez")
 - ✅ Tu primer entregable real generado por el sistema en los primeros 20 min (welcome-quick-win)
-- ✅ 23 skills curadas, instaladas, listas para activarse cuando hablas con Claude
+- ✅ 26 skills curadas, instaladas, listas para activarse cuando hablas con Claude
 - ✅ Brand context (voz, posicionamiento, ICP) generable en 30 minutos extra
 - ✅ Multi-cliente listo para escalar (4 templates de vertical incluidos)
 - ✅ Sistema de aprendizaje continuo: lo que repites se gradúa a regla
@@ -157,7 +157,8 @@ automation/                       🆕 Automatización y migración
 
 strategy/                         Investigación, estrategia y metodologías
 ├── metodo-ias                    🆕 Método I.A.S. (Intención · Acción · Síntesis) anti-AI-brain-fry (v0.7)
-└── strategy-web-research         Research profundo multi-fuente (LangChain)
+├── strategy-web-research         Research ligero multi-fuente (lookups rápidos)
+└── strategy-deep-research        🆕 Deep research iterativo: fuentes primarias, modo médico (PubMed + Vancouver), citas verificables, MD + HTML
 
 tools/                            Utilidades transversales
 ├── tool-firecrawl-scraper        Wrapper Firecrawl con fallback manual
@@ -186,7 +187,7 @@ iamasters-os/
 ├── .claude/
 │   ├── settings.json           # Hooks Sinapsis + permisos seguros por defecto
 │   ├── commands/               # Slash commands del OS
-│   └── skills/                 # 22 skills curadas por categoría
+│   └── skills/                 # 26 skills curadas por categoría
 │
 ├── brand-context/              # Tu marca: voice, positioning, ICP, assets
 ├── context/                    # Contexto sectorizado: me, work, team, priorities, goals

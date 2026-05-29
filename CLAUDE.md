@@ -111,7 +111,7 @@ Lo que aporta este repo encima de Sinapsis:
 - `me.md`, `work.md`, `team.md`, `current-priorities.md`, `goals.md`
 - `learnings.md`, `decisions-log.md`
 
-**Skills curadas (`.claude/skills/`)** — 25 skills core (ver registry abajo).
+**Skills curadas (`.claude/skills/`)** — 26 skills core (ver registry abajo).
 
 **Niveles de proyecto**:
 1. **Single task** — pregunta directa. Output a `projects/<skill-name>/<fecha>-<titulo>/`.
@@ -126,7 +126,7 @@ Lo que aporta este repo encima de Sinapsis:
 
 ## Skills registry (v0.8.0)
 
-Capa 1 = 25 skills core + 2 opcionales (cognito, arnes).
+Capa 1 = 26 skills core + 2 opcionales (cognito, arnes).
 
 ### `_meta/` — sistema (10)
 
@@ -168,12 +168,13 @@ Capa 1 = 25 skills core + 2 opcionales (cognito, arnes).
 | `automation-n8n-to-claude` | Migra workflows n8n al ecosistema Claude |
 | `automation-n8n-builder` | Crea workflows n8n vía MCP `n8n-mcp` |
 
-### `strategy/` (2)
+### `strategy/` (3)
 
 | Skill | Descripción |
 |---|---|
 | `metodo-ias` | Método I.A.S. (Intención · Acción · Síntesis) anti-AI-brain-fry — diario + semanal (v0.7) |
-| `strategy-web-research` | Research con subagentes |
+| `strategy-web-research` | Research ligero con subagentes (lookups rápidos) |
+| `strategy-deep-research` | 🆕 Deep research iterativo: prioriza fuentes primarias/oficiales sobre blogs, modo médico con MCP PubMed + proxy universitario, citas verificables, reporte MD + HTML |
 
 ### `tools/` (4)
 
