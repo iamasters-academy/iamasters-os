@@ -168,13 +168,14 @@ Capa 1 = 26 skills core + 2 opcionales (cognito, arnes).
 | `automation-n8n-to-claude` | Migra workflows n8n al ecosistema Claude |
 | `automation-n8n-builder` | Crea workflows n8n vía MCP `n8n-mcp` |
 
-### `strategy/` (3)
+### `strategy/` (4)
 
 | Skill | Descripción |
 |---|---|
 | `metodo-ias` | Método I.A.S. (Intención · Acción · Síntesis) anti-AI-brain-fry — diario + semanal (v0.7) |
 | `strategy-web-research` | Research ligero con subagentes (lookups rápidos) |
 | `strategy-deep-research` | 🆕 Deep research iterativo: prioriza fuentes primarias/oficiales sobre blogs, modo médico con MCP PubMed + proxy universitario, citas verificables, reporte MD + HTML |
+| `strategy-prd-builder` | 🆕 Crea PRDs híbridos (documento de decisión + playbook de construcción estilo "paso a paso") para apps, SaaS, no-code o contenido. Buenas prácticas empotradas (Atlassian/Maze/Lenny's). Output MD revisable en bloc de notas + HTML opcional |
 
 ### `tools/` (4)
 

@@ -26,7 +26,8 @@
       "Bash(find *)",
       "Bash(mkdir *)",
       "Bash(cp *)",
-      "Bash(mv *)"
+      "Bash(mv *)",
+      "WebFetch(domain:api.callmebot.com)"
     ],
     "deny": [
       "Bash(rm -rf *)",

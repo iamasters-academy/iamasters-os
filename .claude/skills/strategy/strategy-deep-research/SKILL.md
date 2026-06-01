@@ -111,7 +111,16 @@ Si falla, vuelve al paso correspondiente. No entregues un reporte que no pase el
 
 ### Paso 7 · HTML visual compartible
 
-Invoca `tool-visual-explainer` para generar `report.html` autocontenido a partir de `report.md`: resumen, hallazgos, tabla de referencias clicable, y un badge de tier por fuente. Es el entregable que se comparte.
+Invoca `tool-visual-explainer` para generar `report.html` autocontenido a partir de `report.md`, usando su **plantilla fija de marca** (hero con degradado + secciones numeradas). Mapea siempre las secciones en este orden y con estos componentes para que todos los reportes tengan la misma forma:
+
+1. **Abreviaturas** → componente `chips` (sigla en pastilla + término).
+2. **Resumen ejecutivo** → `kpi` (cifras clave) + `list` (bullets citados).
+3. **Hallazgos / gradiente** → `table` (en `tablewrap`).
+4. **Conflictos y confianza** → `table` + `badge` (`b-hi`/`b-med`/`b-lo` = Alta/Media/Baja) + `callout` para la lectura clínica.
+5. **Vacíos / no verificado** → bloque `gap`.
+6. **Referencias** → `refs` (lista numerada con DOI/PMID enlazados).
+
+Footer fijo: "Generado por Dr. Juan Camilo Paris". Es el entregable que se comparte.
 
 ### Paso 8 · Cierre y aprendizaje
 
