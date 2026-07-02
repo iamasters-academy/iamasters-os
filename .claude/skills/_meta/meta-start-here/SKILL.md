@@ -86,6 +86,21 @@ Este recordatorio se muestra **cada vez** que el operador arranca, hasta que `de
 
 Si el operador ya completó la deep-dive (`deepDiveCompleted: true`), no menciones nada.
 
+### Paso 4.6 · Oferta de daily-brief (si aplica)
+
+Si `.claude/skills/tools/daily-brief/` existe (skill instalada) **y** es la
+primera sesión del día (no existe `synapsis/daily-briefs/<TODAY>.md`) **y**
+no se ha ofrecido ya en esta sesión, añade una línea al final del saludo:
+
+```
+PD: ¿quieres que te haga primero el daily brief (correo + agenda)?
+```
+
+Si la skill no está instalada, no ofrezcas nada — evita ruido diario. El
+descubrimiento normal pasa por la tabla de Biblioteca del `CLAUDE.md` cuando
+el operador mencione correo/agenda explícitamente, como con el resto de
+skills de biblioteca. No repitas esta oferta más de una vez por sesión.
+
 ### Paso 5 · Si hay pending tasks de Sinapsis
 
 Sinapsis puede tener instincts en draft pendientes de promote. Si en `~/.claude/skills/_instincts-index.json` hay 5+ drafts con `occurrences >= 3`:
@@ -110,6 +125,7 @@ Importante: este ritual NO ejecuta tareas. Solo carga contexto y propone.
 ## Skills que sugiere (sin invocar automáticamente)
 
 - **`meta-deep-dive`** — si el operador completó el wizard inicial pero no la deep-dive (mostrado como PD al final del saludo, recordatorio diario hasta que se complete)
+- **`daily-brief`** — si está instalada y aún no hay brief de hoy (mostrado como PD al final del saludo, ver Paso 4.6; máximo una vez por sesión)
 
 ## Edge cases
 
