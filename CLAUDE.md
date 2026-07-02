@@ -147,7 +147,7 @@ Lo que aporta este repo encima de Sinapsis:
 
 ## Skills registry (v0.11.0)
 
-Modelo **Core + Biblioteca**: 27 skills core siempre instaladas (el OS las necesita) + 34 en `skills-library/` que el operador instala a demanda con `/skills`. **El operador ya ha instalado 5 de biblioteca** → **32 skills activas** (marcadas con ✅ en las tablas de Biblioteca; se cargan e invocan solas como las Core). Cada skill instalada consume contexto en cada sesion (recomendacion Anthropic: <50 cargadas) — instala solo lo que uses.
+Modelo **Core + Biblioteca**: 27 skills core siempre instaladas (el OS las necesita) + 35 en `skills-library/` que el operador instala a demanda con `/skills`. **El operador ya ha instalado 6 de biblioteca** → **33 skills activas** (marcadas con ✅ en las tablas de Biblioteca; se cargan e invocan solas como las Core). Cada skill instalada consume contexto en cada sesion (recomendacion Anthropic: <50 cargadas) — instala solo lo que uses.
 
 **Routing por intencion (OBLIGATORIO — actívalo en CADA petición)**: antes de responder que no puedes hacer algo, o de resolverlo a mano, contrasta SIEMPRE la intención del operador contra la tabla de **Biblioteca** de abajo (la columna "Ofrécela cuando…" lista los disparadores de cada skill no instalada). Si una encaja, NO la ignores ni la resuelvas tú: ofrécela → "Eso lo hace la skill `<nombre>`. ¿La instalo?" → `bash scripts/skills.sh add <nombre>`. Las skills instaladas (sección Core **y las marcadas ✅ en Biblioteca**) sí se cargan solas: invócalas directamente cuando la intención encaje, sin preguntar. Catálogo en vivo y fuente de verdad de descripciones: `bash scripts/skills.sh list`.
 
@@ -210,7 +210,7 @@ Modelo **Core + Biblioteca**: 27 skills core siempre instaladas (el OS las neces
 |---|---|
 | `ui-ux-pro-max` | Inteligencia de diseño UI/UX (50 estilos, paletas, tipografías, 9 stacks): planear/construir/revisar UI |
 
-### Biblioteca — instalables con `/skills` (34)
+### Biblioteca — instalables con `/skills` (35)
 
 Viven en `skills-library/` (cero coste de contexto hasta instalarlas). Instalar: `bash scripts/skills.sh add <nombre>` · Quitar: `remove` · Catálogo: `list`.
 
@@ -258,13 +258,14 @@ Viven en `skills-library/` (cero coste de contexto hasta instalarlas). Instalar:
 | `tool-web-security-audit` | diga "¿tiene vulnerabilidades mi web?", "pentest a mi sitio", "busca agujeros de seguridad", "¿es hackeable?" (solo webs propias/autorizadas) |
 | `daily-brief` | diga "brief de hoy", "resúmeme el correo y la agenda", "qué tengo hoy", "daily brief", o acepte la oferta matutina de `meta-start-here` (correo Gmail + Google Calendar; Drive aún no conectado) |
 
-#### `automation/` (3) — ✅ las 3 instaladas, invócalas directamente
+#### `automation/` (4) — ✅ las 4 instaladas, invócalas directamente
 
 | Skill | Ofrécela cuando el operador… |
 |---|---|
 | `automation-n8n-to-claude` | ✅ **instalada**. diga "tengo un workflow en n8n que quiero traer aquí", "pasa esta automatización a Claude", "migra mi n8n", o pegue un JSON de n8n/Make para reimplementar |
 | `automation-n8n-builder` | ✅ **instalada**. diga "créame un workflow en n8n", "monta esto en n8n", "automatiza X en n8n", o quiera construir/desplegar un flujo n8n vía MCP |
 | `automation-client-deploy` | ✅ **instalada**. diga "despliega esto al cliente", "llévalo al VPS/PC del cliente", "empaqueta y entrega", o tenga un proyecto local listo para producción en el entorno del cliente |
+| `automation-embudo-captacion` | ✅ **instalada**. diga "capta leads con Reels", "embudo de conversión desde Instagram/redes", "automatiza DMs con palabra clave", "monta un funnel de ManyChat/n8n para captar clientes", "crecer en redes sin seguidores", o describa un flujo de captación orgánica de contenido social → lead. Entrega estrategia + esqueleto técnico; delega el build en `automation-n8n-builder` + `automation-client-deploy` |
 
 #### `visualization/` (2)
 
