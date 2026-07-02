@@ -147,7 +147,7 @@ Lo que aporta este repo encima de Sinapsis:
 
 ## Skills registry (v0.11.0)
 
-Modelo **Core + Biblioteca**: 27 skills core siempre instaladas (el OS las necesita) + 35 en `skills-library/` que el operador instala a demanda con `/skills`. **El operador ya ha instalado 6 de biblioteca** → **33 skills activas** (marcadas con ✅ en las tablas de Biblioteca; se cargan e invocan solas como las Core). Cada skill instalada consume contexto en cada sesion (recomendacion Anthropic: <50 cargadas) — instala solo lo que uses.
+Modelo **Core + Biblioteca**: 27 skills core siempre instaladas (el OS las necesita) + 36 en `skills-library/` que el operador instala a demanda con `/skills`. **El operador ya ha instalado 7 de biblioteca** → **34 skills activas** (marcadas con ✅ en las tablas de Biblioteca; se cargan e invocan solas como las Core). Cada skill instalada consume contexto en cada sesion (recomendacion Anthropic: <50 cargadas) — instala solo lo que uses.
 
 **Routing por intencion (OBLIGATORIO — actívalo en CADA petición)**: antes de responder que no puedes hacer algo, o de resolverlo a mano, contrasta SIEMPRE la intención del operador contra la tabla de **Biblioteca** de abajo (la columna "Ofrécela cuando…" lista los disparadores de cada skill no instalada). Si una encaja, NO la ignores ni la resuelvas tú: ofrécela → "Eso lo hace la skill `<nombre>`. ¿La instalo?" → `bash scripts/skills.sh add <nombre>`. Las skills instaladas (sección Core **y las marcadas ✅ en Biblioteca**) sí se cargan solas: invócalas directamente cuando la intención encaje, sin preguntar. Catálogo en vivo y fuente de verdad de descripciones: `bash scripts/skills.sh list`.
 
@@ -235,7 +235,7 @@ Viven en `skills-library/` (cero coste de contexto hasta instalarlas). Instalar:
 | `strategy-investigacion-profunda` | pida un **informe completo**: "investiga a fondo", "informe con fuentes", "triangula", "verifica con varias fuentes", "due diligence", "estado del arte" |
 | `strategy-stack-recommender` | pregunte "¿con qué construyo esto?", "¿qué stack me recomiendas?", "¿qué tecnologías uso para…?", o describa un proyecto y necesite orientación técnica antes de picar código |
 
-#### `tools/` (18)
+#### `tools/` (19)
 
 | Skill | Ofrécela cuando el operador… |
 |---|---|
@@ -257,6 +257,7 @@ Viven en `skills-library/` (cero coste de contexto hasta instalarlas). Instalar:
 | `tool-web-legal-audit` | diga "audita legalmente esta web", "¿cumple RGPD/LSSI?", "revisa cookies/trackers", "comprueba accesibilidad", o lance una landing pública |
 | `tool-web-security-audit` | diga "¿tiene vulnerabilidades mi web?", "pentest a mi sitio", "busca agujeros de seguridad", "¿es hackeable?" (solo webs propias/autorizadas) |
 | `daily-brief` | diga "brief de hoy", "resúmeme el correo y la agenda", "qué tengo hoy", "daily brief", o acepte la oferta matutina de `meta-start-here` (correo Gmail + Google Calendar; Drive aún no conectado) |
+| `tool-graphify` | ✅ **instalada** (también global en `~/.claude/skills/` — aplica a TODOS los proyectos). diga "graphify", "mapea/indexa este proyecto", "monta el grafo de conocimiento", "grafo de dependencias", o pregunte arquitectura ("¿qué depende de X?") en un repo grande. Always-on vía passive rule Sinapsis `graphify-graph-first`; NUNCA usar `graphify claude install`. Cada repo tiene su grafo propio en `graphify-out/` |
 
 #### `automation/` (4) — ✅ las 4 instaladas, invócalas directamente
 
