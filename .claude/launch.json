@@ -30,5 +30,13 @@
       "runtimeArgs": ["-m", "uvicorn", "web:app", "--host", "127.0.0.1", "--port", "8100"],
       "port": 8100
     }
+  ,
+    {
+      "name": "informe-jugador-landing",
+      "cwd": "projects/briefs/informe-jugador-ia/landing",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8200"],
+      "port": 8200
+    }
   ]
 }
