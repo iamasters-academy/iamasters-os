@@ -24,17 +24,18 @@ esac
 [ "${ECC_HOOK_PROFILE:-standard}" = "minimal" ] && exit 0
 [ "${ECC_SKIP_OBSERVE:-0}" = "1" ] && exit 0
 
-# Find Python
-PYTHON_CMD=""
-if command -v python3 >/dev/null 2>&1; then
-  PYTHON_CMD="python3"
-elif command -v python >/dev/null 2>&1 && python --version 2>&1 | grep -q "Python 3"; then
-  PYTHON_CMD="python"
-fi
-[ -z "$PYTHON_CMD" ] && exit 0
+# Find a REAL Python 3. IMPORTANT: validate `--version` actually reports
+# "Python 3" — the Windows Store "python3"/"python" aliases exist on PATH but
+# only open the Store (exit 49), so `command -v` alone gives a false positive
+# and observations silently stop. Try the Windows `py -3` launcher last.
+PYRUN=""
+for cand in "python3" "python" "py -3"; do
+  if $cand --version 2>&1 | grep -q "^Python 3"; then PYRUN="$cand"; break; fi
+done
+[ -z "$PYRUN" ] && exit 0
 
-# Run the observer
+# Run the observer ($PYRUN unquoted so "py -3" splits into command + arg)
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-echo "$INPUT_JSON" | "$PYTHON_CMD" "$SCRIPT_DIR/observe_v3.py" "$HOOK_PHASE"
+echo "$INPUT_JSON" | $PYRUN "$SCRIPT_DIR/observe_v3.py" "$HOOK_PHASE"
 
 exit 0
