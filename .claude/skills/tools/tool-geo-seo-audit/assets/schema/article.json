@@ -1,0 +1,20 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "{{TITULO}}",
+  "description": "{{RESUMEN}}",
+  "image": "{{URL_IMAGEN}}",
+  "datePublished": "{{YYYY-MM-DD}}",
+  "dateModified": "{{YYYY-MM-DD}}",
+  "author": {
+    "@type": "Person",
+    "name": "{{AUTOR}}",
+    "url": "{{URL_AUTOR}}"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "{{NOMBRE_MARCA}}",
+    "logo": { "@type": "ImageObject", "url": "{{URL_LOGO}}" }
+  },
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "{{URL_ARTICULO}}" }
+}

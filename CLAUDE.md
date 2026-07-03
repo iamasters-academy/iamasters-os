@@ -147,7 +147,7 @@ Lo que aporta este repo encima de Sinapsis:
 
 ## Skills registry (v0.11.0)
 
-Modelo **Core + Biblioteca**: 27 skills core siempre instaladas (el OS las necesita) + 79 en `skills-library/` que el operador instala a demanda con `/skills` (proyecto `nuevas-skills`: pack de marketing completo — 38 skills portadas de `coreyhaines31/marketingskills`, lotes M1-M4; pendientes solo las fusiones F.0). **El operador ya ha instalado 11 de biblioteca** → **38 skills activas** (marcadas con ✅ en las tablas de Biblioteca; se cargan e invocan solas como las Core). Cada skill instalada consume contexto en cada sesion (recomendacion Anthropic: <50 cargadas) — instala solo lo que uses.
+Modelo **Core + Biblioteca**: 27 skills core siempre instaladas (el OS las necesita) + 79 en `skills-library/` que el operador instala a demanda con `/skills` (proyecto `nuevas-skills`: pack de marketing completo — 38 skills portadas de `coreyhaines31/marketingskills`, lotes M1-M4; pendientes solo las fusiones F.0). **El operador tiene 19 de biblioteca instaladas** → **46 skills activas** (tope elegido; marcadas con ✅ en las tablas de Biblioteca; se cargan e invocan solas como las Core). El resto queda en catálogo a coste cero y se ofrece por routing cuando la intención encaje. Cada skill instalada consume contexto en cada sesion (recomendacion Anthropic: <50 cargadas) — instala solo lo que uses.
 
 **Routing por intencion (OBLIGATORIO — actívalo en CADA petición)**: antes de responder que no puedes hacer algo, o de resolverlo a mano, contrasta SIEMPRE la intención del operador contra la tabla de **Biblioteca** de abajo (la columna "Ofrécela cuando…" lista los disparadores de cada skill no instalada). Si una encaja, NO la ignores ni la resuelvas tú: ofrécela → "Eso lo hace la skill `<nombre>`. ¿La instalo?" → `bash scripts/skills.sh add <nombre>`. Las skills instaladas (sección Core **y las marcadas ✅ en Biblioteca**) sí se cargan solas: invócalas directamente cuando la intención encaje, sin preguntar. Catálogo en vivo y fuente de verdad de descripciones: `bash scripts/skills.sh list`.
 
@@ -275,8 +275,8 @@ Viven en `skills-library/` (cero coste de contexto hasta instalarlas). Instalar:
 | `metodo-ias` | diga "método IAS", "planifica la sesión", "recap semanal", "me estoy quemando con la IA", "AI brain fry", "tomo demasiadas micro-decisiones", o quiera estructurar trabajo con IA sin saturarse |
 | `developer-growth-analysis` | diga "analiza mi historial de código", "en qué estoy fallando programando", "dónde puedo mejorar como dev", "detecta mis gaps técnicos", o quiera un informe de sus patrones de desarrollo |
 | `seis-sombreros` | ✅ **instalada** — invócala directamente. pida "seis sombreros", "six hats", "ayúdame a pensar esto", "pros y contras en serio", "rompe el ancla", "análisis multi-perspectiva", o esté ante una decisión con sesgo de anclaje |
-| `cognito` | afronte decisiones con trade-offs, tensión emocional+técnica+estratégica, "¿debería hacer X?", análisis profundo o cambios de enfoque que pidan modos cognitivos explícitos |
-| `strategy-web-research` | pida búsqueda web **ligera y rápida**: "búscame", "investiga rápido", "compara X e Y", 3-5 fuentes, info actual acotada (no informe largo) |
+| `cognito` | ✅ **instalada**. afronte decisiones con trade-offs, tensión emocional+técnica+estratégica, "¿debería hacer X?", análisis profundo o cambios de enfoque que pidan modos cognitivos explícitos |
+| `strategy-web-research` | ✅ **instalada**. pida búsqueda web **ligera y rápida**: "búscame", "investiga rápido", "compara X e Y", 3-5 fuentes, info actual acotada (no informe largo) |
 | `strategy-investigacion-profunda` | pida un **informe completo**: "investiga a fondo", "informe con fuentes", "triangula", "verifica con varias fuentes", "due diligence", "estado del arte" |
 | `strategy-stack-recommender` | pregunte "¿con qué construyo esto?", "¿qué stack me recomiendas?", "¿qué tecnologías uso para…?", o describa un proyecto y necesite orientación técnica antes de picar código |
 
@@ -285,15 +285,15 @@ Viven en `skills-library/` (cero coste de contexto hasta instalarlas). Instalar:
 | Skill | Ofrécela cuando el operador… |
 |---|---|
 | `tool-caveman` | ✅ **instalada**. diga "modo caverna", "caveman", "menos tokens", "comprime tus respuestas", "sé ultra conciso", "ahorra contexto", o "/caveman". Comprime ~75% quitando relleno, mantiene código y sustancia; persiste hasta "modo normal". NO comprime warnings/acciones irreversibles/entregables |
-| `tool-geo-seo-audit` | diga "audita el SEO de mi web", "optimiza para IA / para que me cite ChatGPT", "GEO", "llms.txt", "schema markup", "structured data", "¿por qué no aparezco en Google/IA?", o vaya a posicionar una web pública. Fusiona ai-seo/seo-audit/schema; LLM-native (Python opcional) |
+| `tool-geo-seo-audit` | ✅ **instalada**. diga "audita el SEO de mi web", "optimiza para IA / para que me cite ChatGPT", "GEO", "llms.txt", "schema markup", "structured data", "¿por qué no aparezco en Google/IA?", o vaya a posicionar una web pública. Fusiona ai-seo/seo-audit/schema; LLM-native (Python opcional) |
 | `arnes` | diga "nuevo proyecto", "crea una app/web/landing", "arranca un proyecto", "adopta/renueva este proyecto", o quiera montar software paso a paso (Express/Estándar/PRO) |
 | `vercel-deploy` | diga "despliega esto en Vercel", "súbelo a Vercel", "pon esta web/app online en Vercel", o cierre un proyecto web listo para producción en Vercel (último paso de la cadena build) |
 | `obsidian-plugin` | diga "crea un plugin de Obsidian", "desarrolla algo para Obsidian", "extiende Obsidian", "plugin para mi bóveda de notas", o trabaje sobre la Obsidian API |
 | `video-downloader` | diga "descárgame este vídeo", "bájate este YouTube/Vimeo", "guarda este vídeo en local", "saca el audio de este vídeo", o pase una URL de vídeo para tenerla en disco |
-| `exploratory-data-analysis` | diga "saca insights de estos datos", "explora este dataset/CSV", "haz un EDA", "qué hay en estos datos", o pase un fichero de datos para entenderlo (primer paso del análisis) |
+| `exploratory-data-analysis` | ✅ **instalada**. diga "saca insights de estos datos", "explora este dataset/CSV", "haz un EDA", "qué hay en estos datos", o pase un fichero de datos para entenderlo (primer paso del análisis) |
 | `statistical-analysis` | diga "qué test estadístico uso", "comprueba si esto es significativo", "potencia estadística", "compara estos grupos", o necesite elegir/justificar un test con sus supuestos |
-| `statsmodels` | necesite "regresión OLS/GLM", "ARIMA/series temporales", "modelos mixtos", "diagnósticos de residuos", econometría o inferencia con detalle (encaja con Polymarket) |
-| `scikit-learn` | diga "entréname un modelo", "clasificación/regresión", "clustering", "reducción de dimensionalidad", "pipeline de ML", o haga machine learning clásico en Python |
+| `statsmodels` | ✅ **instalada**. necesite "regresión OLS/GLM", "ARIMA/series temporales", "modelos mixtos", "diagnósticos de residuos", econometría o inferencia con detalle (encaja con Polymarket) |
+| `scikit-learn` | ✅ **instalada**. diga "entréname un modelo", "clasificación/regresión", "clustering", "reducción de dimensionalidad", "pipeline de ML", o haga machine learning clásico en Python |
 | `pytorch-lightning` | diga "red neuronal", "deep learning", "entrenar un modelo en GPU", "LightningModule/Trainer", o monte un pipeline de DL organizado |
 | `shap` | diga "explica las predicciones del modelo", "importancia de variables", "por qué predice esto el modelo", "explicabilidad/interpretabilidad", "SHAP values" (encaja con honestidad-FVI) |
 | `code-audit-integral` | ✅ **instalada** — invócala directamente. diga "audita mi app/código a fondo", "revisión técnica completa", "¿está lista para producción?", "revisa seguridad/backend/rendimiento antes de lanzar", "auditoría integral", o cierre un desarrollo grande y quiera un informe priorizado P0/P1/P2 (13 fases modulares Sprint/Standard/Full; se adapta al stack) |
@@ -310,7 +310,7 @@ Viven en `skills-library/` (cero coste de contexto hasta instalarlas). Instalar:
 
 | Skill | Ofrécela cuando el operador… |
 |---|---|
-| `automation-n8n-to-claude` | ✅ **instalada**. diga "tengo un workflow en n8n que quiero traer aquí", "pasa esta automatización a Claude", "migra mi n8n", o pegue un JSON de n8n/Make para reimplementar |
+| `automation-n8n-to-claude` | diga "tengo un workflow en n8n que quiero traer aquí", "pasa esta automatización a Claude", "migra mi n8n", o pegue un JSON de n8n/Make para reimplementar |
 | `automation-n8n-builder` | ✅ **instalada**. diga "créame un workflow en n8n", "monta esto en n8n", "automatiza X en n8n", o quiera construir/desplegar un flujo n8n vía MCP |
 | `automation-client-deploy` | ✅ **instalada**. diga "despliega esto al cliente", "llévalo al VPS/PC del cliente", "empaqueta y entrega", o tenga un proyecto local listo para producción en el entorno del cliente |
 | `automation-embudo-captacion` | ✅ **instalada**. diga "capta leads con Reels", "embudo de conversión desde Instagram/redes", "automatiza DMs con palabra clave", "monta un funnel de ManyChat/n8n para captar clientes", "crecer en redes sin seguidores", o describa un flujo de captación orgánica de contenido social → lead. Entrega estrategia + esqueleto técnico; delega el build en `automation-n8n-builder` + `automation-client-deploy` |
@@ -319,10 +319,10 @@ Viven en `skills-library/` (cero coste de contexto hasta instalarlas). Instalar:
 
 | Skill | Ofrécela cuando el operador… |
 |---|---|
-| `tool-visual-explainer` | diga "hazme un HTML de esto", "ponlo bonito para compartir", "explícalo visual", "móntame una página que explique X", o necesite compartir un output complejo (diagrama, comparativa, recap) |
+| `tool-visual-explainer` | ✅ **instalada**. diga "hazme un HTML de esto", "ponlo bonito para compartir", "explícalo visual", "móntame una página que explique X", o necesite compartir un output complejo (diagrama, comparativa, recap) |
 | `impeccable` | diga "esto parece hecho por IA", "quita el AI slop", "dale criterio de diseño", "audita/critica el diseño", "pule esta pantalla", "hazlo más atrevido/sobrio". Detector de antipatrones + ajustes finos; complementa `ui-ux-pro-max`/`theme-factory` |
 | `design-taste-frontend` | diga "hazme un frontend con gusto", "que no parezca plantilla", "más carácter/movimiento", "más denso/aireado", o vaya a maquetar una web/app con control fino del estilo (diales variance/motion/density + skeletons GSAP) |
-| `theme-factory` | diga "dale estilo a esto", "aplica un tema", "ponlo bonito con una paleta", "elige fuentes y colores", "tema para esta presentación/landing", o necesite estilizar un artefacto de forma coherente |
+| `theme-factory` | ✅ **instalada**. diga "dale estilo a esto", "aplica un tema", "ponlo bonito con una paleta", "elige fuentes y colores", "tema para esta presentación/landing", o necesite estilizar un artefacto de forma coherente |
 
 ### Procesos encadenados (skills que se ofrecen seguidas)
 

@@ -1,0 +1,16 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "{{NOMBRE}}",
+  "url": "{{URL}}",
+  "logo": "{{URL_LOGO}}",
+  "description": "{{DESCRIPCION_UNA_FRASE}}",
+  "sameAs": ["{{PERFIL_LINKEDIN}}", "{{PERFIL_X}}", "{{PERFIL_INSTAGRAM}}"],
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "customer support",
+    "email": "{{EMAIL}}",
+    "areaServed": "{{PAIS_O_REGION}}",
+    "availableLanguage": ["es"]
+  }
+}
