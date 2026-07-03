@@ -12,7 +12,7 @@
 //
 //  También pone .claude/.skills-pending.json a pending:false (drift resuelto).
 // ============================================================
-import { readFileSync, writeFileSync, readdirSync, existsSync, statSync } from "node:fs";
+import { readFileSync, writeFileSync, readdirSync, existsSync, statSync, mkdirSync } from "node:fs";
 import { join, dirname, basename, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -110,7 +110,9 @@ const catalog = {
   skills,
 };
 
+mkdirSync(dirname(OUT), { recursive: true });    // synapsis/ puede no existir en un checkout limpio
 writeFileSync(OUT, JSON.stringify(catalog, null, 2) + "\n");
+mkdirSync(dirname(PENDING), { recursive: true });
 writeFileSync(
   PENDING,
   JSON.stringify({ pending: false, skill_count: skills.length, synced_at: catalog.updated_at }, null, 2) + "\n"
