@@ -147,7 +147,7 @@ Lo que aporta este repo encima de Sinapsis:
 
 ## Skills registry (v0.11.0)
 
-Modelo **Core + Biblioteca**: 27 skills core siempre instaladas (el OS las necesita) + 79 en `skills-library/` que el operador instala a demanda con `/skills` (proyecto `nuevas-skills`: pack de marketing completo — 38 skills portadas de `coreyhaines31/marketingskills`, lotes M1-M4; pendientes solo las fusiones F.0). **El operador tiene 19 de biblioteca instaladas** → **46 skills activas** (tope elegido; marcadas con ✅ en las tablas de Biblioteca; se cargan e invocan solas como las Core). El resto queda en catálogo a coste cero y se ofrece por routing cuando la intención encaje. Cada skill instalada consume contexto en cada sesion (recomendacion Anthropic: <50 cargadas) — instala solo lo que uses.
+Modelo **Core + Biblioteca**: 27 skills core siempre instaladas (el OS las necesita) + 80 en `skills-library/` que el operador instala a demanda con `/skills` (proyecto `nuevas-skills`: pack de marketing completo — 39 skills portadas de `coreyhaines31/marketingskills`, lotes M1-M4 + `marketing-launch`; fusiones F.0 aplicadas). **El operador tiene 19 de biblioteca instaladas** → **46 skills activas** (tope elegido; marcadas con ✅ en las tablas de Biblioteca; se cargan e invocan solas como las Core). El resto queda en catálogo a coste cero y se ofrece por routing cuando la intención encaje. Cada skill instalada consume contexto en cada sesion (recomendacion Anthropic: <50 cargadas) — instala solo lo que uses.
 
 **Routing por intencion (OBLIGATORIO — actívalo en CADA petición)**: antes de responder que no puedes hacer algo, o de resolverlo a mano, contrasta SIEMPRE la intención del operador contra la tabla de **Biblioteca** de abajo (la columna "Ofrécela cuando…" lista los disparadores de cada skill no instalada). Si una encaja, NO la ignores ni la resuelvas tú: ofrécela → "Eso lo hace la skill `<nombre>`. ¿La instalo?" → `bash scripts/skills.sh add <nombre>`. Las skills instaladas (sección Core **y las marcadas ✅ en Biblioteca**) sí se cargan solas: invócalas directamente cuando la intención encaje, sin preguntar. Catálogo en vivo y fuente de verdad de descripciones: `bash scripts/skills.sh list`.
 
@@ -216,7 +216,7 @@ Modelo **Core + Biblioteca**: 27 skills core siempre instaladas (el OS las neces
 
 Viven en `skills-library/` (cero coste de contexto hasta instalarlas). Instalar: `bash scripts/skills.sh add <nombre>` · Quitar: `remove` · Catálogo: `list`.
 
-#### `marketing/` (42)
+#### `marketing/` (43)
 
 > Pack `coreyhaines31/marketingskills` portado completo (proyecto `nuevas-skills`, lotes M1-M4):
 > 38 skills nuevas + las 4 previas. Todas en biblioteca; instala a demanda con `/skills`. Cuerpo
@@ -249,6 +249,7 @@ Viven en `skills-library/` (cero coste de contexto hasta instalarlas). Instalar:
 | `marketing-directory-submissions` | diga "envía mi producto a directorios", "Product Hunt", "G2/Capterra", "listar en directorios SaaS/startup" |
 | `marketing-lead-magnets` | diga "crea un lead magnet", "imán de leads", "ebook/checklist para captar", "recurso gratuito a cambio del email" |
 | `marketing-free-tools` | diga "herramienta gratuita para captar", "free tool", "calculadora/generador como gancho de leads" |
+| `marketing-launch` | diga "voy a lanzar", "plan de lanzamiento", "launch", "sacar el producto", "anunciar una feature nueva", "lanzar en Product Hunt", "go-to-market del lanzamiento" (≠ plan de marketing continuo = `marketing-plan`; ≠ PR = `marketing-public-relations`) |
 | `marketing-cro` | diga "optimiza esta landing", "mejora la conversión", "CRO", "por qué no convierte", "revisa el formulario/checkout" |
 | `marketing-popups` | diga "monta un popup", "overlay de captura", "exit-intent", "modal de descuento", "banner de suscripción" |
 | `marketing-paywalls` | diga "crea un paywall", "pantalla de upgrade in-app", "muro de pago", "conversión a premium" (apps propias) |
@@ -343,7 +344,43 @@ y confirma.
   `tool-quality-gate` / `tool-web-security-audit` / `tool-seguridad-ia` (gates) →
   `vercel-deploy` / `automation-client-deploy` (deploy). Cierra la cadena de construir app.
 
+**Cadenas del pack de marketing** (ofrecer el siguiente paso al cerrar uno; instalar de biblioteca si hace falta):
+
+- **Dependencia base**: `marketing-product-context` alimenta a TODA skill `marketing-*` (como `competencia → notebooklm-mcp`). Antes de una skill `marketing-*`, verifica que exista contexto de producto (o `brand-context/` + `context/`); si falta, créalo primero.
+- **Embudo full-funnel**: `marketing-product-context` → `marketing-plan` → `marketing-content-strategy` → (`marketing-copywriting` / `marketing-social` / `marketing-video` / `marketing-image`) → `marketing-cro` → `marketing-analytics` → `marketing-ab-testing`.
+- **Producción de contenido**: `marketing-content-strategy` → `marketing-copywriting` → `marketing-copy-editing` → `tool-humanizer` → `tool-output-verifier` → `marketing-content-repurposing` → `marketing-social`.
+- **Captación outbound**: `marketing-icp` / `marketing-customer-research` → `marketing-prospecting` → `marketing-cold-email` → `marketing-sales-enablement`.
+- **Captación inbound (lead gen)**: `marketing-lead-magnets` / `marketing-free-tools` → `marketing-popups` → `automation-embudo-captacion` → `marketing-email-sequence`.
+- **Paid ads (bucle)**: `marketing-plan` → `marketing-ads` → `marketing-ad-creative` → `marketing-meta-ads-analyzer` → `marketing-ab-testing` → (vuelta a creatividades).
+- **SEO/GEO**: `marketing-site-architecture` → `marketing-programmatic-seo` → `tool-geo-seo-audit` → `marketing-competitors`.
+- **Oferta y monetización**: `marketing-offers` → `marketing-pricing` → (`marketing-paywalls` in-app / `marketing-cro` web).
+- **Activación y retención**: `marketing-signup` → `marketing-onboarding` → `marketing-churn-prevention` → `marketing-referrals` → `marketing-revops` (con `marketing-analytics` transversal).
+- **Lanzamiento**: `marketing-plan` → `marketing-offers`/`marketing-pricing` → `marketing-launch` → `marketing-public-relations` + `marketing-directory-submissions` + `marketing-co-marketing` → `marketing-social`.
+
 Dependencia dura declarada: `competencia` → `notebooklm-mcp` (ambas core, ya satisfecha).
+
+### Reglas de routing automáticas (semi-pasivas — específicas del OS)
+
+Aplícalas al detectar el patrón, sin esperar a que el operador lo pida (no van en las passive rules globales para no ensuciar proyectos vanilla):
+
+- **Al entregar un output a cliente/operador** (copy, informe, landing en `clients/**` o `projects/**`): antes de darlo por bueno, pásalo por `tool-output-verifier` (gate) → `tool-humanizer` (AI-tell) → voz de marca (`marketing-brand-voice`).
+- **Al generar un artefacto visual** (HTML/slide/landing/imagen para cliente): aplica `brand-guidelines` (colores/tipografía) y ofrece `theme-factory` si no hay tema.
+- **Al escribir copy de marketing** (post/email/anuncio/landing): tras redactar, ofrece `marketing-copy-editing` + `tool-humanizer` antes del gate.
+
+### Desambiguación (clústeres con disparadores solapados)
+
+Cuando varias skills compiten por la misma intención, decide así (además del "NO la uses para…" de cada `description`):
+
+- **Copy**: ¿hay texto ya? `marketing-copy-editing`. ¿desde cero? `marketing-copywriting`. ¿suena a IA? `tool-humanizer`. ¿entregar? `tool-output-verifier`.
+- **Ads**: montar/gestionar campaña→`marketing-ads` · escribir anuncios→`marketing-ad-creative` · "por qué no convierte" con datos→`marketing-meta-ads-analyzer` · ver ads del rival→`competitive-ads-extractor`.
+- **Vídeo**: crear vídeo de marketing→`marketing-video` · bajar una URL→`video-downloader` · "qué dice"→`tool-transcribe-social` · fútbol→FVI (otro dominio).
+- **Competencia**: intel estratégica→`competencia` · página comparativa X vs Y→`marketing-competitors` · anuncios→`competitive-ads-extractor` · TAM/precios de mercado→`investigacion-mercado`.
+- **SEO**: auditar/optimizar→`tool-geo-seo-audit` · generar N páginas→`marketing-programmatic-seo` · jerarquía/URLs→`marketing-site-architecture`.
+- **Email**: lista propia/lifecycle→`marketing-email-sequence` · desconocidos en frío→`marketing-cold-email`.
+- **Diseño**: sistema desde cero→`ui-ux-pro-max` · aplicar tema→`theme-factory` · "parece IA"→`impeccable` · control fino→`design-taste-frontend` · marca→`brand-guidelines`. **No cargar todas a la vez.**
+- **Pensamiento**: decisión sesgada→`seis-sombreros` · análisis multimodo→`cognito` · "no arranco"→`desbloqueo` · saturación con IA→`metodo-ias`.
+- **Deploy**: web a Vercel→`vercel-deploy` · entorno cliente (VPS/PC)→`automation-client-deploy`.
+- **Lead gen**: embudo social completo→`automation-embudo-captacion` · recurso imán→`marketing-lead-magnets` · herramienta gancho→`marketing-free-tools` · overlay web→`marketing-popups`.
 
 ### Plugins Anthropic (instalación vía marketplace)
 
