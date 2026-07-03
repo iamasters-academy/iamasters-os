@@ -147,7 +147,7 @@ Lo que aporta este repo encima de Sinapsis:
 
 ## Skills registry (v0.11.0)
 
-Modelo **Core + Biblioteca**: 27 skills core siempre instaladas (el OS las necesita) + 41 en `skills-library/` que el operador instala a demanda con `/skills` (proyecto `nuevas-skills` en curso: pack de marketing pendiente de portar por lotes). **El operador ya ha instalado 11 de biblioteca** → **38 skills activas** (marcadas con ✅ en las tablas de Biblioteca; se cargan e invocan solas como las Core). Cada skill instalada consume contexto en cada sesion (recomendacion Anthropic: <50 cargadas) — instala solo lo que uses.
+Modelo **Core + Biblioteca**: 27 skills core siempre instaladas (el OS las necesita) + 49 en `skills-library/` que el operador instala a demanda con `/skills` (proyecto `nuevas-skills` en curso: pack de marketing lote M1 portado; M2-M4 pendientes). **El operador ya ha instalado 11 de biblioteca** → **38 skills activas** (marcadas con ✅ en las tablas de Biblioteca; se cargan e invocan solas como las Core). Cada skill instalada consume contexto en cada sesion (recomendacion Anthropic: <50 cargadas) — instala solo lo que uses.
 
 **Routing por intencion (OBLIGATORIO — actívalo en CADA petición)**: antes de responder que no puedes hacer algo, o de resolverlo a mano, contrasta SIEMPRE la intención del operador contra la tabla de **Biblioteca** de abajo (la columna "Ofrécela cuando…" lista los disparadores de cada skill no instalada). Si una encaja, NO la ignores ni la resuelvas tú: ofrécela → "Eso lo hace la skill `<nombre>`. ¿La instalo?" → `bash scripts/skills.sh add <nombre>`. Las skills instaladas (sección Core **y las marcadas ✅ en Biblioteca**) sí se cargan solas: invócalas directamente cuando la intención encaje, sin preguntar. Catálogo en vivo y fuente de verdad de descripciones: `bash scripts/skills.sh list`.
 
@@ -216,7 +216,10 @@ Modelo **Core + Biblioteca**: 27 skills core siempre instaladas (el OS las neces
 
 Viven en `skills-library/` (cero coste de contexto hasta instalarlas). Instalar: `bash scripts/skills.sh add <nombre>` · Quitar: `remove` · Catálogo: `list`.
 
-#### `marketing/` (4)
+#### `marketing/` (12)
+
+> Pack `coreyhaines31/marketingskills` en curso (proyecto `nuevas-skills`). Lote M1 (fundación)
+> portado; lotes M2-M4 pendientes. Todas van a biblioteca; instala a demanda con `/skills`.
 
 | Skill | Ofrécela cuando el operador… |
 |---|---|
@@ -224,6 +227,14 @@ Viven en `skills-library/` (cero coste de contexto hasta instalarlas). Instalar:
 | `marketing-content-repurposing` | quiera multiplicar una pieza: "repurpose este vídeo/podcast", "saca contenido de esto", "trocea esto para redes", "distribuye esto en varias plataformas" |
 | `marketing-email-sequence` | pida secuencias/automatizaciones de email: "secuencia de bienvenida", "nurture", "win-back", "drip", "qué emails enviar", "cadencia de emails", "embudo de emails" |
 | `marketing-meta-ads-analyzer` | quiera diagnosticar Meta Ads: "analiza mi campaña", "por qué no convierte", "CPA/ROAS/CPM/CTR", "revisa estas audiencias/creatividades", pegue datos o capturas de Meta |
+| `marketing-product-context` | arranque un proyecto de marketing o diga "contexto de producto", "marketing context", "define mi producto/audiencia". Doc base que referencian las demás; puentea con `brand-context/`+`context/` |
+| `marketing-plan` | diga "hazme un plan de marketing", "estrategia de marketing", "plan de crecimiento", "roadmap de marketing", "por dónde empiezo a promocionar" |
+| `marketing-content-strategy` | diga "estrategia de contenido", "qué contenido publico", "calendario editorial", "pilares/topics de contenido" (≠ trocear pieza = `marketing-content-repurposing`) |
+| `marketing-ideas` | diga "dame ideas de marketing", "no sé qué hacer para crecer", "lluvia de ideas", "qué táctica pruebo" (140+ jugadas) |
+| `marketing-psychology` | diga "usa psicología", "gatillos mentales", "principios de persuasión", "por qué la gente compra", "sesgos para conversión" |
+| `marketing-offers` | diga "diseña/mejora una oferta", "cómo empaqueto esto", "qué incluyo en el paquete", "value framing", "hazlo irresistible" |
+| `marketing-pricing` | diga "qué precio pongo", "estrategia de precios", "cuánto cobro", "pricing tiers", "monetización" |
+| `marketing-customer-research` | diga "investiga a mis clientes", "entrevistas de cliente", "qué quieren mis clientes", "voice of customer", "jobs to be done", "analiza reseñas/feedback" |
 
 #### `strategy/` (8)
 
