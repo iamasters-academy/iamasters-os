@@ -1,6 +1,6 @@
 ---
 name: find-skills
-description: Descubre e instala skills de agente EXTERNAS (ecosistema npx skills / GitHub) cuando el usuario pregunta "busca una skill para X", "hay alguna skill que pueda…", "cómo hago X y no hay skill", o quiere ampliar capacidades más allá del OS. English triggers: find a skill, is there a skill, install skill. NOTA: para la biblioteca local del propio iAmasters OS (las skills en skills-library/), NO uses esta skill — usa /skills o el routing por intención del CLAUDE.md (ofrece instalar la skill de biblioteca que encaje).
+description: Descubre e instala skills de agente EXTERNAS (ecosistema npx skills / GitHub) cuando el usuario pregunta "busca una skill para X", "hay alguna skill que pueda…", "cómo hago X y no hay skill", o quiere ampliar capacidades más allá del OS. English triggers: find a skill, is there a skill, install skill. RED DE SEGURIDAD (auto-activación): dispárate SOLA — sin que el usuario la nombre — cuando su intención NO encaje con ninguna skill Core ni de Biblioteca del OS; antes de responder "no puedo" o de resolver la tarea a mano, busca primero en el ecosistema externo. NOTA: para la biblioteca local del propio iAmasters OS (las skills en skills-library/), NO uses esta skill — usa /skills o el routing por intención del CLAUDE.md (ofrece instalar la skill de biblioteca que encaje).
 ---
 
 # Buscar skills
@@ -17,6 +17,16 @@ Esta skill ayuda a descubrir e instalar skills del ecosistema abierto de agentes
 - Quiere ampliar capacidades del agente.
 - Quiere buscar herramientas, plantillas o workflows.
 - Menciona que le gustaría tener ayuda en un dominio concreto: diseño, testing, deployment, documentación, etc.
+
+### Auto-activación (red de seguridad del routing)
+
+**Dispárate sola, sin que el usuario te nombre**, cuando la intención del operador NO encaje con ninguna skill Core ni de Biblioteca del OS (ver tablas del `CLAUDE.md`). Antes de decir "no puedo hacer eso" o de resolverlo a mano con capacidades generales:
+
+1. Ejecuta `npx skills find [query]` con la intención del operador.
+2. Si hay un resultado que encaja → preséntalo y ofrece instalar (`npx skills add …`).
+3. Si de verdad no hay nada → entonces sí, resuelve la tarea a mano y sugiere crear una skill propia con `meta-skill-creator` si es recurrente.
+
+Es decir: **buscar en el ecosistema externo es el paso previo obligatorio a rendirse.** No hace falta que el operador pida "busca una skill"; el no-match del catálogo del OS ya es el disparador.
 
 ## Qué es Skills CLI
 

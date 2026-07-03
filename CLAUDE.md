@@ -147,9 +147,11 @@ Lo que aporta este repo encima de Sinapsis:
 
 ## Skills registry (v0.11.0)
 
-Modelo **Core + Biblioteca**: 27 skills core siempre instaladas (el OS las necesita) + 36 en `skills-library/` que el operador instala a demanda con `/skills`. **El operador ya ha instalado 8 de biblioteca** → **35 skills activas** (marcadas con ✅ en las tablas de Biblioteca; se cargan e invocan solas como las Core). Cada skill instalada consume contexto en cada sesion (recomendacion Anthropic: <50 cargadas) — instala solo lo que uses.
+Modelo **Core + Biblioteca**: 27 skills core siempre instaladas (el OS las necesita) + 41 en `skills-library/` que el operador instala a demanda con `/skills` (proyecto `nuevas-skills` en curso: pack de marketing pendiente de portar por lotes). **El operador ya ha instalado 11 de biblioteca** → **38 skills activas** (marcadas con ✅ en las tablas de Biblioteca; se cargan e invocan solas como las Core). Cada skill instalada consume contexto en cada sesion (recomendacion Anthropic: <50 cargadas) — instala solo lo que uses.
 
 **Routing por intencion (OBLIGATORIO — actívalo en CADA petición)**: antes de responder que no puedes hacer algo, o de resolverlo a mano, contrasta SIEMPRE la intención del operador contra la tabla de **Biblioteca** de abajo (la columna "Ofrécela cuando…" lista los disparadores de cada skill no instalada). Si una encaja, NO la ignores ni la resuelvas tú: ofrécela → "Eso lo hace la skill `<nombre>`. ¿La instalo?" → `bash scripts/skills.sh add <nombre>`. Las skills instaladas (sección Core **y las marcadas ✅ en Biblioteca**) sí se cargan solas: invócalas directamente cuando la intención encaje, sin preguntar. Catálogo en vivo y fuente de verdad de descripciones: `bash scripts/skills.sh list`.
+
+**Fallback obligatorio (auto-activación de `find-skills`)**: si la intención del operador **no encaja con NINGUNA** skill —ni Core, ni Biblioteca instalada, ni Biblioteca disponible—, **antes de decir "no puedo" o de resolverlo a mano, invoca automáticamente la skill `find-skills`** (core `_meta/find-skills`) para buscar en el ecosistema externo (`npx skills`). No esperes a que el operador diga "busca una skill": el no-match del catálogo del OS ES el disparador. Solo si `find-skills` tampoco encuentra nada, resuelve la tarea con capacidades generales y sugiere crearla con `meta-skill-creator` si es recurrente.
 
 ### Core — siempre instaladas (27)
 
@@ -223,10 +225,11 @@ Viven en `skills-library/` (cero coste de contexto hasta instalarlas). Instalar:
 | `marketing-email-sequence` | pida secuencias/automatizaciones de email: "secuencia de bienvenida", "nurture", "win-back", "drip", "qué emails enviar", "cadencia de emails", "embudo de emails" |
 | `marketing-meta-ads-analyzer` | quiera diagnosticar Meta Ads: "analiza mi campaña", "por qué no convierte", "CPA/ROAS/CPM/CTR", "revisa estas audiencias/creatividades", pegue datos o capturas de Meta |
 
-#### `strategy/` (7)
+#### `strategy/` (8)
 
 | Skill | Ofrécela cuando el operador… |
 |---|---|
+| `desbloqueo` | diga "estoy bloqueado", "no consigo arrancar/publicar/lanzar", "llevo semanas dándole vueltas", "no me decido", "me disperso", "empiezo cosas y no las cierro", "procrastino", "síndrome del impostor", o describa parálisis/perfeccionismo/miedo a lanzar (estado de bloqueo personal, NO decisión con trade-offs → eso es `seis-sombreros`/`cognito`) |
 | `metodo-ias` | diga "método IAS", "planifica la sesión", "recap semanal", "me estoy quemando con la IA", "AI brain fry", "tomo demasiadas micro-decisiones", o quiera estructurar trabajo con IA sin saturarse |
 | `developer-growth-analysis` | diga "analiza mi historial de código", "en qué estoy fallando programando", "dónde puedo mejorar como dev", "detecta mis gaps técnicos", o quiera un informe de sus patrones de desarrollo |
 | `seis-sombreros` | ✅ **instalada** — invócala directamente. pida "seis sombreros", "six hats", "ayúdame a pensar esto", "pros y contras en serio", "rompe el ancla", "análisis multi-perspectiva", o esté ante una decisión con sesgo de anclaje |
@@ -235,10 +238,12 @@ Viven en `skills-library/` (cero coste de contexto hasta instalarlas). Instalar:
 | `strategy-investigacion-profunda` | pida un **informe completo**: "investiga a fondo", "informe con fuentes", "triangula", "verifica con varias fuentes", "due diligence", "estado del arte" |
 | `strategy-stack-recommender` | pregunte "¿con qué construyo esto?", "¿qué stack me recomiendas?", "¿qué tecnologías uso para…?", o describa un proyecto y necesite orientación técnica antes de picar código |
 
-#### `tools/` (19)
+#### `tools/` (21)
 
 | Skill | Ofrécela cuando el operador… |
 |---|---|
+| `tool-caveman` | ✅ **instalada**. diga "modo caverna", "caveman", "menos tokens", "comprime tus respuestas", "sé ultra conciso", "ahorra contexto", o "/caveman". Comprime ~75% quitando relleno, mantiene código y sustancia; persiste hasta "modo normal". NO comprime warnings/acciones irreversibles/entregables |
+| `tool-geo-seo-audit` | diga "audita el SEO de mi web", "optimiza para IA / para que me cite ChatGPT", "GEO", "llms.txt", "schema markup", "structured data", "¿por qué no aparezco en Google/IA?", o vaya a posicionar una web pública. Fusiona ai-seo/seo-audit/schema; LLM-native (Python opcional) |
 | `arnes` | diga "nuevo proyecto", "crea una app/web/landing", "arranca un proyecto", "adopta/renueva este proyecto", o quiera montar software paso a paso (Express/Estándar/PRO) |
 | `vercel-deploy` | diga "despliega esto en Vercel", "súbelo a Vercel", "pon esta web/app online en Vercel", o cierre un proyecto web listo para producción en Vercel (último paso de la cadena build) |
 | `obsidian-plugin` | diga "crea un plugin de Obsidian", "desarrolla algo para Obsidian", "extiende Obsidian", "plugin para mi bóveda de notas", o trabaje sobre la Obsidian API |
@@ -254,8 +259,8 @@ Viven en `skills-library/` (cero coste de contexto hasta instalarlas). Instalar:
 | `tool-seguridad-ia` | diga "revisa la seguridad de este código", "¿es seguro lo que ha escrito la IA?", "checklist antes de desplegar", o genere código sensible (credenciales, endpoints, BBDD) |
 | `tool-quality-gate` | diga "antes de desplegar", "voy a hacer push", "¿está listo para producción?", "valida esta app", o cierre un proyecto arnes |
 | `tool-transcribe-social` | pase una URL de Reel/TikTok/Short/vídeo y diga "transcribe esto", "saca lo que dice", "de qué va este vídeo" |
-| `tool-web-legal-audit` | diga "audita legalmente esta web", "¿cumple RGPD/LSSI?", "revisa cookies/trackers", "comprueba accesibilidad", o lance una landing pública |
-| `tool-web-security-audit` | diga "¿tiene vulnerabilidades mi web?", "pentest a mi sitio", "busca agujeros de seguridad", "¿es hackeable?" (solo webs propias/autorizadas) |
+| `tool-web-legal-audit` | ✅ **instalada**. diga "audita legalmente esta web", "¿cumple RGPD/LSSI?", "revisa cookies/trackers", "comprueba accesibilidad", o lance una landing pública |
+| `tool-web-security-audit` | ✅ **instalada**. diga "¿tiene vulnerabilidades mi web?", "pentest a mi sitio", "busca agujeros de seguridad", "¿es hackeable?" (solo webs propias/autorizadas). v2.1: scorecard 0-100 + auto-fix |
 | `daily-brief` | diga "brief de hoy", "resúmeme el correo y la agenda", "qué tengo hoy", "daily brief", o acepte la oferta matutina de `meta-start-here` (correo Gmail + Google Calendar; Drive aún no conectado) |
 | `tool-graphify` | ✅ **instalada** (también global en `~/.claude/skills/` — aplica a TODOS los proyectos). diga "graphify", "mapea/indexa este proyecto", "monta el grafo de conocimiento", "grafo de dependencias", o pregunte arquitectura ("¿qué depende de X?") en un repo grande. Always-on vía passive rule Sinapsis `graphify-graph-first`; NUNCA usar `graphify claude install`. Cada repo tiene su grafo propio en `graphify-out/` |
 
@@ -268,11 +273,13 @@ Viven en `skills-library/` (cero coste de contexto hasta instalarlas). Instalar:
 | `automation-client-deploy` | ✅ **instalada**. diga "despliega esto al cliente", "llévalo al VPS/PC del cliente", "empaqueta y entrega", o tenga un proyecto local listo para producción en el entorno del cliente |
 | `automation-embudo-captacion` | ✅ **instalada**. diga "capta leads con Reels", "embudo de conversión desde Instagram/redes", "automatiza DMs con palabra clave", "monta un funnel de ManyChat/n8n para captar clientes", "crecer en redes sin seguidores", o describa un flujo de captación orgánica de contenido social → lead. Entrega estrategia + esqueleto técnico; delega el build en `automation-n8n-builder` + `automation-client-deploy` |
 
-#### `visualization/` (2)
+#### `visualization/` (4)
 
 | Skill | Ofrécela cuando el operador… |
 |---|---|
 | `tool-visual-explainer` | diga "hazme un HTML de esto", "ponlo bonito para compartir", "explícalo visual", "móntame una página que explique X", o necesite compartir un output complejo (diagrama, comparativa, recap) |
+| `impeccable` | diga "esto parece hecho por IA", "quita el AI slop", "dale criterio de diseño", "audita/critica el diseño", "pule esta pantalla", "hazlo más atrevido/sobrio". Detector de antipatrones + ajustes finos; complementa `ui-ux-pro-max`/`theme-factory` |
+| `design-taste-frontend` | diga "hazme un frontend con gusto", "que no parezca plantilla", "más carácter/movimiento", "más denso/aireado", o vaya a maquetar una web/app con control fino del estilo (diales variance/motion/density + skeletons GSAP) |
 | `theme-factory` | diga "dale estilo a esto", "aplica un tema", "ponlo bonito con una paleta", "elige fuentes y colores", "tema para esta presentación/landing", o necesite estilizar un artefacto de forma coherente |
 
 ### Procesos encadenados (skills que se ofrecen seguidas)
