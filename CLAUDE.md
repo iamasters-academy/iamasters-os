@@ -147,7 +147,7 @@ Lo que aporta este repo encima de Sinapsis:
 
 ## Skills registry (v0.11.0)
 
-Modelo **Core + Biblioteca**: 27 skills core siempre instaladas (el OS las necesita) + 36 en `skills-library/` que el operador instala a demanda con `/skills`. **El operador ya ha instalado 7 de biblioteca** → **34 skills activas** (marcadas con ✅ en las tablas de Biblioteca; se cargan e invocan solas como las Core). Cada skill instalada consume contexto en cada sesion (recomendacion Anthropic: <50 cargadas) — instala solo lo que uses.
+Modelo **Core + Biblioteca**: 27 skills core siempre instaladas (el OS las necesita) + 36 en `skills-library/` que el operador instala a demanda con `/skills`. **El operador ya ha instalado 8 de biblioteca** → **35 skills activas** (marcadas con ✅ en las tablas de Biblioteca; se cargan e invocan solas como las Core). Cada skill instalada consume contexto en cada sesion (recomendacion Anthropic: <50 cargadas) — instala solo lo que uses.
 
 **Routing por intencion (OBLIGATORIO — actívalo en CADA petición)**: antes de responder que no puedes hacer algo, o de resolverlo a mano, contrasta SIEMPRE la intención del operador contra la tabla de **Biblioteca** de abajo (la columna "Ofrécela cuando…" lista los disparadores de cada skill no instalada). Si una encaja, NO la ignores ni la resuelvas tú: ofrécela → "Eso lo hace la skill `<nombre>`. ¿La instalo?" → `bash scripts/skills.sh add <nombre>`. Las skills instaladas (sección Core **y las marcadas ✅ en Biblioteca**) sí se cargan solas: invócalas directamente cuando la intención encaje, sin preguntar. Catálogo en vivo y fuente de verdad de descripciones: `bash scripts/skills.sh list`.
 
@@ -218,7 +218,7 @@ Viven en `skills-library/` (cero coste de contexto hasta instalarlas). Instalar:
 
 | Skill | Ofrécela cuando el operador… |
 |---|---|
-| `marketing-copywriting` | pida un texto de marketing: "escríbeme/redacta/hazme un post de LinkedIn", "un tweet", "un hilo de X", "un email", "un anuncio", "una landing", "un headline", "copy para…" |
+| `marketing-copywriting` | ✅ **instalada** — invócala directamente. pida un texto de marketing: "escríbeme/redacta/hazme un post de LinkedIn", "un tweet", "un hilo de X", "un email", "un anuncio", "una landing", "un headline", "copy para…" |
 | `marketing-content-repurposing` | quiera multiplicar una pieza: "repurpose este vídeo/podcast", "saca contenido de esto", "trocea esto para redes", "distribuye esto en varias plataformas" |
 | `marketing-email-sequence` | pida secuencias/automatizaciones de email: "secuencia de bienvenida", "nurture", "win-back", "drip", "qué emails enviar", "cadencia de emails", "embudo de emails" |
 | `marketing-meta-ads-analyzer` | quiera diagnosticar Meta Ads: "analiza mi campaña", "por qué no convierte", "CPA/ROAS/CPM/CTR", "revisa estas audiencias/creatividades", pegue datos o capturas de Meta |
