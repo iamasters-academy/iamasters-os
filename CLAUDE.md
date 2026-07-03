@@ -304,7 +304,7 @@ Viven en `skills-library/` (cero coste de contexto hasta instalarlas). Instalar:
 | `tool-transcribe-social` | pase una URL de Reel/TikTok/Short/vídeo y diga "transcribe esto", "saca lo que dice", "de qué va este vídeo" |
 | `tool-web-legal-audit` | ✅ **instalada**. diga "audita legalmente esta web", "¿cumple RGPD/LSSI?", "revisa cookies/trackers", "comprueba accesibilidad", o lance una landing pública |
 | `tool-web-security-audit` | ✅ **instalada**. diga "¿tiene vulnerabilidades mi web?", "pentest a mi sitio", "busca agujeros de seguridad", "¿es hackeable?" (solo webs propias/autorizadas). v2.1: scorecard 0-100 + auto-fix |
-| `daily-brief` | diga "brief de hoy", "resúmeme el correo y la agenda", "qué tengo hoy", "daily brief", o acepte la oferta matutina de `meta-start-here` (correo Gmail + Google Calendar; Drive aún no conectado) |
+| `daily-brief` | ✅ **instalada**. diga "brief de hoy", "resúmeme el correo y la agenda", "qué tengo hoy", "daily brief", o acepte la oferta matutina de `meta-start-here` (correo Gmail + Google Calendar; Drive aún no conectado) |
 | `tool-graphify` | ✅ **instalada** (también global en `~/.claude/skills/` — aplica a TODOS los proyectos). diga "graphify", "mapea/indexa este proyecto", "monta el grafo de conocimiento", "grafo de dependencias", o pregunte arquitectura ("¿qué depende de X?") en un repo grande. Always-on vía passive rule Sinapsis `graphify-graph-first`; NUNCA usar `graphify claude install`. Cada repo tiene su grafo propio en `graphify-out/` |
 
 #### `automation/` (4) — ✅ las 4 instaladas, invócalas directamente

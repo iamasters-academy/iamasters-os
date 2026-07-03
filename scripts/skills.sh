@@ -12,6 +12,9 @@
 #    bash scripts/skills.sh add <nombre>      # instala desde la biblioteca (+ deps)
 #    bash scripts/skills.sh remove <nombre>   # desinstala (las core no se pueden)
 #    bash scripts/skills.sh sync [--quiet]    # refresca instaladas tras /actualiza
+#    bash scripts/skills.sh catalog           # regenera el catálogo desde el disco
+#
+#  add/remove/sync regeneran synapsis/skills-catalog.json solos (sin drift).
 #
 #  Las personalizaciones del operador (SKILL.local.md) se preservan
 #  SIEMPRE: al instalar, desinstalar, reinstalar y sincronizar.
@@ -79,6 +82,21 @@ deps_for() {
 }
 
 say() { $QUIET || printf "%b\n" "$1"; }
+
+regen_catalog() {
+    # Regenera synapsis/skills-catalog.json desde el disco (fuente de verdad).
+    # Evita el drift: se llama tras cada add/remove/sync. No falla el comando
+    # si node no está disponible.
+    if command -v node >/dev/null 2>&1; then
+        if $QUIET; then
+            node "$REPO_ROOT/scripts/regen-catalog.mjs" --quiet >/dev/null 2>&1 || true
+        else
+            node "$REPO_ROOT/scripts/regen-catalog.mjs" || say "${YELLOW}  ! no se pudo regenerar el catálogo${NC}"
+        fi
+    else
+        say "${YELLOW}  ! node no disponible: catálogo no regenerado (corre 'skills.sh catalog' luego)${NC}"
+    fi
+}
 
 do_add() {
     local name="$1" as_dep="${2:-}"
@@ -224,6 +242,7 @@ case "$CMD" in
             exit 1
         fi
         do_add "$1"
+        regen_catalog
         say ""
         say "  Reinicia Claude Code para que cargue la skill."
         ;;
@@ -233,11 +252,13 @@ case "$CMD" in
             exit 1
         fi
         do_remove "$1"
+        regen_catalog
         ;;
-    sync)   do_sync ;;
+    sync)   do_sync; regen_catalog ;;
+    catalog) regen_catalog ;;
     -h|--help|help) grep '^#' "$0" | sed 's/^# \{0,2\}//' | head -18 ;;
     *)
-        printf "%b\n" "${RED}Comando desconocido: $CMD${NC} (usa list, add, remove o sync)"
+        printf "%b\n" "${RED}Comando desconocido: $CMD${NC} (usa list, add, remove, sync o catalog)"
         exit 1
         ;;
 esac
