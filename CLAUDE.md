@@ -147,7 +147,7 @@ Lo que aporta este repo encima de Sinapsis:
 
 ## Skills registry (v0.11.0)
 
-Modelo **Core + Biblioteca**: 27 skills core siempre instaladas (el OS las necesita) + 49 en `skills-library/` que el operador instala a demanda con `/skills` (proyecto `nuevas-skills` en curso: pack de marketing lote M1 portado; M2-M4 pendientes). **El operador ya ha instalado 11 de biblioteca** → **38 skills activas** (marcadas con ✅ en las tablas de Biblioteca; se cargan e invocan solas como las Core). Cada skill instalada consume contexto en cada sesion (recomendacion Anthropic: <50 cargadas) — instala solo lo que uses.
+Modelo **Core + Biblioteca**: 27 skills core siempre instaladas (el OS las necesita) + 79 en `skills-library/` que el operador instala a demanda con `/skills` (proyecto `nuevas-skills`: pack de marketing completo — 38 skills portadas de `coreyhaines31/marketingskills`, lotes M1-M4; pendientes solo las fusiones F.0). **El operador ya ha instalado 11 de biblioteca** → **38 skills activas** (marcadas con ✅ en las tablas de Biblioteca; se cargan e invocan solas como las Core). Cada skill instalada consume contexto en cada sesion (recomendacion Anthropic: <50 cargadas) — instala solo lo que uses.
 
 **Routing por intencion (OBLIGATORIO — actívalo en CADA petición)**: antes de responder que no puedes hacer algo, o de resolverlo a mano, contrasta SIEMPRE la intención del operador contra la tabla de **Biblioteca** de abajo (la columna "Ofrécela cuando…" lista los disparadores de cada skill no instalada). Si una encaja, NO la ignores ni la resuelvas tú: ofrécela → "Eso lo hace la skill `<nombre>`. ¿La instalo?" → `bash scripts/skills.sh add <nombre>`. Las skills instaladas (sección Core **y las marcadas ✅ en Biblioteca**) sí se cargan solas: invócalas directamente cuando la intención encaje, sin preguntar. Catálogo en vivo y fuente de verdad de descripciones: `bash scripts/skills.sh list`.
 
@@ -216,10 +216,11 @@ Modelo **Core + Biblioteca**: 27 skills core siempre instaladas (el OS las neces
 
 Viven en `skills-library/` (cero coste de contexto hasta instalarlas). Instalar: `bash scripts/skills.sh add <nombre>` · Quitar: `remove` · Catálogo: `list`.
 
-#### `marketing/` (12)
+#### `marketing/` (42)
 
-> Pack `coreyhaines31/marketingskills` en curso (proyecto `nuevas-skills`). Lote M1 (fundación)
-> portado; lotes M2-M4 pendientes. Todas van a biblioteca; instala a demanda con `/skills`.
+> Pack `coreyhaines31/marketingskills` portado completo (proyecto `nuevas-skills`, lotes M1-M4):
+> 38 skills nuevas + las 4 previas. Todas en biblioteca; instala a demanda con `/skills`. Cuerpo
+> original inglés, frontmatter en castellano, nota-puente al OS en cada una.
 
 | Skill | Ofrécela cuando el operador… |
 |---|---|
@@ -235,6 +236,36 @@ Viven en `skills-library/` (cero coste de contexto hasta instalarlas). Instalar:
 | `marketing-offers` | diga "diseña/mejora una oferta", "cómo empaqueto esto", "qué incluyo en el paquete", "value framing", "hazlo irresistible" |
 | `marketing-pricing` | diga "qué precio pongo", "estrategia de precios", "cuánto cobro", "pricing tiers", "monetización" |
 | `marketing-customer-research` | diga "investiga a mis clientes", "entrevistas de cliente", "qué quieren mis clientes", "voice of customer", "jobs to be done", "analiza reseñas/feedback" |
+| `marketing-cold-email` | diga "email en frío", "cold email", "correo de prospección", "outreach B2B", "secuencia de follow-up a prospectos" |
+| `marketing-prospecting` | diga "lista de prospectos", "encuentra clientes potenciales", "cualifica leads", "a quién le vendo", "lista de contactos para outreach" |
+| `marketing-ads` | diga "monta una campaña de pago", "configura anuncios en Google/Meta/LinkedIn", "gestiona mis ads", "estructura/presupuesto de campañas" (≠ diagnosticar Meta = `marketing-meta-ads-analyzer`) |
+| `marketing-ad-creative` | diga "crea creatividades de anuncio", "headlines para ads", "variantes de anuncio", "ángulos para la campaña" |
+| `marketing-social` | diga "posts para redes", "contenido de social media", "qué publico en IG/LinkedIn/X", "ideas para redes" |
+| `marketing-video` | diga "guion de vídeo", "ideas para reels/shorts", "vídeo de marketing", "vídeo para el anuncio" (≠ FVI ni descargar/transcribir) |
+| `marketing-image` | diga "gráficos para redes", "imágenes de marketing", "genera una imagen para post/anuncio", "banner", "creatividad visual" |
+| `marketing-public-relations` | diga "campaña de PR", "nota de prensa", "contacta periodistas", "aparecer en medios", "relaciones públicas" |
+| `marketing-community` | diga "crea una comunidad", "estrategia de comunidad", "hacer crecer comunidad", "Discord/Skool/grupo" (≠ captación redes = `automation-embudo-captacion`) |
+| `marketing-co-marketing` | diga "co-marketing", "partners para campañas", "alianza/colaboración de marketing", "campaña conjunta", "cross-promotion" |
+| `marketing-directory-submissions` | diga "envía mi producto a directorios", "Product Hunt", "G2/Capterra", "listar en directorios SaaS/startup" |
+| `marketing-lead-magnets` | diga "crea un lead magnet", "imán de leads", "ebook/checklist para captar", "recurso gratuito a cambio del email" |
+| `marketing-free-tools` | diga "herramienta gratuita para captar", "free tool", "calculadora/generador como gancho de leads" |
+| `marketing-cro` | diga "optimiza esta landing", "mejora la conversión", "CRO", "por qué no convierte", "revisa el formulario/checkout" |
+| `marketing-popups` | diga "monta un popup", "overlay de captura", "exit-intent", "modal de descuento", "banner de suscripción" |
+| `marketing-paywalls` | diga "crea un paywall", "pantalla de upgrade in-app", "muro de pago", "conversión a premium" (apps propias) |
+| `marketing-signup` | diga "mejora el registro", "optimiza el signup", "flujo de alta", "reduce fricción de registro", "trial sin tarjeta" |
+| `marketing-onboarding` | diga "mejora el onboarding", "activación de usuarios", "time to value", "flujo post-registro" |
+| `marketing-churn-prevention` | diga "reduce el churn", "evita cancelaciones", "flujo de cancelación", "oferta de retención", "win-back de cancelados" |
+| `marketing-referrals` | diga "programa de referidos", "sistema de afiliados", "member-get-member", "cómo hago que me recomienden" |
+| `marketing-revops` | diga "revops", "lead scoring", "pipeline de leads", "ciclo de vida del lead", "handoff marketing-ventas" |
+| `marketing-sales-enablement` | diga "material de ventas", "pitch deck", "guion de demo", "one-pager", "cómo respondo objeciones" |
+| `marketing-analytics` | diga "configura GA4", "tracking de eventos", "mide mis conversiones", "audita mi analítica", "atribución" |
+| `marketing-ab-testing` | diga "plan de A/B testing", "diseña un experimento", "qué testeo primero", "significancia del test", "variantes a probar" |
+| `marketing-programmatic-seo` | diga "SEO programático", "páginas a escala", "cientos de páginas SEO", "pSEO", "plantillas de landing por keyword" |
+| `marketing-site-architecture` | diga "reestructura mi web", "arquitectura del sitio", "jerarquía de páginas", "navegación/menú", "internal linking" |
+| `marketing-competitors` | diga "página de comparación", "X vs Y", "alternativa a Z", "landing de versus" (≠ inteligencia competitiva de negocio = `competencia`) |
+| `marketing-copy-editing` | diga "edita este copy", "revisa este texto", "mejóralo/púlelo", "hazlo más claro/corto" (≠ escribir desde cero = `marketing-copywriting`) |
+| `marketing-aso` | diga "optimiza mi ficha de la app", "ASO", "keywords de la app", "screenshots de la ficha" (apps propias) |
+| `marketing-sms` | diga "campaña de SMS", "marketing por SMS/MMS", "cadencia de SMS", "opt-in de SMS" |
 
 #### `strategy/` (8)
 
