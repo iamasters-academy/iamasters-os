@@ -341,3 +341,42 @@ Leer en voz alta antes de cada loop nuevo:
 - `references/loop-canvas.md` — plantilla de los 9 campos + ejemplo rellenado universal. Leer SIEMPRE en modo DISEÑO/DISPARO.
 - `references/patrones.md` — los 7 patrones de diseño de loops. Leer al elegir la forma del loop.
 - `references/demo-playbook.md` — guion de la demo en directo "El mismo trabajo, dos veces". Leer cuando el usuario prepare una formación o demo.
+
+---
+
+## Lente marketing — fusión de `coreyhaines31/marketingskills` (`marketing-loops`)
+
+> El Loop Engine es agnóstico de dominio. Para **loops de marketing**, aplica esta lente: usa las
+> skills `marketing-*` de la biblioteca como *cuerpo del loop*, y regula la cadencia por velocidad
+> real de la señal (el error #1 es sobre-frecuentar).
+
+### Regla de cadencia (marketing)
+Ajusta la cadencia a cómo de rápido cambia la señal, no a con qué frecuencia te gustaría un update.
+
+| Señal | Cadencia realista | Por qué |
+|---|---|---|
+| Rankings, backlinks, autoridad de dominio | Semanal | Se mueven lento; a diario es ruido |
+| Fatiga de creatividades, deriva de CPA | Cada 2-3 días | Los feedback loops de Meta/Google son de días |
+| Activación / onboarding | Semanal | Necesita suficientes altas para ser significativo |
+| Señales de churn | Diario o on-trigger | La ventana de intervención es corta |
+| Decaimiento de contenido/copy | Mensual | La erosión de tráfico es gradual |
+| Cambios de competidores | Semanal | Precios/posicionamiento cambian poco pero importan |
+| Menciones / social listening | Diario | Las ventanas de engagement se cierran rápido |
+
+### Cuándo NO hacer loop (o poner checkpoint humano)
+- **La estrategia/creatividad es el trabajo real** — los loops mantienen y optimizan; no fijan
+  posicionamiento ni inventan campañas.
+- **La acción publica o gasta sin revisión** — auto-*borrador* de anuncio/email/post: OK.
+  Auto-*publicar* o auto-*mover presupuesto*: checkpoint humano salvo autorización explícita con topes.
+- **Señal demasiado escasa** — un loop de conversión semanal sobre 40 visitas/semana mide ruido.
+- **Loop vanidoso** — si nadie actúa sobre el output, bórralo.
+
+### Cuerpos de loop de marketing (catálogo vivo)
+Cada iteración orquesta skills `marketing-*`: p. ej. *ranking watch* → [[tool-geo-seo-audit]];
+*ad fatigue* → [[marketing-meta-ads-analyzer]] + [[marketing-ad-creative]]; *churn watch* →
+[[marketing-churn-prevention]]; *content decay* → [[marketing-content-strategy]] + [[marketing-copy-editing]].
+Rellena las 9 partes del Loop Canvas (arriba) para cada uno; sin self-check, estado/idempotencia y
+condición de parada concretos, el loop no está listo.
+
+Vocabulario prohibido (deshonesto): "ponlo y olvídate", "marketing 100% autónomo", "la IA lo hace
+todo", "10x en piloto automático". Los loops son sistemas con compuertas, no magia.

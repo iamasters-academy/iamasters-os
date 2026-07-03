@@ -192,3 +192,69 @@ This skill provides a **modular, multi-step workflow** to perform advanced compe
 
 ---
 
+
+---
+
+## Perfilado estructurado desde URLs — fusión de `coreyhaines31/marketingskills` (`competitor-profiling`)
+
+> Complementa el flujo NotebookLM/subagentes de arriba con un **perfilado reproducible desde la web
+> del competidor**: scraping con [[tool-firecrawl-scraper]], plantilla comparable y dos niveles de
+> profundidad. Un fichero por competidor en `competitor-profiles/<nombre>.md`; al final, un
+> `_summary.md` con tabla comparativa, mapa de posicionamiento y huecos.
+
+### Principios
+Hechos > opiniones · estructurado y comparable (mismas métricas para todos) · datos actuales · evaluación honesta (también las fortalezas del rival).
+
+### Proceso
+1. **Scraping (Firecrawl)** — home + pricing (+ páginas clave en deep). Guarda el crudo con fecha.
+2. **SEO/mercado** — rank de dominio, keywords, tráfico estimado, backlinks (si hay fuente de datos).
+3. **Síntesis** — rellena la plantilla; construye el `_summary.md` al final.
+
+### Plantilla de perfil (comparable)
+```markdown
+# [Competidor] — Perfil
+
+**URL**: [web] · **Generado**: [fecha] · **Profundidad**: [quick scan / deep profile]
+
+## De un vistazo
+| Métrica | Valor |
+|---|---|
+| Tagline | … | 
+| Fundación / HQ / equipo / funding | … |
+| Rank de dominio / tráfico orgánico est. / referring domains / keywords | … |
+
+## Posicionamiento y mensaje
+Propuesta de valor · audiencia objetivo · ángulo de posicionamiento · temas de mensaje (con página fuente).
+
+## Producto y features
+Capacidades núcleo · diferenciadores · integraciones · señales de dirección de producto (changelog).
+
+## Precios
+| Tier | Precio | Incluye |
+|---|---|---|
+Billing (mensual/anual) · free trial · rarezas (per-seat, uso, costes ocultos).
+
+## Clientes y prueba social
+Logos · industrias · temas de casos · ratings (G2/Capterra con nº de reseñas).
+
+## SEO y contenido
+Tráfico orgánico est. · top páginas por tráfico · frecuencia y tipos de contenido · perfil de backlinks.
+
+## Fortalezas y debilidades
+Con evidencia/fuente en cada punto.
+
+## Implicaciones para [tu producto]
+Dónde son fuertes vs. nosotros · dónde somos fuertes vs. ellos · oportunidades · amenazas.
+
+## Fuentes de datos crudos
+Fechas de scraping/pull por sección.
+```
+
+### Quick Scan vs Deep Profile
+- **Quick scan** (rápido, barato): home + pricing; SEO resumen; salida abreviada (De un vistazo + Posicionamiento + Precios + SEO). **Por defecto.**
+- **Deep profile**: todas las páginas clave + reseñas; backlinks + keyword intelligence + stack; plantilla completa. Úsalo si el operador lo pide o hay ≤3 competidores.
+
+### Varios competidores
+Paraleliza el scraping (todas las home a la vez, luego pricing…) · mismas métricas para todos ·
+`_summary.md` al final · si hay 10+, prioriza el top 5 por solape de dominio. Perfiles = fotos:
+al actualizar, revisa pricing primero, re-pull SEO, escanea changelog, y anota cambios en `## Change Log`.

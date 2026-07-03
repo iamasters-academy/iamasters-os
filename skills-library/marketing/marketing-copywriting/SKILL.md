@@ -194,3 +194,65 @@ Aplicar y volver a verificar (Paso 5).
 ## Examples
 
 Ver `references/examples.md` para casos LinkedIn, X thread, email, landing hero.
+
+---
+
+## Copy de página web — fusión de `coreyhaines31/marketingskills` (`copywriting`)
+
+> Los pasos de arriba generan copy **por plataforma** (LinkedIn/X/email/secciones sueltas). Para
+> **copy de página web completa** (home, landing, pricing, feature, about) aplica además estos
+> principios y este framework. Tras el borrador, pásalo por [[tool-humanizer]] y el gate de siempre;
+> para revisión línea a línea, [[marketing-copy-editing]].
+
+### Principios de copywriting
+- **Claridad antes que ingenio** — si hay que elegir entre claro y creativo, claro.
+- **Beneficios antes que características** — la característica es lo que hace; el beneficio, lo que
+  significa para el cliente.
+- **Concreto antes que vago** — ❌ "ahorra tiempo en tu flujo" · ✅ "reduce tu informe semanal de
+  4 horas a 15 minutos".
+- **Lenguaje del cliente antes que de la empresa** — usa las palabras que usan tus clientes (reseñas,
+  entrevistas, tickets). Conecta con [[marketing-customer-research]].
+- **Una idea por sección** — cada sección avanza un solo argumento; construye un flujo lógico.
+
+### Reglas de estilo
+1. **Simple > complejo** — "usar" no "utilizar".
+2. **Concreto > vago** — evita "optimizar", "streamline", "innovador".
+3. **Activa > pasiva** — "generamos informes", no "los informes se generan".
+4. **Seguro > matizado** — quita "casi", "muy", "realmente".
+5. **Mostrar > contar** — describe el resultado en vez de adjetivar.
+6. **Honesto > sensacionalista** — datos o testimonios inventados destruyen confianza y crean riesgo legal.
+
+Quick check: ¿jerga que confunde? ¿frases que hacen demasiado? ¿voz pasiva? ¿exclamaciones (fuera)?
+¿buzzwords sin sustancia?
+
+### Framework de página
+
+**Above the fold**
+- **Titular** — tu mensaje más importante; propuesta de valor central; concreto > genérico.
+  Fórmulas: "{Consigue resultado} sin {dolor}" · "El {categoría} para {audiencia}" · "Nunca más
+  {evento desagradable}" · "{Pregunta que apunta al dolor principal}".
+- **Subtitular** — expande el titular, añade concreción, 1-2 frases máx.
+- **CTA primario** — verbo de acción + lo que obtienen: "Empieza la prueba gratis" > "Registrarse".
+
+**Secciones núcleo**
+| Sección | Propósito |
+|---|---|
+| Prueba social | Credibilidad (logos, cifras, testimonios) |
+| Problema/Dolor | Demuestra que entiendes su situación |
+| Solución/Beneficios | Conecta con resultados (3-5 beneficios clave) |
+| Cómo funciona | Reduce complejidad percibida (3-4 pasos) |
+| Objeciones | FAQ, comparativas, garantías |
+| CTA final | Recap de valor, repite CTA, reversión de riesgo |
+
+### CTA
+- **Débiles (evitar):** Enviar, Registrarse, Saber más, Clic aquí, Empezar.
+- **Fuertes (usar):** Empieza la prueba gratis · Consigue [cosa concreta] · Ve [producto] en acción ·
+  Crea tu primer [cosa] · Descarga la guía.
+- **Fórmula:** [verbo de acción] + [lo que obtienen] + [cualificador si hace falta].
+
+### Guía por tipo de página
+- **Home** — sirve a varias audiencias sin ser genérica; lidera con la propuesta más amplia; caminos claros por intención.
+- **Landing** — un mensaje, un CTA; casa el titular con el anuncio/origen del tráfico; argumento completo en una página.
+- **Pricing** — ayuda a elegir plan; responde "¿cuál me conviene?"; haz obvio el plan recomendado. Conecta con [[marketing-pricing]].
+- **Feature** — conecta característica → beneficio → resultado; casos de uso; camino claro a probar/comprar.
+- **About** — cuenta por qué existís; conecta misión con beneficio del cliente; incluye CTA igualmente.
