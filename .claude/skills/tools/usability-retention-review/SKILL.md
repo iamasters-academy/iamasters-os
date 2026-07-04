@@ -1,6 +1,6 @@
 ---
 name: usability-retention-review
-description: Skill especializado en revisar usabilidad, navegación y retención de apps. Evalúa si la app es agradable, fácil de navegar y si lo importante se encuentra rápido. Responde con honestidad brutal.
+description: Revisa la usabilidad, navegación y retención de una app con honestidad brutal — evalúa si es agradable, si se navega fácil y si lo importante se encuentra rápido. Úsala cuando el operador diga "revisa la UX/usabilidad de mi app", "¿es fácil de usar?", "¿por qué no retiene?", "critica la navegación de esto", o antes de lanzar una app y quiera una crítica sin filtros. NO la uses para diseñar UI desde cero ([[ui-ux-pro-max]]) ni para auditar código/seguridad ([[code-audit-integral]]).
 ---
 
 // turbo-all
