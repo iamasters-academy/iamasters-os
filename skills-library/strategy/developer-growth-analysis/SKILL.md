@@ -1,6 +1,6 @@
 ---
 name: developer-growth-analysis
-description: Analyzes your recent  chat history to identify coding patterns, development gaps, and areas for improvement, curates relevant learning resources, and sends a report.
+description: Analiza tu historial de código reciente para detectar patrones, gaps de desarrollo y áreas de mejora, cura recursos de aprendizaje y genera un informe. Úsala cuando el operador diga "analiza mi historial de código", "en qué estoy fallando programando", "dónde puedo mejorar como dev", "detecta mis gaps técnicos", o quiera un informe de sus patrones de desarrollo.
 ---
 
 # Developer Growth Analysis
