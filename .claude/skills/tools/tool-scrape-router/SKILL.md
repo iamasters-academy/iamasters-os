@@ -8,14 +8,21 @@ description: Analiza un trabajo de scraping/crawling, elige la mejor herramienta
 > **Skill del OS (router)** — el cerebro de scraping: clasifica el trabajo, elige herramienta y ejecuta.
 > **No fusiona** con [[tool-firecrawl-scraper]] (queda enfocado): cuando gana Firecrawl, delega en él.
 > Catálogo completo de herramientas (cuándo usar / setup / free tier / lenguaje) en `references/toolbox.md`;
-> matriz de decisión en `references/decision-matrix.md`. Filosofía: **empezar por lo gratis y simple,
-> escalar solo si falla** — no montar Playwright para bajar una página estática.
+> matriz de decisión en `references/decision-matrix.md`; anti-detección gratis en
+> `references/anti-detection.md`. Filosofía: **empezar por lo gratis y simple, escalar solo si falla** —
+> no montar Playwright para bajar una página estática. La ruta común la ejecuta un **runner
+> determinista** (`scripts/scrape.py`), no comandos improvisados.
 
 ## Cuándo se invoca
 - El operador dice "scrapea/extrae datos de esta web", "crawlea este sitio", "qué herramienta uso para X", "saca estos datos a escala", "convierte esta web en API".
 - Otra skill necesita datos web que el fetch nativo no puede sacar (JS, anti-bot, escala, extracción estructurada).
 
 ## Process
+
+### Paso 0 · Preflight (capability-aware)
+- Ejecuta `py -3 scripts/scrape.py --probe` → JSON de lo disponible (httpx, trafilatura, crawl4ai, playwright, scrapy, `FIRECRAWL_API_KEY`). El routing elige **entre lo instalado**; si la mejor opción no está, o se instala (`pip install -r scripts/requirements.txt`) o se baja un peldaño.
+- El runner comprueba `robots.txt` del objetivo antes de tocar nada.
+- **Validación**: sabes qué herramientas hay y si robots permite el path.
 
 ### Paso 1 · Clasificar el trabajo (ejes)
 Determina, preguntando lo mínimo si falta:
@@ -43,15 +50,25 @@ Cruza el perfil con `references/decision-matrix.md`. Resumen:
 - **Validación**: 1 herramienta elegida (o 2 si el trabajo tiene fases) + el porqué en 1 frase.
 
 ### Paso 3 · Ejecutar (con escalada)
-- Si gana **Firecrawl** → invoca [[tool-firecrawl-scraper]] (no reimplementes).
-- Si gana otra → aplica su bloque de `references/toolbox.md` (setup runtime + comando) y ejecútala. Keys en `.env`, NUNCA commiteadas.
-- **Escalera de escalado** (coste 0 primero): WebFetch nativo → Firecrawl free / Crawl4AI local → Playwright / Scrapling (JS/anti-bot) → Apify MCP. Sube un peldaño solo si el anterior falla; **documenta por qué subiste**.
-- **Validación**: datos extraídos con la estructura pedida; si algo se bloqueó, se dice explícitamente (no inventar).
+- **Ruta común (web genérica → texto/markdown/campos)**: `py -3 scripts/scrape.py --url <U> --out <DIR> [--mode auto|static|markdown|render] [--format markdown|text|json]`. El runner recorre solo la escalera: httpx+trafilatura → Firecrawl (si key) → Crawl4AI → Playwright, y deja `data.*` + `manifest.json`.
+- **Casos que el runner no cubre**: red social → **Apify MCP**; crawl masivo con pipeline → **Scrapy**/**Colly** (setup de `references/toolbox.md`); no-code para cliente → **Maxun**; recon/URLs → **Katana**. Firecrawl directo también puede ir vía [[tool-firecrawl-scraper]].
+- **Sitios duros (anti-bot)**: antes de rendirte, aplica `references/anti-detection.md` (UA/delays/retry gratis) o escala a Firecrawl/Scrapling/Apify (traen anti-bot). Keys en `.env`, NUNCA commiteadas.
+- **Validación**: `manifest.json` con `tool_used` + `ladder_tried`; si todo falló o robots bloquea, se dice explícitamente (no inventar).
 
 ### Paso 4 · Entregar + cerrar
-- Guarda en `projects/tool-scrape-router/<YYYY-MM-DD>-<sitio>/` (datos + qué herramienta se usó + por qué).
-- **Respeto legal/ToS**: robots.txt, rate limits, sin datos personales sin base legal, sin sitios que lo prohíban en sus términos. Ante duda, para y pregunta.
+- Copia el `<DIR>` (con `data.*` + `manifest.json`) a `projects/tool-scrape-router/<YYYY-MM-DD>-<sitio>/`. El `manifest.json` es la traza (herramienta usada, escalera, robots, chars).
+- **Respeto legal/ToS**: robots.txt (el runner lo comprueba), rate limits, sin datos personales sin base legal, sin sitios que lo prohíban en sus términos. Ante duda, para y pregunta.
 - Append en `context/learnings.md` bajo `## tool-scrape-router` (qué herramienta rindió para qué tipo de sitio).
+
+## Casos del operador
+- **FVI / fútbol**: fichas públicas (Transfermarkt, FBref, Wyscout público) → runner ruta 1 (estático) o Firecrawl si bloquean. Datos tabulares → `--format json`. NO scrapear datos de pago/ToS restrictivo.
+- **Polymarket**: datos de mercado → API oficial si existe; si no, runner/Firecrawl sobre páginas públicas.
+- **Competencia**: precios/landings de competidores → runner ruta 1 → Firecrawl si anti-bot. Encadena con `competencia`/`investigacion-mercado` para el análisis.
+
+## Nota Windows/Docker
+En tu Windows (py3.14) el runner puro-python (httpx+trafilatura) va nativo. Playwright/Crawl4AI/Scrapy
+tiran de navegador o son pesados → si dan guerra en Windows, córrelos en **Docker py3.11** (como FVI).
+El `--probe` te dice al momento qué está montado.
 
 ## Outputs
 - `projects/tool-scrape-router/<YYYY-MM-DD>-<sitio>/` con los datos extraídos + nota de herramienta/escalada usada.

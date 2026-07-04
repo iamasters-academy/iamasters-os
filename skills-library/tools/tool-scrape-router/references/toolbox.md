@@ -3,9 +3,19 @@
 > Todas open-source y con opción gratis. Keys/servicios en `.env`, NUNCA commitear. El router elige
 > por `decision-matrix.md`; aquí está el "cómo" de cada una.
 
+> **Check rápido de qué tienes**: `py -3 scripts/scrape.py --probe`. Instala la base con
+> `py -3 -m pip install -r scripts/requirements.txt` (httpx+trafilatura+selectolax, ligero).
+
 ## Ya en el OS (usar primero)
+- **`scripts/scrape.py` (runner del skill)** — ejecuta la escalera de coste 0 (httpx+trafilatura →
+  Firecrawl → Crawl4AI → Playwright), comprueba robots.txt y escribe `data.*` + `manifest.json`.
+  **Es la vía por defecto** para web genérica; las herramientas de abajo son para casos que no cubre.
 - **WebFetch nativo** — built-in de Claude Code. HTML→markdown de 1 URL pública. **0 setup, 0 coste.**
-  Primer peldaño SIEMPRE para páginas estáticas simples. Falla con JS pesado / anti-bot.
+  Útil para una lectura puntual dentro de una conversación; para trabajo trazable usa el runner.
+- **trafilatura** — el **mejor extractor de artículo/texto principal sin navegador** (Python, gratis).
+  Es la rung 1 del runner. `py -3 -m pip install trafilatura`. Ideal para blogs/noticias/fichas estáticas.
+- **MarkItDown** (Microsoft) — convierte **cualquier fichero** (PDF/DOCX/PPTX/HTML) → markdown. Para
+  cuando ya tienes el documento descargado, no la web. `py -3 -m pip install markitdown`.
 - **`tool-firecrawl-scraper`** (skill core) — wrapper de **Firecrawl**. Markdown limpio, `onlyMainContent`,
   crawl. Degrada a WebFetch si no hay `FIRECRAWL_API_KEY` (500 créditos free). El router **delega aquí**
   cuando gana Firecrawl.
@@ -58,6 +68,16 @@
 - **Cuándo**: **screenshots/PDF/HTML a escala** vía API sin montar tu granja de navegadores. Sobre Puppeteer.
 - **Setup**: self-host (Docker) o su cloud. Alternativa "servicio" a Playwright local.
 
+## Notas Windows
+- Base (httpx+trafilatura+selectolax) = puro-python, va nativo en py3.14. Usa `py -3`, no `python3`
+  (el shim de Store daba guerra; ya arreglado, pero `py -3` es lo seguro).
+- **Playwright**: tras `pip install playwright` hay que `py -3 -m playwright install` (baja navegadores).
+- **Crawl4AI / Scrapy** pesados en Windows → si dan problemas, Docker py3.11 (como FVI).
+
+## Anti-detección
+Para sitios que bloquean, ver `anti-detection.md` (UA/delays/retry gratis; proxies gratis = poco
+fiables → mejor escalar a Firecrawl/Scrapling/Apify que traen anti-bot).
+
 ## Regla de oro
-Elige la MÍNIMA herramienta que resuelve el trabajo. Estático→WebFetch/Firecrawl. JS→Playwright.
+Elige la MÍNIMA herramienta que resuelve el trabajo. Estático→runner (trafilatura)/Firecrawl. JS→Playwright.
 Estructurado→ScrapeGraphAI. Masivo→Scrapy/Colly. Social→Apify. No sobre-ingenierices.

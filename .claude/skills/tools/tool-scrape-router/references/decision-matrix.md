@@ -1,5 +1,8 @@
 # Matriz de decisión — qué herramienta para qué trabajo
 
+> **Capability-aware**: primero `py -3 scripts/scrape.py --probe`. Elige entre lo **instalado**; si la
+> mejor opción no está, o la instalas o bajas de peldaño. La matriz de abajo es el ideal; el probe manda.
+
 ## Árbol de decisión (rápido)
 
 ```
@@ -41,6 +44,14 @@
 | Objetivo | Recon/URLs | Katana | — |
 | Usuario | No-code/cliente | Maxun | — |
 | Stack | Go / máxima velocidad | Colly | Katana |
+
+## Forma del dato → formato de salida (`--format`)
+| Lo que sacas | Formato | Nota |
+|---|---|---|
+| Artículo / texto principal | `markdown` | rung 1 trafilatura; por defecto |
+| Campos concretos (nombre/precio/stock) | `json` | ScrapeGraphAI o parse propio |
+| Tabla | `json` (o CSV al post-procesar) | tras render si es JS |
+| Fichero ya descargado (PDF/DOCX) | `markdown` | MarkItDown, no es scraping web |
 
 ## Escalera de escalado (coste 0 primero)
 
