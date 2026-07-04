@@ -16,6 +16,11 @@ version: 0.1.0
 > `context/` (crea/actualiza con [[marketing-product-context]]). Las "Related Skills" por nombre
 > pelado son aquí `marketing-<nombre>`.
 
+> **Extensión OS (fusión Claura)** — Modo **planificador semanal de stories**: arma un calendario de 7
+> días de stories con mecánicas de engagement (polls, quizzes, stickers de pregunta, cuenta atrás) y un
+> CTA por día. Encaja con [[marketing-content-strategy]] (calendario global) pero baja al detalle de
+> stories. Disparadores: "planifícame las stories de la semana", "qué stories subo".
+
 
 # Social Content
 

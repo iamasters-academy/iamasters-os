@@ -5,6 +5,12 @@ description: Convierte una pieza fuente (video YouTube, podcast, transcript reun
 
 # marketing-content-repurposing
 
+> **Extensión OS (fusión Claura)** — Modo **clonar carrusel**: toma un carrusel viral de referencia,
+> extrae su **estructura** (nº de slides, ritmo hook→desarrollo→CTA, tipo de cada slide) y la recrea
+> con el contenido y branding de la marca. Se copia el FORMATO, nunca el texto/activos del original.
+> Compón los slides con [[marketing-image]] y aplica [[brand-guidelines]]. Disparadores: "clona este
+> carrusel a mi marca", "replica este formato viral".
+
 ## Cuándo se invoca
 
 - Usuario dice: "repurpose este video", "saca contenido de este podcast", "del último Café Camaleónico, sácame X piezas"

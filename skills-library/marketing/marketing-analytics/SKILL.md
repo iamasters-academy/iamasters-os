@@ -15,6 +15,12 @@ version: 0.1.0
 > `context/` (crea/actualiza con [[marketing-product-context]]). Las "Related Skills" por nombre
 > pelado son aquí `marketing-<nombre>`.
 
+> **Extensión OS (fusión Claura)** — Modo **autopsia de contenido**: post-mortem forense de una pieza o
+> campaña — contrasta las **métricas reales vs la hipótesis** con la que se publicó, aísla qué movió el
+> resultado (hook/formato/timing/distribución) y saca la lección accionable para la próxima. Se apoya en
+> el tracking de esta skill; encaja con [[marketing-viral-radar]] (cierra el bucle: predijo→publicó→qué
+> pasó). Disparadores: "por qué funcionó/falló este post", "autopsia de contenido".
+
 
 # Analytics Tracking
 

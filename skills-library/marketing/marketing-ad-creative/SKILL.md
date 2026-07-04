@@ -16,6 +16,14 @@ version: 0.1.0
 > `context/` (crea/actualiza con [[marketing-product-context]]). Las "Related Skills" por nombre
 > pelado son aquí `marketing-<nombre>`.
 
+> **Extensión OS (fusión Claura)** — Dos modos añadidos:
+> 1. **Batch de hooks** — genera 25-50 hooks scroll-stopper en una tanda (cold opens, POVs, pattern
+>    interrupts, story hooks) para testear en ads o refrescar creatividades fatigadas. Agrupa por
+>    ángulo/audiencia; pásalos por [[tool-humanizer]] + [[tool-output-verifier]] antes de entregar.
+> 2. **Clonar ad ganador** — a partir de un anuncio que funciona (propio o detectado con
+>    [[competitive-ads-extractor]]), recrea la estructura/ángulo **adaptado legalmente** a la marca:
+>    copia el patrón (hook→dolor→prueba→CTA), NUNCA activos/marca del tercero. Nada de plagio.
+
 
 # Ad Creative
 

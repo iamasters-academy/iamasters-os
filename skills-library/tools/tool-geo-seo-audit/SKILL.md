@@ -18,6 +18,12 @@ version: 0.1.0
 
 # tool-geo-seo-audit — Auditoría GEO + SEO
 
+> **Extensión OS (fusión Claura)** — Modo **generador de FAQ**: crea bloques de FAQ estructurados
+> (pregunta→respuesta concisa citable) optimizados para **featured snippets y citas de IA** (AI
+> Overviews/ChatGPT/Perplexity), con su schema `FAQPage` JSON-LD. Se apoya en el rewriter que preserva
+> la voz de marca y en el competitive framing ya presentes en esta skill. Úsalo cuando el operador
+> diga "genera las FAQ para que me cite la IA" o "FAQ para snippets".
+
 Adaptación para iAmasters OS que fusiona lo mejor de dos fuentes:
 - **`zubair-trabzada/geo-seo-claude`** — orquestador de comandos + score GEO 0-100 + plantillas schema.
 - **`mverab/eGEOagents`** — sistema de 4 agentes, competitive framing como señal prioritaria

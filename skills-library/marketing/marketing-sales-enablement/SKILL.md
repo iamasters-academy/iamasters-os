@@ -15,6 +15,12 @@ version: 0.1.0
 > `context/` (crea/actualiza con [[marketing-product-context]]). Las "Related Skills" por nombre
 > pelado son aquí `marketing-<nombre>`.
 
+> **Extensión OS (fusión Claura)** — Modo **propuesta comercial**: genera una propuesta lista para
+> enviar (contexto→solución→alcance→**pricing**→siguientes pasos) en Markdown/PDF (o para pegar en
+> Notion). Toma precios de [[marketing-pricing]] si existen y la oferta de [[marketing-offers]]. Cierra
+> la cadena de ventas tras [[sales-call-prep]]. Disparadores: "hazme la propuesta comercial", "propuesta
+> con pricing para este cliente".
+
 
 # Sales Enablement
 

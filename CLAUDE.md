@@ -212,11 +212,11 @@ Modelo **Core + Biblioteca**: 27 skills core siempre instaladas (el OS las neces
 |---|---|
 | `ui-ux-pro-max` | Inteligencia de diseño UI/UX (50 estilos, paletas, tipografías, 9 stacks): planear/construir/revisar UI |
 
-### Biblioteca — instalables con `/skills` (53)
+### Biblioteca — instalables con `/skills` (55)
 
 Viven en `skills-library/` (cero coste de contexto hasta instalarlas). Instalar: `bash scripts/skills.sh add <nombre>` · Quitar: `remove` · Catálogo: `list`.
 
-#### `marketing/` (45)
+#### `marketing/` (46)
 
 > Pack `coreyhaines31/marketingskills` portado completo (proyecto `nuevas-skills`, lotes M1-M4):
 > 38 skills nuevas + las 4 previas. Todas en biblioteca; instala a demanda con `/skills`. Cuerpo
@@ -269,6 +269,7 @@ Viven en `skills-library/` (cero coste de contexto hasta instalarlas). Instalar:
 | `marketing-sms` | diga "campaña de SMS", "marketing por SMS/MMS", "cadencia de SMS", "opt-in de SMS" |
 | `marketing-autoecom` | diga "genera un carrusel de producto", "posts diarios de mi tienda", "publica catálogo en IG/TikTok", "automatiza contenido de e-commerce". Wrapper de `Upload-Post/skill-autoecom` (MIT): extrae identidad de marca de la tienda, elige bestseller round-robin, compone slides con IA (Gemini) y publica vía Upload-Post. Necesita keys (`UPLOAD_POST_API_KEY`/`GEMINI_API_KEY`) + setup runtime |
 | `marketing-autopublish` | diga "publica esto en todas mis redes", "distribución multiplataforma", "sube este vídeo/post a TikTok+YT+IG+LinkedIn a la vez". Wrapper de `yikart/AiToEarn` (MIT): gen de contenido + publicación 1-click a 13+ plataformas + engagement. **Pesada** (Node20+MongoDB+Redis+Electron+OAuth), docs en chino. ≠ carrusel e-commerce (`marketing-autoecom`) ≠ estrategia de posts (`marketing-social`) |
+| `marketing-viral-radar` | diga "qué se está viralizando en mi nicho", "qué publico esta semana", "dame tendencias para contenido", "radar viral". Monitoriza IG/TikTok (Apify MCP) + Reddit/Google Trends (`tool-scrape-router`), cruza con marca/ICP y devuelve "qué publicar esta semana" (ángulo+formato+gancho). Alimenta `marketing-content-strategy`. Viral≠relevante: descarta lo que no encaja |
 
 #### `strategy/` (8)
 
@@ -318,10 +319,11 @@ Viven en `skills-library/` (cero coste de contexto hasta instalarlas). Instalar:
 | `tool-vps-hardening` | diga "asegura mi VPS", "¿tengo puertos expuestos?", "hardening del servidor", "revisa mi Docker/servidor", o antes de exponer un servicio público. Skill original del OS (destila los dominios útiles del pack cibersec de 817): SSH+ufw+auditoría de puertos, Docker security, fail2ban, rotación de secrets, checklist pre-deploy cliente. Complementa (no solapa) `tool-web-security-audit`/`tool-seguridad-ia`/`tool-web-legal-audit`. Solo servidores propios/autorizados |
 | `tool-scrape-router` | ✅ **instalada** — invócala directamente. diga "scrapea/extrae datos de esta web", "crawlea este sitio", "qué herramienta uso para scrapear X", "saca estos datos a escala", "convierte esta web en datos/API". **Cerebro de scraping**: clasifica el trabajo, elige la mejor herramienta gratis por matriz (Firecrawl/Playwright/Crawl4AI/Scrapling/Scrapy/ScrapeGraphAI/Colly/Katana/Maxun/Browserless + Apify MCP) con escalera de coste 0, y ejecuta. Delega en `tool-firecrawl-scraper` cuando gana Firecrawl. Respeta robots.txt/ToS/RGPD |
 
-#### `automation/` (5) — las 4 primeras ✅ instaladas (invócalas directamente); `automation-fork-and-resell` en biblioteca
+#### `automation/` (6) — las 4 primeras ✅ instaladas (invócalas directamente); `automation-fork-and-resell` y `automation-crm` en biblioteca
 
 | Skill | Ofrécela cuando el operador… |
 |---|---|
+| `automation-crm` | diga "monta mi CRM", "guarda este contacto/lead", "actualiza el pipeline", "en qué etapa está este deal", "necesito un CRM". CRM (contactos/empresas/deals/pipeline) sobre **Supabase** (ligero, MCP ya conectado) o **Twenty** (open-source AGPLv3, UI completa). Desbloquea `sales-pipeline-forecast` y alimenta `sales-call-prep`/`marketing-prospecting` |
 | `automation-fork-and-resell` | diga "cómo monetizo este repo open-source", "quiero revender X a clientes", "monta un servicio con este software libre", o busque productizar OSS para su consultoría IA-PYMEs. Playbook (no wrapper): elegir oportunidad (Cal.com/Ghost/Medusa/n8n/Supabase…) → fork → marca → VPS/cloud → cobro setup+mantenimiento. Verifica licencia (ojo AGPL). Cadena → `tool-vps-hardening` → `automation-client-deploy`/`vercel-deploy` |
 | `automation-n8n-to-claude` | diga "tengo un workflow en n8n que quiero traer aquí", "pasa esta automatización a Claude", "migra mi n8n", o pegue un JSON de n8n/Make para reimplementar |
 | `automation-n8n-builder` | ✅ **instalada**. diga "créame un workflow en n8n", "monta esto en n8n", "automatiza X en n8n", o quiera construir/desplegar un flujo n8n vía MCP |
@@ -368,7 +370,7 @@ y confirma.
   → `brand-guidelines` → `usability-retention-review` → `react-best-practices` /
   `backend-development` → `vercel-deploy`. (Complementa a `arnes`, que orquesta el arranque.)
 - **Legal (agencia)**: `legal-nda-triage` (triaje rápido) → `legal-contract-review` (análisis a fondo + redlines) → `legal-compliance` (si hay datos personales/DPA). Siempre con disclaimer: análisis de apoyo, no asesoría jurídica.
-- **Ventas (IA-PYMEs)**: `marketing-prospecting`/`marketing-cold-email` (captar) → `sales-call-prep` (preparar/cerrar la llamada) → `marketing-sales-enablement` (material) → `sales-pipeline-forecast` (previsión y priorización).
+- **Ventas (IA-PYMEs)**: `marketing-prospecting`/`marketing-cold-email` (captar) → `automation-crm` (guardar contacto/deal) → `sales-call-prep` (preparar/cerrar la llamada) → `marketing-sales-enablement` (material + propuesta comercial) → `sales-pipeline-forecast` (previsión leyendo el CRM).
 - **Monetizar OSS**: `automation-fork-and-resell` (elegir + empaquetar) → `arnes` (código) → `tool-vps-hardening` (asegurar) → `automation-client-deploy`/`vercel-deploy` (entregar) → `startup-business-analyst` (validar margen).
 - **Scraping → análisis**: `tool-scrape-router` (elige herramienta + extrae) → `tool-firecrawl-scraper`/otra (ejecución) → `strategy-web-research`/`investigacion-mercado` si el objetivo es analizar, no solo tener los datos crudos.
 - **Inteligencia competitiva**: `competitive-ads-extractor` + `competencia` (esta usa
@@ -385,7 +387,7 @@ y confirma.
 
 - **Dependencia base**: `marketing-product-context` alimenta a TODA skill `marketing-*` (como `competencia → notebooklm-mcp`). Antes de una skill `marketing-*`, verifica que exista contexto de producto (o `brand-context/` + `context/`); si falta, créalo primero.
 - **Embudo full-funnel**: `marketing-product-context` → `marketing-plan` → `marketing-content-strategy` → (`marketing-copywriting` / `marketing-social` / `marketing-video` / `marketing-image`) → `marketing-cro` → `marketing-analytics` → `marketing-ab-testing`.
-- **Producción de contenido**: `marketing-content-strategy` → `marketing-copywriting` → `marketing-copy-editing` → `tool-humanizer` → `tool-output-verifier` → `marketing-content-repurposing` → `marketing-social`.
+- **Producción de contenido**: `marketing-viral-radar` (qué se viraliza → qué decir esta semana) → `marketing-content-strategy` → `marketing-copywriting` → `marketing-copy-editing` → `tool-humanizer` → `tool-output-verifier` → `marketing-content-repurposing` → `marketing-social` → `marketing-analytics` (autopsia: qué funcionó, cierra el bucle con el radar).
 - **Producción de vídeo**: `marketing-video` (guion) → `tool-voicebox` (voz en off) → `tool-video-generator` (render corto) **o** `tool-video-montage` (producción pro con research/archivo) **o** `tool-avatar-video` (portavoz IA) → `tool-opencut` (edición/subtítulos/formato) → `tool-output-verifier` → `marketing-content-repurposing` → `marketing-social` **o** `marketing-autopublish` (distribución multiplataforma). E-commerce social: `marketing-autoecom` (carrusel de producto auto-publicado).
 - **Captación outbound**: `marketing-icp` / `marketing-customer-research` → `marketing-prospecting` → `marketing-cold-email` → `marketing-sales-enablement`.
 - **Captación inbound (lead gen)**: `marketing-lead-magnets` / `marketing-free-tools` → `marketing-popups` → `automation-embudo-captacion` → `marketing-email-sequence`.
