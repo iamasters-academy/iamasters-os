@@ -149,6 +149,14 @@ Lo que aporta este repo encima de Sinapsis:
 
 Modelo **Core + Biblioteca**: 27 skills core siempre instaladas (el OS las necesita) + 80 en `skills-library/` que el operador instala a demanda con `/skills` (proyecto `nuevas-skills`: pack de marketing completo — 39 skills portadas de `coreyhaines31/marketingskills`, lotes M1-M4 + `marketing-launch`; fusiones F.0 aplicadas). **El operador tiene 20 de biblioteca instaladas** → **47 skills activas** (marcadas con ✅ en las tablas de Biblioteca; se cargan e invocan solas como las Core). El resto queda en catálogo a coste cero y se ofrece por routing cuando la intención encaje. Cada skill instalada consume contexto en cada sesion (recomendacion Anthropic: <50 cargadas) — instala solo lo que uses.
 
+> **Nota de arquitectura (para no confundir en auditorías)**: una skill instalada vive **a la vez** en
+> `skills-library/<cat>/<nombre>/` (fuente, coste cero) y en `.claude/skills/<cat>/<nombre>/` (copia
+> activa que se carga). Esto es **intencional**, no duplicación: `skills.sh add` copia de biblioteca a
+> instaladas, `remove` borra la copia activa, `sync` la refresca desde biblioteca. La **fuente de verdad**
+> es `synapsis/skills-catalog.json` (self-healing), que cuenta skills **distintas** (no las copias). Además,
+> algunas skills que se citan en cadenas/desambiguación son **globales** (`~/.claude/skills/`, p. ej.
+> `investigacion-mercado`, `graphify`) y no viven en este repo — se marcan "(skill global)".
+
 **Routing por intencion (OBLIGATORIO — actívalo en CADA petición)**: antes de responder que no puedes hacer algo, o de resolverlo a mano, contrasta SIEMPRE la intención del operador contra la tabla de **Biblioteca** de abajo (la columna "Ofrécela cuando…" lista los disparadores de cada skill no instalada). Si una encaja, NO la ignores ni la resuelvas tú: ofrécela → "Eso lo hace la skill `<nombre>`. ¿La instalo?" → `bash scripts/skills.sh add <nombre>`. Las skills instaladas (sección Core **y las marcadas ✅ en Biblioteca**) sí se cargan solas: invócalas directamente cuando la intención encaje, sin preguntar. Catálogo en vivo y fuente de verdad de descripciones: `bash scripts/skills.sh list`.
 
 **Fallback obligatorio (auto-activación de `find-skills`)**: si la intención del operador **no encaja con NINGUNA** skill —ni Core, ni Biblioteca instalada, ni Biblioteca disponible—, **antes de decir "no puedo" o de resolverlo a mano, invoca automáticamente la skill `find-skills`** (core `_meta/find-skills`) para buscar en el ecosistema externo (`npx skills`). No esperes a que el operador diga "busca una skill": el no-match del catálogo del OS ES el disparador. Solo si `find-skills` tampoco encuentra nada, resuelve la tarea con capacidades generales y sugiere crearla con `meta-skill-creator` si es recurrente.
@@ -372,7 +380,7 @@ y confirma.
 - **Legal (agencia)**: `legal-nda-triage` (triaje rápido) → `legal-contract-review` (análisis a fondo + redlines) → `legal-compliance` (si hay datos personales/DPA). Siempre con disclaimer: análisis de apoyo, no asesoría jurídica.
 - **Ventas (IA-PYMEs)**: `marketing-prospecting`/`marketing-cold-email` (captar) → `automation-crm` (guardar contacto/deal) → `sales-call-prep` (preparar/cerrar la llamada) → `marketing-sales-enablement` (material + propuesta comercial) → `sales-pipeline-forecast` (previsión leyendo el CRM).
 - **Monetizar OSS**: `automation-fork-and-resell` (elegir + empaquetar) → `arnes` (código) → `tool-vps-hardening` (asegurar) → `automation-client-deploy`/`vercel-deploy` (entregar) → `startup-business-analyst` (validar margen).
-- **Scraping → análisis**: `tool-scrape-router` (elige herramienta + extrae) → `tool-firecrawl-scraper`/otra (ejecución) → `strategy-web-research`/`investigacion-mercado` si el objetivo es analizar, no solo tener los datos crudos.
+- **Scraping → análisis**: `tool-scrape-router` (elige herramienta + extrae) → `tool-firecrawl-scraper`/otra (ejecución) → `strategy-web-research`/`investigacion-mercado` (skill global) si el objetivo es analizar, no solo tener los datos crudos.
 - **Inteligencia competitiva**: `competitive-ads-extractor` + `competencia` (esta usa
   `notebooklm-mcp`) → `startup-business-analyst` → `investigacion-mercado` (skill global).
 - **Data/ML**: `exploratory-data-analysis` → `statistical-analysis` / `statsmodels` →
@@ -414,14 +422,14 @@ Cuando varias skills compiten por la misma intención, decide así (además del 
 - **Copy**: ¿hay texto ya? `marketing-copy-editing`. ¿desde cero? `marketing-copywriting`. ¿suena a IA? `tool-humanizer`. ¿entregar? `tool-output-verifier`.
 - **Ads**: montar/gestionar campaña→`marketing-ads` · escribir anuncios→`marketing-ad-creative` · "por qué no convierte" con datos→`marketing-meta-ads-analyzer` · ver ads del rival→`competitive-ads-extractor`.
 - **Vídeo**: guion/ideas→`marketing-video` · **render corto AI (tema→mp4)→`tool-video-generator`** · **producción con research/archivo/animación→`tool-video-montage`** (pesada, AGPL) · **edición/recorte/subtítulos programático→`tool-opencut`** · **avatar hablando (cara+voz)→`tool-avatar-video`** · **voz en off/clonación/dictado→`tool-voicebox`** · generar con un modelo concreto (Flux/Kling/Sora)→`tool-genai-studio` · bajar una URL→`video-downloader` · "qué dice"→`tool-transcribe-social` · fútbol→FVI (otro dominio).
-- **Competencia**: intel estratégica→`competencia` · página comparativa X vs Y→`marketing-competitors` · anuncios→`competitive-ads-extractor` · TAM/precios de mercado→`investigacion-mercado`.
+- **Competencia**: intel estratégica→`competencia` · página comparativa X vs Y→`marketing-competitors` · anuncios→`competitive-ads-extractor` · TAM/precios de mercado→`investigacion-mercado` (skill global).
 - **SEO**: auditar/optimizar→`tool-geo-seo-audit` · generar N páginas→`marketing-programmatic-seo` · jerarquía/URLs→`marketing-site-architecture`.
 - **Email**: lista propia/lifecycle→`marketing-email-sequence` · desconocidos en frío→`marketing-cold-email`.
 - **Diseño**: sistema desde cero→`ui-ux-pro-max` · aplicar tema→`theme-factory` · "parece IA"→`impeccable` · control fino→`design-taste-frontend` · marca→`brand-guidelines`. **No cargar todas a la vez.**
 - **Pensamiento**: decisión sesgada→`seis-sombreros` · análisis multimodo→`cognito` · "no arranco"→`desbloqueo` · saturación con IA→`metodo-ias`.
 - **Deploy**: web a Vercel→`vercel-deploy` · entorno cliente (VPS/PC)→`automation-client-deploy`.
 - **Lead gen**: embudo social completo→`automation-embudo-captacion` · recurso imán→`marketing-lead-magnets` · herramienta gancho→`marketing-free-tools` · overlay web→`marketing-popups`.
-- **Scraping/crawling**: decidir herramienta + ejecutar→`tool-scrape-router` (matriz + escalada) · Firecrawl directo→`tool-firecrawl-scraper` · investigar (no solo extraer datos)→`strategy-web-research`/`investigacion-mercado` · redes sociales (IG/TikTok/YT)→Apify MCP · "qué dice un vídeo"→`tool-transcribe-social` · bajar un vídeo→`video-downloader`. **Regla**: empezar por lo gratis (WebFetch nativo) y escalar solo si falla.
+- **Scraping/crawling**: decidir herramienta + ejecutar→`tool-scrape-router` (matriz + escalada) · Firecrawl directo→`tool-firecrawl-scraper` · investigar (no solo extraer datos)→`strategy-web-research`/`investigacion-mercado` (skill global) · redes sociales (IG/TikTok/YT)→Apify MCP · "qué dice un vídeo"→`tool-transcribe-social` · bajar un vídeo→`video-downloader`. **Regla**: empezar por lo gratis (WebFetch nativo) y escalar solo si falla.
 
 ### Plugins Anthropic (instalación vía marketplace)
 
