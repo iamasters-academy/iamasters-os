@@ -212,11 +212,11 @@ Modelo **Core + Biblioteca**: 27 skills core siempre instaladas (el OS las neces
 |---|---|
 | `ui-ux-pro-max` | Inteligencia de diseño UI/UX (50 estilos, paletas, tipografías, 9 stacks): planear/construir/revisar UI |
 
-### Biblioteca — instalables con `/skills` (39)
+### Biblioteca — instalables con `/skills` (52)
 
 Viven en `skills-library/` (cero coste de contexto hasta instalarlas). Instalar: `bash scripts/skills.sh add <nombre>` · Quitar: `remove` · Catálogo: `list`.
 
-#### `marketing/` (44)
+#### `marketing/` (45)
 
 > Pack `coreyhaines31/marketingskills` portado completo (proyecto `nuevas-skills`, lotes M1-M4):
 > 38 skills nuevas + las 4 previas. Todas en biblioteca; instala a demanda con `/skills`. Cuerpo
@@ -268,6 +268,7 @@ Viven en `skills-library/` (cero coste de contexto hasta instalarlas). Instalar:
 | `marketing-aso` | diga "optimiza mi ficha de la app", "ASO", "keywords de la app", "screenshots de la ficha" (apps propias) |
 | `marketing-sms` | diga "campaña de SMS", "marketing por SMS/MMS", "cadencia de SMS", "opt-in de SMS" |
 | `marketing-autoecom` | diga "genera un carrusel de producto", "posts diarios de mi tienda", "publica catálogo en IG/TikTok", "automatiza contenido de e-commerce". Wrapper de `Upload-Post/skill-autoecom` (MIT): extrae identidad de marca de la tienda, elige bestseller round-robin, compone slides con IA (Gemini) y publica vía Upload-Post. Necesita keys (`UPLOAD_POST_API_KEY`/`GEMINI_API_KEY`) + setup runtime |
+| `marketing-autopublish` | diga "publica esto en todas mis redes", "distribución multiplataforma", "sube este vídeo/post a TikTok+YT+IG+LinkedIn a la vez". Wrapper de `yikart/AiToEarn` (MIT): gen de contenido + publicación 1-click a 13+ plataformas + engagement. **Pesada** (Node20+MongoDB+Redis+Electron+OAuth), docs en chino. ≠ carrusel e-commerce (`marketing-autoecom`) ≠ estrategia de posts (`marketing-social`) |
 
 #### `strategy/` (8)
 
@@ -282,7 +283,7 @@ Viven en `skills-library/` (cero coste de contexto hasta instalarlas). Instalar:
 | `strategy-investigacion-profunda` | pida un **informe completo**: "investiga a fondo", "informe con fuentes", "triangula", "verifica con varias fuentes", "due diligence", "estado del arte" |
 | `strategy-stack-recommender` | pregunte "¿con qué construyo esto?", "¿qué stack me recomiendas?", "¿qué tecnologías uso para…?", o describa un proyecto y necesite orientación técnica antes de picar código |
 
-#### `tools/` (24)
+#### `tools/` (29)
 
 | Skill | Ofrécela cuando el operador… |
 |---|---|
@@ -310,11 +311,17 @@ Viven en `skills-library/` (cero coste de contexto hasta instalarlas). Instalar:
 | `tool-video-generator` | diga "hazme un vídeo corto de X", "genera un reel/short", "vídeo AI para redes", "monta un vídeo con voz en off automática". Wrapper de `harry0703/MoneyPrinterTurbo` (MIT): tema→guion LLM→stock (Pexels)→TTS→subtítulos→mp4 vertical. Es el RENDER del clúster vídeo (≠ `marketing-video` = guion). Setup runtime (Docker/Python + FFmpeg + keys) |
 | `tool-video-montage` | diga "monta un vídeo tipo documental/explainer", "produce un vídeo con footage de archivo", "pipeline de vídeo completo". Wrapper de `calesthio/OpenMontage` (**AGPLv3**, copyleft — no se vendoriza): pipelines explainer/documental/trailer con research + Remotion + FFmpeg. Alternativa "pro" y más pesada a `tool-video-generator` |
 | `tool-genai-studio` | diga "genera imagen/vídeo con el modelo X (Flux/Kling/Sora/Veo…)", "studio multi-modelo", "probar varios modelos de imagen/vídeo". Wrapper fino de `Anil-matcha/Open-Generative-AI` (MIT, es una app→candidata floja). Úsala solo para modelos concretos; para imagen normal usa `marketing-image`, para short estándar `tool-video-generator` |
+| `tool-voicebox` | diga "hazme la voz en off de este guion", "clona esta voz", "genera audio de este texto", "dicta/transcribe en local". Wrapper de `jamiepine/voicebox` (MIT): TTS multi-motor (23 idiomas) + clonación + dictado Whisper, **local sin API keys**. Alimenta el montaje de vídeo (≠ transcribir URL social = `tool-transcribe-social`) |
+| `tool-opencut` | diga "recorta/une estos clips", "añade subtítulos a este vídeo", "normaliza estos vídeos a 9:16", "procesa este lote de vídeos". Wrapper de `OpenCut-app/OpenCut` (MIT): edición programática vía API headless (Node/Bun+FFmpeg). Es EDICIÓN (≠ generación `tool-video-generator` ≠ montaje `tool-video-montage`) |
+| `tool-avatar-video` | diga "hazme un avatar hablando", "vídeo de portavoz IA", "talking head desde esta foto", "cara que narra este texto". Wrapper fino que reenvía al **Gradio Space** `victor/LongCat-Video-Avatar-1.5` (`gradio_client`): imagen+audio→avatar. Self-host 13.6B multi-GPU = opción pesada. Solo avatares propios/con consentimiento |
+| `spec-kit` | diga "hazlo con spec-kit", "desarrollo dirigido por spec", "especifica antes de programar", "requisitos y plan antes del código". Wrapper de `github/spec-kit` (MIT, oficial): flujo Constitution→Specify→Plan→Tasks→Implement. Complementa `arnes` en proyectos con alcance (no para fixes puntuales) |
+| `tool-vps-hardening` | diga "asegura mi VPS", "¿tengo puertos expuestos?", "hardening del servidor", "revisa mi Docker/servidor", o antes de exponer un servicio público. Skill original del OS (destila los dominios útiles del pack cibersec de 817): SSH+ufw+auditoría de puertos, Docker security, fail2ban, rotación de secrets, checklist pre-deploy cliente. Complementa (no solapa) `tool-web-security-audit`/`tool-seguridad-ia`/`tool-web-legal-audit`. Solo servidores propios/autorizados |
 
-#### `automation/` (4) — ✅ las 4 instaladas, invócalas directamente
+#### `automation/` (5) — las 4 primeras ✅ instaladas (invócalas directamente); `automation-fork-and-resell` en biblioteca
 
 | Skill | Ofrécela cuando el operador… |
 |---|---|
+| `automation-fork-and-resell` | diga "cómo monetizo este repo open-source", "quiero revender X a clientes", "monta un servicio con este software libre", o busque productizar OSS para su consultoría IA-PYMEs. Playbook (no wrapper): elegir oportunidad (Cal.com/Ghost/Medusa/n8n/Supabase…) → fork → marca → VPS/cloud → cobro setup+mantenimiento. Verifica licencia (ojo AGPL). Cadena → `tool-vps-hardening` → `automation-client-deploy`/`vercel-deploy` |
 | `automation-n8n-to-claude` | diga "tengo un workflow en n8n que quiero traer aquí", "pasa esta automatización a Claude", "migra mi n8n", o pegue un JSON de n8n/Make para reimplementar |
 | `automation-n8n-builder` | ✅ **instalada**. diga "créame un workflow en n8n", "monta esto en n8n", "automatiza X en n8n", o quiera construir/desplegar un flujo n8n vía MCP |
 | `automation-client-deploy` | ✅ **instalada**. diga "despliega esto al cliente", "llévalo al VPS/PC del cliente", "empaqueta y entrega", o tenga un proyecto local listo para producción en el entorno del cliente |
@@ -329,15 +336,39 @@ Viven en `skills-library/` (cero coste de contexto hasta instalarlas). Instalar:
 | `design-taste-frontend` | diga "hazme un frontend con gusto", "que no parezca plantilla", "más carácter/movimiento", "más denso/aireado", o vaya a maquetar una web/app con control fino del estilo (diales variance/motion/density + skeletons GSAP) |
 | `theme-factory` | ✅ **instalada**. diga "dale estilo a esto", "aplica un tema", "ponlo bonito con una paleta", "elige fuentes y colores", "tema para esta presentación/landing", o necesite estilizar un artefacto de forma coherente |
 
+#### `legal/` (3) — categoría nueva; bridged de `anthropics/knowledge-work-plugins` (Apache-2.0), self-contained. Frente: agencia FIFA. **No sustituyen a un abogado — análisis de apoyo.**
+
+| Skill | Ofrécela cuando el operador… |
+|---|---|
+| `legal-contract-review` | diga "revisa este contrato", "analiza este acuerdo de jugador/sponsor", "márcame las cláusulas problemáticas", "genera redlines", o reciba un contrato antes de firmar. Revisa contra playbook, clasifica desviaciones 🔴🟠🟡 + impacto de negocio + redlines. Playbook editable en `references/playbook.md` |
+| `legal-nda-triage` | diga "revisa este NDA", "¿puedo firmar este acuerdo de confidencialidad?", "triaje de NDA", o reciba un NDA de club/sponsor/cliente. Clasifica 🟢🟡🔴 en minutos (mutuo, duración, alcance, no-competencia encubierta, jurisdicción) → firmar/negociar/escalar |
+| `legal-compliance` | diga "¿cumplo RGPD?", "revisa este DPA", "un usuario pide sus datos", "mapea qué datos trato", o gestione datos personales (jugadores UE, cliente clínica). RGPD/CCPA a nivel de tratamiento (≠ `tool-web-legal-audit` = cookies de web) |
+
+#### `sales/` (2) — categoría nueva; bridged de `anthropics/knowledge-work-plugins` (Apache-2.0). Frente: consultoría IA-PYMEs.
+
+| Skill | Ofrécela cuando el operador… |
+|---|---|
+| `sales-call-prep` | diga "prepárame esta llamada", "voy a hablar con un cliente potencial", "resume esta call y sácame los siguientes pasos". PRE (agenda + preguntas de descubrimiento) + POST (action items + follow-up). ≠ outreach en frío (`marketing-cold-email`/`marketing-prospecting`) |
+| `sales-pipeline-forecast` | diga "revisa mi pipeline", "haz una previsión de ventas", "qué deals priorizo", "cuánto voy a cerrar este mes". Diagnóstico de salud (estancados/single-threaded) + previsión best/likely/worst + gap. Standalone con CSV; mejor con CRM |
+
+#### `finance/` (1) — categoría nueva; bridged de `anthropics/knowledge-work-plugins` (Apache-2.0). Frente: Polymarket/negocio.
+
+| Skill | Ofrécela cuando el operador… |
+|---|---|
+| `finance-variance-analysis` | diga "por qué cambió este resultado", "descompón esta varianza", "analiza mi P&L de trading", "qué mueve mis márgenes". Descompone varianzas en drivers (precio/volumen/mix) + waterfall + narrativa. Complementa `startup-business-analyst` (modelo) y `statsmodels` (inferencia); ≠ contabilidad GAAP |
+
 ### Procesos encadenados (skills que se ofrecen seguidas)
 
 Algunas skills funcionan mejor en secuencia. Cuando cierres un paso, **ofrece el siguiente** de
 su cadena (instalándolo desde biblioteca si hace falta). No las encadenes en automático: ofrece
 y confirma.
 
-- **Construir web/app**: `ask-questions-if-underspecified` → `ui-ux-pro-max` → `theme-factory`
+- **Construir web/app**: `ask-questions-if-underspecified` → `spec-kit` (specify/plan/tasks si el proyecto tiene alcance) → `ui-ux-pro-max` → `theme-factory`
   → `brand-guidelines` → `usability-retention-review` → `react-best-practices` /
   `backend-development` → `vercel-deploy`. (Complementa a `arnes`, que orquesta el arranque.)
+- **Legal (agencia)**: `legal-nda-triage` (triaje rápido) → `legal-contract-review` (análisis a fondo + redlines) → `legal-compliance` (si hay datos personales/DPA). Siempre con disclaimer: análisis de apoyo, no asesoría jurídica.
+- **Ventas (IA-PYMEs)**: `marketing-prospecting`/`marketing-cold-email` (captar) → `sales-call-prep` (preparar/cerrar la llamada) → `marketing-sales-enablement` (material) → `sales-pipeline-forecast` (previsión y priorización).
+- **Monetizar OSS**: `automation-fork-and-resell` (elegir + empaquetar) → `arnes` (código) → `tool-vps-hardening` (asegurar) → `automation-client-deploy`/`vercel-deploy` (entregar) → `startup-business-analyst` (validar margen).
 - **Inteligencia competitiva**: `competitive-ads-extractor` + `competencia` (esta usa
   `notebooklm-mcp`) → `startup-business-analyst` → `investigacion-mercado` (skill global).
 - **Data/ML**: `exploratory-data-analysis` → `statistical-analysis` / `statsmodels` →
@@ -353,7 +384,7 @@ y confirma.
 - **Dependencia base**: `marketing-product-context` alimenta a TODA skill `marketing-*` (como `competencia → notebooklm-mcp`). Antes de una skill `marketing-*`, verifica que exista contexto de producto (o `brand-context/` + `context/`); si falta, créalo primero.
 - **Embudo full-funnel**: `marketing-product-context` → `marketing-plan` → `marketing-content-strategy` → (`marketing-copywriting` / `marketing-social` / `marketing-video` / `marketing-image`) → `marketing-cro` → `marketing-analytics` → `marketing-ab-testing`.
 - **Producción de contenido**: `marketing-content-strategy` → `marketing-copywriting` → `marketing-copy-editing` → `tool-humanizer` → `tool-output-verifier` → `marketing-content-repurposing` → `marketing-social`.
-- **Producción de vídeo**: `marketing-video` (guion) → `tool-video-generator` (render corto) **o** `tool-video-montage` (producción pro con research/archivo) → `tool-output-verifier` → `marketing-content-repurposing` → `marketing-social`. E-commerce social: `marketing-autoecom` (carrusel de producto auto-publicado).
+- **Producción de vídeo**: `marketing-video` (guion) → `tool-voicebox` (voz en off) → `tool-video-generator` (render corto) **o** `tool-video-montage` (producción pro con research/archivo) **o** `tool-avatar-video` (portavoz IA) → `tool-opencut` (edición/subtítulos/formato) → `tool-output-verifier` → `marketing-content-repurposing` → `marketing-social` **o** `marketing-autopublish` (distribución multiplataforma). E-commerce social: `marketing-autoecom` (carrusel de producto auto-publicado).
 - **Captación outbound**: `marketing-icp` / `marketing-customer-research` → `marketing-prospecting` → `marketing-cold-email` → `marketing-sales-enablement`.
 - **Captación inbound (lead gen)**: `marketing-lead-magnets` / `marketing-free-tools` → `marketing-popups` → `automation-embudo-captacion` → `marketing-email-sequence`.
 - **Paid ads (bucle)**: `marketing-plan` → `marketing-ads` → `marketing-ad-creative` → `marketing-meta-ads-analyzer` → `marketing-ab-testing` → (vuelta a creatividades).
@@ -378,7 +409,7 @@ Cuando varias skills compiten por la misma intención, decide así (además del 
 
 - **Copy**: ¿hay texto ya? `marketing-copy-editing`. ¿desde cero? `marketing-copywriting`. ¿suena a IA? `tool-humanizer`. ¿entregar? `tool-output-verifier`.
 - **Ads**: montar/gestionar campaña→`marketing-ads` · escribir anuncios→`marketing-ad-creative` · "por qué no convierte" con datos→`marketing-meta-ads-analyzer` · ver ads del rival→`competitive-ads-extractor`.
-- **Vídeo**: guion/ideas→`marketing-video` · **render corto AI (tema→mp4)→`tool-video-generator`** · **producción con research/archivo/animación→`tool-video-montage`** (pesada, AGPL) · generar con un modelo concreto (Flux/Kling/Sora)→`tool-genai-studio` · bajar una URL→`video-downloader` · "qué dice"→`tool-transcribe-social` · fútbol→FVI (otro dominio).
+- **Vídeo**: guion/ideas→`marketing-video` · **render corto AI (tema→mp4)→`tool-video-generator`** · **producción con research/archivo/animación→`tool-video-montage`** (pesada, AGPL) · **edición/recorte/subtítulos programático→`tool-opencut`** · **avatar hablando (cara+voz)→`tool-avatar-video`** · **voz en off/clonación/dictado→`tool-voicebox`** · generar con un modelo concreto (Flux/Kling/Sora)→`tool-genai-studio` · bajar una URL→`video-downloader` · "qué dice"→`tool-transcribe-social` · fútbol→FVI (otro dominio).
 - **Competencia**: intel estratégica→`competencia` · página comparativa X vs Y→`marketing-competitors` · anuncios→`competitive-ads-extractor` · TAM/precios de mercado→`investigacion-mercado`.
 - **SEO**: auditar/optimizar→`tool-geo-seo-audit` · generar N páginas→`marketing-programmatic-seo` · jerarquía/URLs→`marketing-site-architecture`.
 - **Email**: lista propia/lifecycle→`marketing-email-sequence` · desconocidos en frío→`marketing-cold-email`.
@@ -392,6 +423,7 @@ Cuando varias skills compiten por la misma intención, decide así (además del 
 | Skill | Cómo activar |
 |---|---|
 | `docx`, `xlsx`, `pdf`, `pptx` | `/plugin install anthropic-skills` |
+| `knowledge-work-plugins` (finance/sales/legal/PM…) | `anthropics/knowledge-work-plugins` (Apache-2.0). Del OS ya se han portado a biblioteca las de más valor (`legal-*`, `sales-*`, `finance-variance-analysis`). El resto (contabilidad GAAP, sales account-research/draft-outreach que solapan `marketing-*`) se activan suelto por el marketplace oficial si hicieran falta |
 
 ### Slash commands
 
