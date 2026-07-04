@@ -212,7 +212,7 @@ Modelo **Core + Biblioteca**: 27 skills core siempre instaladas (el OS las neces
 |---|---|
 | `ui-ux-pro-max` | Inteligencia de diseño UI/UX (50 estilos, paletas, tipografías, 9 stacks): planear/construir/revisar UI |
 
-### Biblioteca — instalables con `/skills` (52)
+### Biblioteca — instalables con `/skills` (53)
 
 Viven en `skills-library/` (cero coste de contexto hasta instalarlas). Instalar: `bash scripts/skills.sh add <nombre>` · Quitar: `remove` · Catálogo: `list`.
 
@@ -283,7 +283,7 @@ Viven en `skills-library/` (cero coste de contexto hasta instalarlas). Instalar:
 | `strategy-investigacion-profunda` | pida un **informe completo**: "investiga a fondo", "informe con fuentes", "triangula", "verifica con varias fuentes", "due diligence", "estado del arte" |
 | `strategy-stack-recommender` | pregunte "¿con qué construyo esto?", "¿qué stack me recomiendas?", "¿qué tecnologías uso para…?", o describa un proyecto y necesite orientación técnica antes de picar código |
 
-#### `tools/` (29)
+#### `tools/` (30)
 
 | Skill | Ofrécela cuando el operador… |
 |---|---|
@@ -316,6 +316,7 @@ Viven en `skills-library/` (cero coste de contexto hasta instalarlas). Instalar:
 | `tool-avatar-video` | diga "hazme un avatar hablando", "vídeo de portavoz IA", "talking head desde esta foto", "cara que narra este texto". Wrapper fino que reenvía al **Gradio Space** `victor/LongCat-Video-Avatar-1.5` (`gradio_client`): imagen+audio→avatar. Self-host 13.6B multi-GPU = opción pesada. Solo avatares propios/con consentimiento |
 | `spec-kit` | diga "hazlo con spec-kit", "desarrollo dirigido por spec", "especifica antes de programar", "requisitos y plan antes del código". Wrapper de `github/spec-kit` (MIT, oficial): flujo Constitution→Specify→Plan→Tasks→Implement. Complementa `arnes` en proyectos con alcance (no para fixes puntuales) |
 | `tool-vps-hardening` | diga "asegura mi VPS", "¿tengo puertos expuestos?", "hardening del servidor", "revisa mi Docker/servidor", o antes de exponer un servicio público. Skill original del OS (destila los dominios útiles del pack cibersec de 817): SSH+ufw+auditoría de puertos, Docker security, fail2ban, rotación de secrets, checklist pre-deploy cliente. Complementa (no solapa) `tool-web-security-audit`/`tool-seguridad-ia`/`tool-web-legal-audit`. Solo servidores propios/autorizados |
+| `tool-scrape-router` | diga "scrapea/extrae datos de esta web", "crawlea este sitio", "qué herramienta uso para scrapear X", "saca estos datos a escala", "convierte esta web en datos/API". **Cerebro de scraping**: clasifica el trabajo, elige la mejor herramienta gratis por matriz (Firecrawl/Playwright/Crawl4AI/Scrapling/Scrapy/ScrapeGraphAI/Colly/Katana/Maxun/Browserless + Apify MCP) con escalera de coste 0, y ejecuta. Delega en `tool-firecrawl-scraper` cuando gana Firecrawl. Respeta robots.txt/ToS/RGPD |
 
 #### `automation/` (5) — las 4 primeras ✅ instaladas (invócalas directamente); `automation-fork-and-resell` en biblioteca
 
@@ -369,6 +370,7 @@ y confirma.
 - **Legal (agencia)**: `legal-nda-triage` (triaje rápido) → `legal-contract-review` (análisis a fondo + redlines) → `legal-compliance` (si hay datos personales/DPA). Siempre con disclaimer: análisis de apoyo, no asesoría jurídica.
 - **Ventas (IA-PYMEs)**: `marketing-prospecting`/`marketing-cold-email` (captar) → `sales-call-prep` (preparar/cerrar la llamada) → `marketing-sales-enablement` (material) → `sales-pipeline-forecast` (previsión y priorización).
 - **Monetizar OSS**: `automation-fork-and-resell` (elegir + empaquetar) → `arnes` (código) → `tool-vps-hardening` (asegurar) → `automation-client-deploy`/`vercel-deploy` (entregar) → `startup-business-analyst` (validar margen).
+- **Scraping → análisis**: `tool-scrape-router` (elige herramienta + extrae) → `tool-firecrawl-scraper`/otra (ejecución) → `strategy-web-research`/`investigacion-mercado` si el objetivo es analizar, no solo tener los datos crudos.
 - **Inteligencia competitiva**: `competitive-ads-extractor` + `competencia` (esta usa
   `notebooklm-mcp`) → `startup-business-analyst` → `investigacion-mercado` (skill global).
 - **Data/ML**: `exploratory-data-analysis` → `statistical-analysis` / `statsmodels` →
@@ -417,6 +419,7 @@ Cuando varias skills compiten por la misma intención, decide así (además del 
 - **Pensamiento**: decisión sesgada→`seis-sombreros` · análisis multimodo→`cognito` · "no arranco"→`desbloqueo` · saturación con IA→`metodo-ias`.
 - **Deploy**: web a Vercel→`vercel-deploy` · entorno cliente (VPS/PC)→`automation-client-deploy`.
 - **Lead gen**: embudo social completo→`automation-embudo-captacion` · recurso imán→`marketing-lead-magnets` · herramienta gancho→`marketing-free-tools` · overlay web→`marketing-popups`.
+- **Scraping/crawling**: decidir herramienta + ejecutar→`tool-scrape-router` (matriz + escalada) · Firecrawl directo→`tool-firecrawl-scraper` · investigar (no solo extraer datos)→`strategy-web-research`/`investigacion-mercado` · redes sociales (IG/TikTok/YT)→Apify MCP · "qué dice un vídeo"→`tool-transcribe-social` · bajar un vídeo→`video-downloader`. **Regla**: empezar por lo gratis (WebFetch nativo) y escalar solo si falla.
 
 ### Plugins Anthropic (instalación vía marketplace)
 
