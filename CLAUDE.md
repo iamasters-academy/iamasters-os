@@ -212,11 +212,11 @@ Modelo **Core + Biblioteca**: 27 skills core siempre instaladas (el OS las neces
 |---|---|
 | `ui-ux-pro-max` | Inteligencia de diseño UI/UX (50 estilos, paletas, tipografías, 9 stacks): planear/construir/revisar UI |
 
-### Biblioteca — instalables con `/skills` (35)
+### Biblioteca — instalables con `/skills` (39)
 
 Viven en `skills-library/` (cero coste de contexto hasta instalarlas). Instalar: `bash scripts/skills.sh add <nombre>` · Quitar: `remove` · Catálogo: `list`.
 
-#### `marketing/` (43)
+#### `marketing/` (44)
 
 > Pack `coreyhaines31/marketingskills` portado completo (proyecto `nuevas-skills`, lotes M1-M4):
 > 38 skills nuevas + las 4 previas. Todas en biblioteca; instala a demanda con `/skills`. Cuerpo
@@ -267,6 +267,7 @@ Viven en `skills-library/` (cero coste de contexto hasta instalarlas). Instalar:
 | `marketing-copy-editing` | diga "edita este copy", "revisa este texto", "mejóralo/púlelo", "hazlo más claro/corto" (≠ escribir desde cero = `marketing-copywriting`) |
 | `marketing-aso` | diga "optimiza mi ficha de la app", "ASO", "keywords de la app", "screenshots de la ficha" (apps propias) |
 | `marketing-sms` | diga "campaña de SMS", "marketing por SMS/MMS", "cadencia de SMS", "opt-in de SMS" |
+| `marketing-autoecom` | diga "genera un carrusel de producto", "posts diarios de mi tienda", "publica catálogo en IG/TikTok", "automatiza contenido de e-commerce". Wrapper de `Upload-Post/skill-autoecom` (MIT): extrae identidad de marca de la tienda, elige bestseller round-robin, compone slides con IA (Gemini) y publica vía Upload-Post. Necesita keys (`UPLOAD_POST_API_KEY`/`GEMINI_API_KEY`) + setup runtime |
 
 #### `strategy/` (8)
 
@@ -281,7 +282,7 @@ Viven en `skills-library/` (cero coste de contexto hasta instalarlas). Instalar:
 | `strategy-investigacion-profunda` | pida un **informe completo**: "investiga a fondo", "informe con fuentes", "triangula", "verifica con varias fuentes", "due diligence", "estado del arte" |
 | `strategy-stack-recommender` | pregunte "¿con qué construyo esto?", "¿qué stack me recomiendas?", "¿qué tecnologías uso para…?", o describa un proyecto y necesite orientación técnica antes de picar código |
 
-#### `tools/` (21)
+#### `tools/` (24)
 
 | Skill | Ofrécela cuando el operador… |
 |---|---|
@@ -306,6 +307,9 @@ Viven en `skills-library/` (cero coste de contexto hasta instalarlas). Instalar:
 | `tool-web-security-audit` | ✅ **instalada**. diga "¿tiene vulnerabilidades mi web?", "pentest a mi sitio", "busca agujeros de seguridad", "¿es hackeable?" (solo webs propias/autorizadas). v2.1: scorecard 0-100 + auto-fix |
 | `daily-brief` | ✅ **instalada**. diga "brief de hoy", "resúmeme el correo y la agenda", "qué tengo hoy", "daily brief", o acepte la oferta matutina de `meta-start-here` (correo Gmail + Google Calendar; Drive aún no conectado) |
 | `tool-graphify` | ✅ **instalada** (también global en `~/.claude/skills/` — aplica a TODOS los proyectos). diga "graphify", "mapea/indexa este proyecto", "monta el grafo de conocimiento", "grafo de dependencias", o pregunte arquitectura ("¿qué depende de X?") en un repo grande. Always-on vía passive rule Sinapsis `graphify-graph-first`; NUNCA usar `graphify claude install`. Cada repo tiene su grafo propio en `graphify-out/` |
+| `tool-video-generator` | diga "hazme un vídeo corto de X", "genera un reel/short", "vídeo AI para redes", "monta un vídeo con voz en off automática". Wrapper de `harry0703/MoneyPrinterTurbo` (MIT): tema→guion LLM→stock (Pexels)→TTS→subtítulos→mp4 vertical. Es el RENDER del clúster vídeo (≠ `marketing-video` = guion). Setup runtime (Docker/Python + FFmpeg + keys) |
+| `tool-video-montage` | diga "monta un vídeo tipo documental/explainer", "produce un vídeo con footage de archivo", "pipeline de vídeo completo". Wrapper de `calesthio/OpenMontage` (**AGPLv3**, copyleft — no se vendoriza): pipelines explainer/documental/trailer con research + Remotion + FFmpeg. Alternativa "pro" y más pesada a `tool-video-generator` |
+| `tool-genai-studio` | diga "genera imagen/vídeo con el modelo X (Flux/Kling/Sora/Veo…)", "studio multi-modelo", "probar varios modelos de imagen/vídeo". Wrapper fino de `Anil-matcha/Open-Generative-AI` (MIT, es una app→candidata floja). Úsala solo para modelos concretos; para imagen normal usa `marketing-image`, para short estándar `tool-video-generator` |
 
 #### `automation/` (4) — ✅ las 4 instaladas, invócalas directamente
 
@@ -349,6 +353,7 @@ y confirma.
 - **Dependencia base**: `marketing-product-context` alimenta a TODA skill `marketing-*` (como `competencia → notebooklm-mcp`). Antes de una skill `marketing-*`, verifica que exista contexto de producto (o `brand-context/` + `context/`); si falta, créalo primero.
 - **Embudo full-funnel**: `marketing-product-context` → `marketing-plan` → `marketing-content-strategy` → (`marketing-copywriting` / `marketing-social` / `marketing-video` / `marketing-image`) → `marketing-cro` → `marketing-analytics` → `marketing-ab-testing`.
 - **Producción de contenido**: `marketing-content-strategy` → `marketing-copywriting` → `marketing-copy-editing` → `tool-humanizer` → `tool-output-verifier` → `marketing-content-repurposing` → `marketing-social`.
+- **Producción de vídeo**: `marketing-video` (guion) → `tool-video-generator` (render corto) **o** `tool-video-montage` (producción pro con research/archivo) → `tool-output-verifier` → `marketing-content-repurposing` → `marketing-social`. E-commerce social: `marketing-autoecom` (carrusel de producto auto-publicado).
 - **Captación outbound**: `marketing-icp` / `marketing-customer-research` → `marketing-prospecting` → `marketing-cold-email` → `marketing-sales-enablement`.
 - **Captación inbound (lead gen)**: `marketing-lead-magnets` / `marketing-free-tools` → `marketing-popups` → `automation-embudo-captacion` → `marketing-email-sequence`.
 - **Paid ads (bucle)**: `marketing-plan` → `marketing-ads` → `marketing-ad-creative` → `marketing-meta-ads-analyzer` → `marketing-ab-testing` → (vuelta a creatividades).
@@ -373,7 +378,7 @@ Cuando varias skills compiten por la misma intención, decide así (además del 
 
 - **Copy**: ¿hay texto ya? `marketing-copy-editing`. ¿desde cero? `marketing-copywriting`. ¿suena a IA? `tool-humanizer`. ¿entregar? `tool-output-verifier`.
 - **Ads**: montar/gestionar campaña→`marketing-ads` · escribir anuncios→`marketing-ad-creative` · "por qué no convierte" con datos→`marketing-meta-ads-analyzer` · ver ads del rival→`competitive-ads-extractor`.
-- **Vídeo**: crear vídeo de marketing→`marketing-video` · bajar una URL→`video-downloader` · "qué dice"→`tool-transcribe-social` · fútbol→FVI (otro dominio).
+- **Vídeo**: guion/ideas→`marketing-video` · **render corto AI (tema→mp4)→`tool-video-generator`** · **producción con research/archivo/animación→`tool-video-montage`** (pesada, AGPL) · generar con un modelo concreto (Flux/Kling/Sora)→`tool-genai-studio` · bajar una URL→`video-downloader` · "qué dice"→`tool-transcribe-social` · fútbol→FVI (otro dominio).
 - **Competencia**: intel estratégica→`competencia` · página comparativa X vs Y→`marketing-competitors` · anuncios→`competitive-ads-extractor` · TAM/precios de mercado→`investigacion-mercado`.
 - **SEO**: auditar/optimizar→`tool-geo-seo-audit` · generar N páginas→`marketing-programmatic-seo` · jerarquía/URLs→`marketing-site-architecture`.
 - **Email**: lista propia/lifecycle→`marketing-email-sequence` · desconocidos en frío→`marketing-cold-email`.
