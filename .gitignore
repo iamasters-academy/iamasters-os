@@ -8,6 +8,9 @@
 .mcp.json
 !.mcp.json.example
 
+# Graphify (grafo de conocimiento, cache derivado — se reconstruye con `graphify update .`)
+graphify-out/
+
 # OS
 .DS_Store
 Thumbs.db
@@ -104,6 +107,9 @@ __pycache__/
 *.pyd
 .Python
 *.egg-info/
+.venv/
+venv/
+**/.venv/
 
 # Node
 node_modules/
