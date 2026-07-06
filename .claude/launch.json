@@ -33,7 +33,7 @@
   ,
     {
       "name": "informe-jugador-landing",
-      "cwd": "projects/briefs/informe-jugador-ia/landing",
+      "cwd": "projects/informe-jugador-ia/landing",
       "runtimeExecutable": "python",
       "runtimeArgs": ["-m", "http.server", "8200"],
       "port": 8200
