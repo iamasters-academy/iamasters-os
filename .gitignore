@@ -126,3 +126,6 @@ yarn.lock
 # Scratch artifacts (playwright MCP logs, ad-hoc screenshots)
 .playwright-mcp/
 p0-default.png
+
+# Vendored external clone (Unreal Engine MCP) — trae su propio .git, no forma parte del OS
+vendor/unreal-mcp/
