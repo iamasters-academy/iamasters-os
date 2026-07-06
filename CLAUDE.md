@@ -220,11 +220,11 @@ Modelo **Core + Biblioteca**: 27 skills core siempre instaladas (el OS las neces
 |---|---|
 | `ui-ux-pro-max` | Inteligencia de diseño UI/UX (50 estilos, paletas, tipografías, 9 stacks): planear/construir/revisar UI |
 
-### Biblioteca — instalables con `/skills` (55)
+### Biblioteca — instalables con `/skills` (57)
 
 Viven en `skills-library/` (cero coste de contexto hasta instalarlas). Instalar: `bash scripts/skills.sh add <nombre>` · Quitar: `remove` · Catálogo: `list`.
 
-#### `marketing/` (46)
+#### `marketing/` (48)
 
 > Pack `coreyhaines31/marketingskills` portado completo (proyecto `nuevas-skills`, lotes M1-M4):
 > 38 skills nuevas + las 4 previas. Todas en biblioteca; instala a demanda con `/skills`. Cuerpo
@@ -278,6 +278,8 @@ Viven en `skills-library/` (cero coste de contexto hasta instalarlas). Instalar:
 | `marketing-autoecom` | diga "genera un carrusel de producto", "posts diarios de mi tienda", "publica catálogo en IG/TikTok", "automatiza contenido de e-commerce". Wrapper de `Upload-Post/skill-autoecom` (MIT): extrae identidad de marca de la tienda, elige bestseller round-robin, compone slides con IA (Gemini) y publica vía Upload-Post. Necesita keys (`UPLOAD_POST_API_KEY`/`GEMINI_API_KEY`) + setup runtime |
 | `marketing-autopublish` | diga "publica esto en todas mis redes", "distribución multiplataforma", "sube este vídeo/post a TikTok+YT+IG+LinkedIn a la vez". Wrapper de `yikart/AiToEarn` (MIT): gen de contenido + publicación 1-click a 13+ plataformas + engagement. **Pesada** (Node20+MongoDB+Redis+Electron+OAuth), docs en chino. ≠ carrusel e-commerce (`marketing-autoecom`) ≠ estrategia de posts (`marketing-social`) |
 | `marketing-viral-radar` | diga "qué se está viralizando en mi nicho", "qué publico esta semana", "dame tendencias para contenido", "radar viral". Monitoriza IG/TikTok (Apify MCP) + Reddit/Google Trends (`tool-scrape-router`), cruza con marca/ICP y devuelve "qué publicar esta semana" (ángulo+formato+gancho). Alimenta `marketing-content-strategy`. Viral≠relevante: descarta lo que no encaja |
+| `marketing-storytelling` | diga "convierte esto en una historia", "estructúralo como relato", "que esto enganche", "dale arco narrativo a este tema" para un Reel/post/vídeo/newsletter. Devuelve la pieza con arco hook→contexto→recorrido→giro→cierre (marcado en [corchetes]). ≠ redactar copy de plataforma (`marketing-copywriting`) ≠ auditar solo el arranque (`marketing-hooks`). Skill del OS, inspirada en el pack de F. Carosia |
+| `marketing-hooks` | diga "revísame este hook", "mejora el arranque", "este inicio no engancha", "dame ganchos" antes de publicar un Reel/post/vídeo/email/anuncio. Audita las primeras 2 líneas contra checklist + 6 patrones y devuelve 5 hooks más fuertes. **≠ `marketing-viral-radar`** (ese dice QUÉ tema; este, CÓMO arranca). Skill del OS, inspirada en el pack de F. Carosia |
 
 #### `strategy/` (8)
 
@@ -395,7 +397,7 @@ y confirma.
 
 - **Dependencia base**: `marketing-product-context` alimenta a TODA skill `marketing-*` (como `competencia → notebooklm-mcp`). Antes de una skill `marketing-*`, verifica que exista contexto de producto (o `brand-context/` + `context/`); si falta, créalo primero.
 - **Embudo full-funnel**: `marketing-product-context` → `marketing-plan` → `marketing-content-strategy` → (`marketing-copywriting` / `marketing-social` / `marketing-video` / `marketing-image`) → `marketing-cro` → `marketing-analytics` → `marketing-ab-testing`.
-- **Producción de contenido**: `marketing-viral-radar` (qué se viraliza → qué decir esta semana) → `marketing-content-strategy` → `marketing-copywriting` → `marketing-copy-editing` → `tool-humanizer` → `tool-output-verifier` → `marketing-content-repurposing` → `marketing-social` → `marketing-analytics` (autopsia: qué funcionó, cierra el bucle con el radar).
+- **Producción de contenido**: `marketing-viral-radar` (qué se viraliza → qué decir esta semana) → `marketing-content-strategy` → `marketing-storytelling` (arco narrativo del tema) → `marketing-copywriting` → `marketing-hooks` (pule el arranque) → `marketing-copy-editing` → `tool-humanizer` → `tool-output-verifier` → `marketing-content-repurposing` → `marketing-social` → `marketing-analytics` (autopsia: qué funcionó, cierra el bucle con el radar).
 - **Producción de vídeo**: `marketing-video` (guion) → `tool-voicebox` (voz en off) → `tool-video-generator` (render corto) **o** `tool-video-montage` (producción pro con research/archivo) **o** `tool-avatar-video` (portavoz IA) → `tool-opencut` (edición/subtítulos/formato) → `tool-output-verifier` → `marketing-content-repurposing` → `marketing-social` **o** `marketing-autopublish` (distribución multiplataforma). E-commerce social: `marketing-autoecom` (carrusel de producto auto-publicado).
 - **Captación outbound**: `marketing-icp` / `marketing-customer-research` → `marketing-prospecting` → `marketing-cold-email` → `marketing-sales-enablement`.
 - **Captación inbound (lead gen)**: `marketing-lead-magnets` / `marketing-free-tools` → `marketing-popups` → `automation-embudo-captacion` → `marketing-email-sequence`.
