@@ -31,6 +31,17 @@ grandes (cientos de archivos); en repos diminutos no aporta.
 **Cada proyecto tiene SU grafo**: la herramienta y esta skill son globales, pero el grafo
 se construye dentro de cada repo (`graphify-out/` local al proyecto) y nunca se mezclan.
 
+**Política del operador — grafo siempre, en todos los proyectos, `conocimiento/` incluida**:
+cuando trabajes en cualquier repo del operador que no tenga `graphify-out/`, ofrece (o
+construye directamente si la petición ya lo pide) el grafo. **Nunca excluyas la carpeta
+`conocimiento/`** (ni ninguna otra carpeta de documentación de dominio del proyecto) del
+grafo — es contenido de valor (informes, research, PDFs de referencia), no ruido. Solo se
+excluyen dependencias vendorizadas/generadas (`node_modules`, `.venv`, `__pycache__`,
+`.agent/` de skills copiadas, backups, `dist/`) — eso ya lo cubre el `.gitignore` de cada
+repo. Si `conocimiento/` (o similar) tiene PDFs/docs, no basta con L1: pásala por **L3**
+(ver más abajo) para que el contenido esté realmente entendido por el grafo, no solo listado
+por nombre de archivo.
+
 ## Regla de decisión (dísela al operador si duda)
 
 - **Arquitectura / dependencias precisas** ("¿qué depende de X?", "¿cómo conecta login
@@ -94,6 +105,27 @@ reprocesa lo modificado — no re-embebe todo como el RAG vectorial.
   ⚠️ La CLI **sin `--backend`** (p. ej. `graphify .` a secas con docs) sí exige una key de
   proveedor (`GEMINI_API_KEY`/`OPENAI_API_KEY`/…). No la uses así para L3; usa una de las dos
   vías Claude de arriba. Actívalo solo si el repo tiene documentación que quieras en el grafo.
+
+### Ojo: `.gitignore` recorta lo que Graphify ve — y no hay forma de bypasearlo
+
+Graphify respeta `.gitignore` (y `.graphifyignore`) al escanear, **incluso apuntando a una
+subcarpeta concreta** (sube hasta la raíz del repo git buscando reglas). Es intencional: un
+`.graphifyignore` **solo puede excluir más, nunca re-incluir** algo que `.gitignore` ya
+excluye — evita que secretos gitignored se cuelen en el grafo. Un `.graphifyinclude` tampoco
+sirve para esto (solo destapa dotfiles/dotdirs ocultos, no anula `.gitignore`).
+
+Si una carpeta con contenido de valor (p. ej. `conocimiento/`) tiene PDFs/imágenes
+gitignored, antes de tocar nada **comprueba si el proyecto ya tiene su propio índice/RAG
+para esos docs** (mira el `CLAUDE.md` del repo y el propio comentario del `.gitignore` — a
+veces la exclusión es deliberada porque ya existe otra herramienta, no un descuido). Si es
+así, no dupliques esfuerzo: deja que el grafo cubra lo estructural (L1 ya indexa código/`.md`
+aunque estén junto a los PDFs excluidos) y esa otra herramienta cubra la búsqueda semántica
+de los documentos — encaja con la regla de decisión grafo-vs-RAG de arriba.
+
+Si el proyecto NO tiene nada así y el operador quiere esos archivos en el grafo de verdad, la
+única vía es editar el `.gitignore` para quitar/acotar esas líneas — **pregunta primero**:
+tiene el efecto secundario real de dejar esos archivos git-trackeables (pueden colarse en un
+futuro `git add`), no lo hagas sin confirmación explícita.
 
 ## Consultar el grafo
 
