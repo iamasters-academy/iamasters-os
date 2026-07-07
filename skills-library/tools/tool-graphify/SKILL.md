@@ -139,13 +139,15 @@ graphify path "NodoA" "NodoB"          # camino más corto entre dos nodos
 
 El always-on de este entorno NO es el de Graphify: es la passive rule
 `graphify-graph-first` en `~/.claude/skills/_passive-rules.json`, que antes de cada
-`Grep`/`Glob` recuerda mirar `graphify-out/GRAPH_REPORT.md` si existe. Cubre todos los
-proyectos con el hook Sinapsis ya instalado.
+`Grep`/`Glob` recuerda **consultar** el grafo con `graphify query/explain/path` si existe
+`graphify-out/`. Cubre todos los proyectos con el hook Sinapsis ya instalado.
 
 **Comportamiento esperado en sesión** (cualquier repo): antes de buscar a ciegas, comprueba
-si existe `graphify-out/GRAPH_REPORT.md`. Si existe → léelo y navega el grafo
-(`graphify query/explain/path`). Si no existe y el repo es mediano/grande → ofrece
-construirlo con esta skill.
+si existe `graphify-out/`. Si existe → **navega el grafo con `graphify query/explain/path`**
+(resultados pequeños y dirigidos). ⚠️ **NUNCA leas `GRAPH_REPORT.md` ni `graph.json` enteros**
+con Read/cat: pesan cientos de KB / decenas de MB y agotan la ventana de contexto de golpe —
+ese es justo el gasto que la herramienta debe evitar. Si no existe y el repo es mediano/grande
+→ ofrece construirlo con esta skill.
 
 - ⚠️ **NO ejecutes `graphify claude install`** en ningún repo del operador: duplicaría el
   always-on (ya lo da la passive rule), y en `iamasters-os` chocaría con el CLAUDE.md y los
@@ -165,7 +167,7 @@ graphify . --no-viz                    # solo report + JSON
 ## Checklist al aplicar a un proyecto nuevo
 
 1. ¿Repo mediano/grande? Si <30 archivos, avisa que no compensa.
-2. `graphify .` (L1). Revisa `graphify-out/GRAPH_REPORT.md`.
+2. `graphify .` (L1). Hojea `graphify-out/GRAPH_REPORT.md` en el editor si quieres (NO lo cargues entero en contexto con Read/cat); para consultar desde la sesión usa `graphify query/explain/path`.
 3. ¿Hay docs/multimedia relevantes? Ofrece L2/L3. L3 con Claude = sin API key: corre
    `/graphify . --update` dentro de Claude Code (subagentes = tu sesión) o `--backend
    claude-cli`. Consume cuota de suscripción, no facturación por token.

@@ -30,6 +30,36 @@ Comprobar `.claude/.skills-pending.json`:
 - Update `synapsis/skills-catalog.json` con cambios
 - Limpiar `.skills-pending.json`
 
+### Paso 2.5 · Auto-retire de skills caché
+
+Ejecutar el sistema de caché inteligente:
+
+```bash
+bash scripts/auto-retire-skills.sh
+```
+
+**Qué hace:**
+- Revisa skills instaladas (excluyendo core `_meta/`)
+- Calcula días desde último uso (desde `usage-tracker.json`)
+- Si NO usada 7+ días → retira (mueve a biblioteca)
+- Si usada recientemente → mantiene cache
+- Reporta: skills retiradas, skills mantenidas, estado del caché
+
+**Output al usuario:**
+```
+=== Auto-Retire de Skills ===
+🗑️  automation-n8n-builder: No usada 8 días → RETIRADA
+✓ marketing-copywriting: Usada ayer → MANTENIDA
+✓ theme-factory: Usada hace 3 días → MANTENIDA
+
+Estado del caché: 15 skills cacheadas
+```
+
+**Integración con cache-manager:**
+- cache-manager registró uso durante la sesión
+- auto-retire-skills.sh lee usage-tracker.json
+- Skills frecuentes se quedan, raras se retiran
+
 ### Paso 3 · Update CLAUDE.md skills registry
 
 Localizar la sección `## Skills registry` del CLAUDE.md.
