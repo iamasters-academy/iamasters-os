@@ -5,12 +5,34 @@ description: Cierre de sesión iAmasters OS. Genera daily summary con qué se hi
 
 # meta-wrap-up
 
-## Cuándo se invoca
+## Auto-detección de fin de sesión
 
+`meta-wrap-up` se sugiere automáticamente cuando se cumple alguna de estas condiciones:
+
+1. **Token usage > 80%** (context window casi lleno)
+2. **Hora local > 17:00** (fin del día laboral)
+3. **Hubo commits/ediciones significativas** (>3 archivos modificados o >1 commit)
+4. **Hilos activos en working-memory.md** (sesión productiva en curso)
+
+**Cómo funciona:**
+- Claude verifica estas condiciones al inicio de cada turno
+- Si se cumple alguna, sugiere: "⏰ Wrap up disponible. ¿Daily summary + sync + working memory ahora?"
+- El usuario puede:
+  - Aceptar ("sí", "wrap up", "adelante") → ejecuta meta-wrap-up normalmente
+  - Posponer ("en 1 hora", "luego", "al final") → se ofrecerá más tarde
+  - Declinar ("no", "todavía no") → se recordará al cierre si es hora trigger
+- NO es intrusivo: solo sugiere, nunca fuerza la ejecución
+
+**Valores configurables:**
+- Token threshold: 80% del context window
+- Hora trigger: 17:00 (5 PM) hora local
+- Archivos mínimo: 3 archivos editados
+- Estos valores son heurísticos, no reglas estrictas
+
+## Invocación manual
+
+Además de la auto-detección, puedes invocarla manualmente en cualquier momento:
 - Usuario dice: "wrap up", "cierra sesión", "resumen del día", "/wrap-up"
-- Skill detecta que la sesión va a terminar (token usage > 80% sostenido)
-
-NO se invoca automáticamente al cerrar Claude Code (Ctrl+C) — el usuario debe pedirlo explícitamente o el comando `/wrap-up` debe correrlo.
 
 ## Process
 
@@ -192,6 +214,31 @@ Excepción: si detecta patrón repetido sin skill creada (3+ sesiones haciendo X
 
 ## Examples
 
+**Ejemplo 1 - Auto-sugerencia por token usage:**
+```
+Usuario: (trabajando en proyecto, token usage 82%)
+
+Claude: "⏰ Wrap up disponible. Estás al 82% del contexto.
+         ¿Daily summary + sync + working memory ahora?"
+
+Usuario: "sí"
+
+Claude: → ejecuta meta-wrap-up normalmente
+```
+
+**Ejemplo 2 - Auto-sugerencia por hora (fin del día):**
+```
+Usuario: (son las 17:15, ha trabajado todo el día)
+
+Claude: "⏰ Wrap up disponible. Son más de las 17:00 y has tenido
+         actividad hoy. ¿Daily summary + sync + working memory ahora?"
+
+Usuario: "en 1 hora"
+
+Claude: "Perfecto, te lo ofreceré de nuevo en 1 hora o cuando cierres."
+```
+
+**Ejemplo 3 - Invocación manual:**
 ```
 Usuario: /wrap-up
 
