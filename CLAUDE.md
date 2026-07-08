@@ -147,7 +147,7 @@ Lo que aporta este repo encima de Sinapsis:
 
 ## Skills registry (v0.11.0)
 
-Modelo **Core + Biblioteca**: 27 skills core siempre instaladas (el OS las necesita) + 80 en `skills-library/` que el operador instala a demanda con `/skills` (proyecto `nuevas-skills`: pack de marketing completo — 39 skills portadas de `coreyhaines31/marketingskills`, lotes M1-M4 + `marketing-launch`; fusiones F.0 aplicadas). **El operador tiene 22 de biblioteca instaladas** → **49 skills activas** (marcadas con ✅ en las tablas de Biblioteca; se cargan e invocan solas como las Core). El resto queda en catálogo a coste cero y se ofrece por routing cuando la intención encaje. Cada skill instalada consume contexto en cada sesion (recomendacion Anthropic: <50 cargadas) — instala solo lo que uses.
+Modelo **Core + Biblioteca**: 27 skills core siempre instaladas (el OS las necesita) + 80 en `skills-library/` que el operador instala a demanda con `/skills` (proyecto `nuevas-skills`: pack de marketing completo — 39 skills portadas de `coreyhaines31/marketingskills`, lotes M1-M4 + `marketing-launch`; fusiones F.0 aplicadas). **El operador tiene 23 de biblioteca instaladas** → **50 skills activas** (marcadas con ✅ en las tablas de Biblioteca; se cargan e invocan solas como las Core). El resto queda en catálogo a coste cero y se ofrece por routing cuando la intención encaje. Cada skill instalada consume contexto en cada sesion (recomendacion Anthropic: <50 cargadas) — instala solo lo que uses.
 
 > **Nota de arquitectura (para no confundir en auditorías)**: una skill instalada vive **a la vez** en
 > `skills-library/<cat>/<nombre>/` (fuente, coste cero) y en `.claude/skills/<cat>/<nombre>/` (copia
@@ -281,13 +281,14 @@ Viven en `skills-library/` (cero coste de contexto hasta instalarlas). Instalar:
 | `marketing-storytelling` | ✅ **instalada** — invócala directamente. diga "convierte esto en una historia", "estructúralo como relato", "que esto enganche", "dale arco narrativo a este tema" para un Reel/post/vídeo/newsletter. Devuelve la pieza con arco hook→contexto→recorrido→giro→cierre (marcado en [corchetes]). ≠ redactar copy de plataforma (`marketing-copywriting`) ≠ auditar solo el arranque (`marketing-hooks`). Skill del OS, inspirada en el pack de F. Carosia |
 | `marketing-hooks` | ✅ **instalada** — invócala directamente. diga "revísame este hook", "mejora el arranque", "este inicio no engancha", "dame ganchos" antes de publicar un Reel/post/vídeo/email/anuncio. Audita las primeras 2 líneas contra checklist + 6 patrones y devuelve 5 hooks más fuertes. **≠ `marketing-viral-radar`** (ese dice QUÉ tema; este, CÓMO arranca). Skill del OS, inspirada en el pack de F. Carosia |
 
-#### `strategy/` (8)
+#### `strategy/` (9)
 
 | Skill | Ofrécela cuando el operador… |
 |---|---|
 | `desbloqueo` | diga "estoy bloqueado", "no consigo arrancar/publicar/lanzar", "llevo semanas dándole vueltas", "no me decido", "me disperso", "empiezo cosas y no las cierro", "procrastino", "síndrome del impostor", o describa parálisis/perfeccionismo/miedo a lanzar (estado de bloqueo personal, NO decisión con trade-offs → eso es `seis-sombreros`/`cognito`) |
 | `metodo-ias` | diga "método IAS", "planifica la sesión", "recap semanal", "me estoy quemando con la IA", "AI brain fry", "tomo demasiadas micro-decisiones", o quiera estructurar trabajo con IA sin saturarse |
 | `developer-growth-analysis` | diga "analiza mi historial de código", "en qué estoy fallando programando", "dónde puedo mejorar como dev", "detecta mis gaps técnicos", o quiera un informe de sus patrones de desarrollo |
+| `project-architect` | ✅ **instalada** — invócala directamente. diga "analiza y reorganiza este proyecto", "estructura profesional", "reorganiza archivos", "documentación completa", "mapa del proyecto", "¿dónde pongo X?", o quiera organizar un proyecto desordenado. Crea README, PROJECT_MAP, AI_CONTEXT, CHANGELOG, TODO, DECISIONS; detecta duplicados/huérfanos/temporales; reorganiza por función sin modificar contenido. Optimizado para IA. **≠ `code-audit-integral`** (este audita código; `project-architect` organiza estructura/archivos) |
 | `seis-sombreros` | ✅ **instalada** — invócala directamente. pida "seis sombreros", "six hats", "ayúdame a pensar esto", "pros y contras en serio", "rompe el ancla", "análisis multi-perspectiva", o esté ante una decisión con sesgo de anclaje |
 | `cognito` | ✅ **instalada**. afronte decisiones con trade-offs, tensión emocional+técnica+estratégica, "¿debería hacer X?", análisis profundo o cambios de enfoque que pidan modos cognitivos explícitos |
 | `strategy-web-research` | ✅ **instalada**. pida búsqueda web **ligera y rápida**: "búscame", "investiga rápido", "compara X e Y", 3-5 fuentes, info actual acotada (no informe largo) |
