@@ -56,6 +56,18 @@ description: {{Cuándo se invoca, qué hace. 50-500 chars. Verbos de intención:
 ## Examples
 
 Ver `references/examples.md` para casos completos.
+
+## Referencias (si aplica)
+
+Si esta skill se basa en fuente externa (repo, URL, otro proyecto):
+
+```markdown
+## Referencias
+
+- [Nombre del repo/original](URL completa) — Descripción breve
+- Licencia: [tipo si aplica]
+- Notas: [adaptaciones realizadas, si es relevante]
+```
 ```
 
 ## Reglas no-negociables
@@ -66,6 +78,7 @@ Ver `references/examples.md` para casos completos.
 4. **Sin código pesado en SKILL.md** — los snippets largos van a `references/` o `scripts/`.
 5. **Idioma castellano** en SKILL.md, **inglés en code/JSON/commits**.
 6. **Sin info privada** del operador — los ejemplos usan placeholders genéricos ("Empresa Demo SL", "cliente@ejemplo.com").
+7. **Referencias externas obligatorias** — si la skill se basa en fuente externa, incluir sección `## Referencias` al final con enlace y licencia.
 
 ## Antipatrones que NO debes repetir
 
@@ -77,6 +90,7 @@ Ver `references/examples.md` para casos completos.
 | Pasos sin verificación | Rompe en silencio | Cada paso con criterio "cómo sé que salió bien" |
 | Skill que hace 5 cosas distintas | Ambigua, difícil de mantener | Trocear en 5 skills + 1 orquestadora si necesario |
 | Sin learnings hook | Skills no aprenden | Append a `context/learnings.md` al cierre |
+| Fuente externa sin referencias | No se atribuye la fuente, incumple licencias | Añadir sección `## Referencias` al final con enlace + licencia |
 
 ## Token budget recomendado
 

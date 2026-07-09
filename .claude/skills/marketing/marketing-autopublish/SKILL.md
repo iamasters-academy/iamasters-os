@@ -52,3 +52,9 @@ description: Genera contenido con IA y lo publica en 13+ plataformas (TikTok/You
 ## Examples
 
 Ver `references/examples.md` para casos completos.
+
+## Referencias
+
+- [yikart/AiToEarn](https://github.com/yikart/AiToEarn) — Base original de la skill (wrapper, código no vendoreado)
+- Licencia: MIT
+- Notas: Documentación primaria en chino; requiere Node 20 + MongoDB + Redis + OAuth de cada red social

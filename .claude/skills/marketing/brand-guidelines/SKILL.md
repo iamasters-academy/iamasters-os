@@ -29,3 +29,8 @@ Tool for maintaining visual consistency across documents, presentations, and UI 
 - **Contrast**: Maintain at least 4.5:1 ratio for accessibility.
 - **Hierarchy**: Use weight and size to guide the reader's attention.
 - **Whitespace**: Use generous padding to create a premium, uncrowded feel.
+
+## Referencias
+
+- [anthropics/skills — brand-guidelines](https://github.com/anthropics/skills) — Base original de la skill
+- Licencia: Apache-2.0

@@ -185,3 +185,9 @@ Ninguna directamente. Esta skill es invocada **por** otras (seis-sombreros, pric
 - **Una sesión NO debe generar más de 3 entradas**. Si más, probablemente estás registrando ruido. Pregúntate cuáles son no triviales.
 - **Las entradas más útiles son las que duelen registrar** — las que admites un error, cambias de opinión, o decides algo que va contra tu instinto. Esas son las que el log ayuda a respetar.
 - **El log es solo del operador**, no de cada cliente. Para clientes hay un decisions-log dentro de `clients/<nombre>/context/`.
+
+## Referencias
+
+- [Luispitik/claude-code-second-brain](https://github.com/Luispitik/claude-code-second-brain) — Patrón original de "decision journal append-only que Claude lee para mantener coherencia entre sesiones"
+- Autor: Luis Pitik (mismo autor de Sinapsis)
+- Licencia: No especificada en repo original

@@ -122,3 +122,8 @@ async function getUser(id: string): Promise<User> {
 - **Metrics**: Request latency, error rates, queue depths
 - **Tracing**: Distributed tracing with correlation IDs
 - **Health checks**: `/health` and `/ready` endpoints
+
+## Referencias
+
+- [wshobson/agents — backend-development](https://github.com/wshobson/agents) — Base original de la skill
+- Licencia: MIT

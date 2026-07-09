@@ -26,3 +26,8 @@ Modern guidelines for building performant, maintainable React and Next.js applic
 - **Key Prop**: Always provide unique, stable `key` props for list items.
 
 *Refer to [Vercel's official guidelines](https://github.com/vercel-labs/agent-skills) for specific enterprise patterns.*
+
+## Referencias
+
+- [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills) — Base original de la skill
+- Licencia: No especificada en repo original

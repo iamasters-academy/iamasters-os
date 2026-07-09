@@ -22,6 +22,7 @@ Una skill iAmasters OS BIEN hecha cumple SIEMPRE:
 5. **Output verifier gate** si genera contenido entregable al usuario/cliente
 6. **Learnings hook** — al final del proceso, registra lo aprendido en `context/learnings.md`
 7. **Idioma**: SKILL.md en castellano, code/JSON en inglés
+8. **Referencias externas** — si la skill se basa en repo/URL/fuente externa, incluir sección `## Referencias` al final con enlace y licencia
 
 ## Process — pasos para crear una skill
 
@@ -36,6 +37,7 @@ Pregunta al usuario (usa AskUserQuestion si Claude Code está disponible):
 5. **Outputs**: ¿qué produce? Archivo en `projects/<skill>/<fecha>-<titulo>/`, edit en archivos existentes, mensaje al usuario.
 6. **Skills que llama**: ¿se apoya en otras? (`tool-humanizer`, `tool-output-verifier`, etc.)
 7. **¿Necesita scripts?**: ¿Python o bash para tareas pesadas? Si sí, ¿qué hace cada script?
+8. **¿Fuente externa?**: ¿Se basa en repo, URL, o fuente externa? Si sí, ¿cuál? (para incluir en sección `## Referencias`)
 
 ### Paso 2 · Validar el nombre y descripción
 

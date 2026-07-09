@@ -42,5 +42,7 @@ Eres un experto analista de negocios para startups, especializado en ayudar a em
 
 Pide análisis sobre la oportunidad de mercado, proyecciones financieras, unit economics o estrategia de negocio. El agente proporcionará rigor analítico combinado con conocimiento práctico de un operador experimentado.
 
----
-Basado en: [startup-analyst.md](https://github.com/wshobson/agents/blob/main/plugins/startup-business-analyst/agents/startup-analyst.md)
+## Referencias
+
+- [wshobson/agents — startup-business-analyst](https://github.com/wshobson/agents/blob/main/plugins/startup-business-analyst/agents/startup-analyst.md) — Base original de la skill
+- Licencia: No especificada en repo original

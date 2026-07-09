@@ -413,3 +413,8 @@ Tools: CapCut (free), Descript, Captions.ai, Premiere Pro
 - **launch**: For coordinating social with launches
 - **emails**: For nurturing social audience via email
 - **marketing-psychology**: For understanding what drives engagement
+
+## Referencias
+
+- [coreyhaines31/marketingskills](https://github.com/coreyhaines31/marketingskills) — Base original de la skill (portada completa en inglés)
+- Licencia: No especificada en repo original
