@@ -1,0 +1,5 @@
+# Dev/test dependencies for the shared NotebookLM lib.
+# The lib itself depends on notebooklm-py (see each skill's requirements.txt), but the
+# unit tests use a FakeClient and do NOT touch the SDK, so pytest + PyYAML is enough.
+pytest>=8.0
+PyYAML>=6.0
