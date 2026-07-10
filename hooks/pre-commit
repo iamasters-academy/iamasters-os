@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+# Pre-commit hook · Arnes + Cónclave (iAmasters OS)
+#
+# Bloque 1 (Arnes v0.2.4): secretos + archivos grandes — SIEMPRE, incondicional.
+# Bloque 2 (Cónclave):      sello de doble OK — SOLO si el staged toca código.
+#
+# Código = extensiones .sh .mjs .js .ts .py .ps1  o  rutas bajo hooks/ vendor/ scripts/
+# Los commits de solo docs/skills/.md pasan SIN sello (el gate no asfixia docs).
+# Override del sello (NO de los secretos):  CONCLAVE_OVERRIDE=1 git commit ...
+set -uo pipefail
+
+echo "🔍 Verificando commit..."
+
+# Staged files (excluye deletes y renames para no procesar rutas inexistentes/duales)
+STAGED="$(git diff --cached --name-only --diff-filter=d --no-renames)"
+
+# ─── Bloque 1a · Secretos (Arnes, incondicional) ────────────────────────────
+# Patrón afinado: requiere asignación ([:=]) tras la palabra clave, para no
+# autofalsear con la propia cadena del patrón ni con comentarios sueltos.
+LEAK=""
+if [ -n "$STAGED" ]; then
+  LEAK="$(printf '%s\n' "$STAGED" | xargs -r grep -IlE '(API_KEY|SECRET|PASSWORD|TOKEN)[[:space:]]*[:=]' 2>/dev/null || true)"
+fi
+if [ -n "$LEAK" ]; then
+  echo "❌ DETECTADO: posibles secretos en el commit:"
+  echo "$LEAK"
+  echo "Revisa los archivos antes de commitear (usa variables de entorno, no claves hardcodeadas)."
+  exit 1
+fi
+
+# ─── Bloque 1b · Archivos grandes (Arnes, incondicional, confirmación) ──────
+LARGE=""
+if [ -n "$STAGED" ]; then
+  LARGE="$(printf '%s\n' "$STAGED" | xargs -r du -k 2>/dev/null | awk '$1 >= 1024 {print $2}' || true)"
+fi
+if [ -n "$LARGE" ]; then
+  echo "⚠️  ADVERTENCIA: archivos grandes detectados (>1 MB):"
+  echo "$LARGE"
+  printf '¿Commitearlos igualmente? (s/N) '
+  read -r response
+  if [ "$response" != "s" ]; then
+    echo "Cancelado."
+    exit 1
+  fi
+fi
+
+# ─── Bloque 2 · Sello Cónclave (SOLO si el staged toca código) ──────────────
+CODE_PATTERN='\.(sh|mjs|js|ts|py|ps1)$|(^|/)(hooks|vendor|scripts)/'
+CODE_FILES=""
+if [ -n "$STAGED" ]; then
+  CODE_FILES="$(printf '%s\n' "$STAGED" | grep -E "$CODE_PATTERN" || true)"
+fi
+
+if [ -z "$CODE_FILES" ]; then
+  # Commit de solo docs/config/skills → no exige sello
+  echo "✅ Verificación completa (sin código staged: gate Cónclave skipped)."
+  exit 0
+fi
+
+STAMP=".conclave/pass"
+TREE="$(git write-tree)"
+
+if [ -f "$STAMP" ] && [ "$(cat "$STAMP" 2>/dev/null)" = "$TREE" ]; then
+  rm -f "$STAMP"   # sello de un solo uso
+  echo "✅ Verificación completa (sello Cónclave válido: código revisado)."
+  exit 0
+fi
+
+if [ "${CONCLAVE_OVERRIDE:-0}" = "1" ]; then
+  echo "⚠️  Conclave: OVERRIDE manual — commit de código permitido sin gate." >&2
+  exit 0
+fi
+
+cat >&2 <<'MSG'
+──────────────────────────────────────────────
+ ⛔  CONCLAVE · este cambio de CÓDIGO no ha pasado la revisión.
+     Ningún commit de código sin doble OK (constructor + revisor).
+       1. Pasa la revisión adversarial (cognito / code-review / verify).
+       2. Tras el doble OK:   git write-tree > .conclave/pass
+          (o: bash .claude/skills/engineering/conclave/scripts/conclave-approve.sh)
+       3. Vuelve a commitear.
+     Override consciente:   CONCLAVE_OVERRIDE=1 git commit ...
+──────────────────────────────────────────────
+MSG
+exit 1

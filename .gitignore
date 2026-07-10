@@ -30,6 +30,9 @@ desktop.ini
 # CodeGraph index local (si se usa el add-on)
 .codegraph/
 
+# Cónclave · gate pre-commit (sello local de doble OK tras revisión adversarial)
+.conclave/
+
 # Operator data — privado por usuario, no se commitea
 context/daily-memory/
 context/.memory-index/
@@ -69,6 +72,9 @@ projects/briefs/*
 projects/*/
 !projects/.gitkeep
 !projects/briefs/.gitkeep
+# Deploy artifacts sueltos en projects/ (p. ej. fvi-deploy-package.tar.gz, 680 MB)
+projects/*.tar.gz
+projects/*.zip
 # Excepción: el showcase sí forma parte del repo (material de referencia)
 !projects/_showcase/
 !projects/_showcase/**
