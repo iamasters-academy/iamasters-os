@@ -1,5 +1,10 @@
 {
   "_comment": "iAmasters OS — settings.json del proyecto. Permisos seguros + hooks locales del OS. Los hooks de Sinapsis viven en ~/.claude/settings.json (global), instalados por bash scripts/install.sh.",
+  "_hook_docs": {
+    "_overview": "Hooks locales del OS — los hooks Sinapsis (observe, instinct-activator, etc.) están en ~/.claude/settings.json. Estos son específicos del repo. NOTA: las claves '_'-prefijadas son seguras a nivel top-level; DENTRO de 'hooks' el validador las trata como eventos y warnerea, por eso la doc vive aquí fuera.",
+    "SessionStart": "Auto-sync del índice de memoria (/recuerda): ingest incremental best-effort al iniciar sesión. async:true → corre en segundo plano y NUNCA retrasa el arranque ni la carga de comandos/skills (antes era síncrono y al colgarse el script los comandos no salían en /). Best-effort: no rompe si faltan deps (pyyaml) o no hay corpus.",
+    "PostToolUse_Edit_Write": "Detecta si se ha añadido/modificado una skill — flagear para sync en próximo wrap-up (bash scripts/skill-change-detector.sh)."
+  },
   "permissions": {
     "allow": [
       "Read(**)",
@@ -40,12 +45,10 @@
     ]
   },
   "hooks": {
-    "_comment": "Hooks locales del OS — los hooks Sinapsis (observe, instinct-activator, etc.) están en ~/.claude/settings.json. Estos son específicos del repo.",
     "SessionStart": [
       {
         "hooks": [
           {
-            "_comment": "Auto-sync del índice de memoria (/recuerda): ingest incremental best-effort al iniciar sesión. async:true → corre en segundo plano y NUNCA retrasa el arranque ni la carga de comandos/skills (antes era síncrono y al colgarse el script los comandos no salían en /). Best-effort: no rompe si faltan deps (pyyaml) o no hay corpus.",
             "type": "command",
             "command": "python3 scripts/memory-index/ingest.py >/dev/null 2>&1 || true",
             "async": true,
@@ -59,7 +62,6 @@
         "matcher": "Edit|Write",
         "hooks": [
           {
-            "_comment": "Detecta si se ha añadido/modificado una skill — flagear para sync en próximo wrap-up",
             "type": "command",
             "command": "bash scripts/skill-change-detector.sh",
             "async": true,

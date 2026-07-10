@@ -1,6 +1,6 @@
 ---
 name: fs-scaffold
-description: Scaffolding profesional para proyectos de software. Arranca proyectos bien hechos en una conversación: 3 modos (nuevo/adoptar/mantener), 240+ piezas internas, regla de oro specs→tests→código
+description: Scaffolding profesional para proyectos de software: arranca proyectos bien hechos en una conversación (3 modos nuevo/adoptar/mantener, 240+ piezas internas, specs→tests→código). Úsala cuando el operador diga "scaffold este proyecto", "arranca con metodología specs→tests→código", "monta TDD desde el inicio" o pida estructura profesional. NO para proyectos ligeros (eso es [[arnes]] Express).
 category: engineering
 tags: [scaffolding, project-setup, quality-gates, cross-tool, tdd, documentation]
 author: Fernando Montero <fernando@fersora.com>

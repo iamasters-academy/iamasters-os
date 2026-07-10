@@ -1,6 +1,6 @@
 ---
 name: project-architect
-description: Analiza y reorganiza cualquier proyecto para tener una estructura profesional, escalable y comprensible para humanos e IAs. Detecta duplicados, archivos huérfanos, crea documentación (README, PROJECT_MAP, AI_CONTEXT, CHANGELOG, TODO, DECISIONS) y reorganiza archivos por función sin modificar contenido.
+description: Reorganiza y documenta un proyecto caótico con estructura profesional: detecta duplicados y archivos huérfanos, crea README/PROJECT_MAP/AI_CONTEXT/CHANGELOG y reagrupa archivos por función sin tocar el contenido. Úsala cuando el operador diga "ordena este proyecto", "limpia la estructura", "genera README/PROJECT_MAP", "detecta archivos huérfanos" o herede un repo confuso.
 category: strategy
 tags: [organization, documentation, architecture, knowledge-management, refactoring]
 version: "1.0.0"
