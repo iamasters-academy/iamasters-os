@@ -104,6 +104,7 @@ Cuando cierres un paso, **ofrece el siguiente** de su cadena (instalándolo de b
 - **Ventas (IA-PYMEs)**: `marketing-prospecting`/`marketing-cold-email` → `automation-crm` → `sales-call-prep` → `marketing-sales-enablement` → `sales-pipeline-forecast`.
 - **Monetizar OSS**: `automation-fork-and-resell` → `arnes` → `tool-vps-hardening` → `automation-client-deploy`/`vercel-deploy` → `startup-business-analyst`.
 - **Scraping → análisis**: `tool-scrape-router` → `tool-firecrawl-scraper`/otra → `strategy-web-research`/`investigacion-mercado` (skill global).
+- **Bot web autónomo 24/7**: `ask-questions-if-underspecified` → `automation-web-bot` (diseño + scaffold) → `conclave` (build) → `tool-vps-hardening` → `automation-client-deploy` → `automation-loop-engine` (scorecard).
 - **Inteligencia competitiva**: `competitive-ads-extractor` + `competencia` (usa `notebooklm-mcp`) → `startup-business-analyst` → `investigacion-mercado` (skill global).
 - **Data/ML**: `exploratory-data-analysis` → `statistical-analysis` / `statsmodels` → `scikit-learn` / `pytorch-lightning` → `shap`. Aplica a FVI y Polymarket.
 - **Vídeo**: `video-downloader` → `tool-transcribe-social`.
@@ -144,6 +145,7 @@ Cuando varias skills compiten por la misma intención (además del "NO la uses p
 - **Diseño**: sistema desde cero→`ui-ux-pro-max` · aplicar tema→`theme-factory` · "parece IA"→`impeccable` · control fino→`design-taste-frontend` · marca→`brand-guidelines`. **No cargar todas a la vez.**
 - **Pensamiento**: decisión sesgada→`seis-sombreros` · análisis multimodo→`cognito` · "no arranco"→`desbloqueo` · saturación con IA→`metodo-ias`.
 - **Deploy**: web a Vercel→`vercel-deploy` · entorno cliente (VPS/PC)→`automation-client-deploy`.
+- **Automatizar tarea repetitiva**: ¿bot 24/7 en servidor sobre una web?→`automation-web-bot` · ¿loop local con Claude supervisando?→`automation-loop-engine` · ¿workflow API a API?→`automation-n8n-builder` · ¿extraer datos una vez?→`tool-scrape-router` · ¿solo el deploy de algo ya construido?→`automation-client-deploy`.
 - **Scraping/crawling**: decidir herramienta + ejecutar→`tool-scrape-router` · Firecrawl directo→`tool-firecrawl-scraper` · investigar (no solo extraer)→`strategy-web-research`/`investigacion-mercado` (skill global) · redes (IG/TikTok/YT)→Apify MCP · "qué dice un vídeo"→`tool-transcribe-social` · bajar un vídeo→`video-downloader`. **Regla**: empezar por lo gratis (WebFetch nativo) y escalar solo si falla.
 
 ### Plugins Anthropic y skills externas
