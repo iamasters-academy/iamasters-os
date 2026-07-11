@@ -64,6 +64,9 @@ projects/*/
 # Excepción: el showcase sí forma parte del repo (material de referencia)
 !projects/_showcase/
 !projects/_showcase/**
+# Excepción: virtuoso-web es un codebase real (sitio Next.js), no un output efímero
+!projects/Virtuoso_Agency/
+!projects/Virtuoso_Agency/**
 
 # Loops del operador (privados)
 loops/*
@@ -111,3 +114,6 @@ yarn.lock
 
 # Personalizaciones del operador sobre skills curadas — sobreviven updates
 **/SKILL.local.md
+
+# Excepción: virtuoso-web trackea su lockfile para builds reproducibles
+!projects/Virtuoso_Agency/virtuoso-web/package-lock.json
