@@ -67,7 +67,8 @@ projects/*/
 # Excepción: virtuoso-web es un codebase real (sitio Next.js), no un output efímero
 # (el resto de Virtuoso_Agency es contenido mixto/efímero y debe seguir ignorado)
 !projects/Virtuoso_Agency/
-!projects/Virtuoso_Agency/virtuoso-web/
+projects/Virtuoso_Agency/*
+!projects/Virtuoso_Agency/virtuoso-web
 !projects/Virtuoso_Agency/virtuoso-web/**
 
 # Loops del operador (privados)
