@@ -1,5 +1,16 @@
 {
   "version": "1.0.0",
   "last_updated": "2026-07-11",
-  "skills": {}
+  "skills": {
+    "wrap-up": {
+      "last_used": "2026-07-11",
+      "count": 1,
+      "status": "active"
+    },
+    "start-here": {
+      "last_used": "2026-07-11",
+      "count": 1,
+      "status": "active"
+    }
+  }
 }
