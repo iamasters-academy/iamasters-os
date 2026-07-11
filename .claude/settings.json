@@ -3,7 +3,8 @@
   "_hook_docs": {
     "_overview": "Hooks locales del OS — los hooks Sinapsis (observe, instinct-activator, etc.) están en ~/.claude/settings.json. Estos son específicos del repo. NOTA: las claves '_'-prefijadas son seguras a nivel top-level; DENTRO de 'hooks' el validador las trata como eventos y warnerea, por eso la doc vive aquí fuera.",
     "SessionStart": "Auto-sync del índice de memoria (/recuerda): ingest incremental best-effort al iniciar sesión. async:true → corre en segundo plano y NUNCA retrasa el arranque ni la carga de comandos/skills (antes era síncrono y al colgarse el script los comandos no salían en /). Best-effort: no rompe si faltan deps (pyyaml) o no hay corpus.",
-    "PostToolUse_Edit_Write": "Detecta si se ha añadido/modificado una skill — flagear para sync en próximo wrap-up (bash scripts/skill-change-detector.sh)."
+    "PostToolUse_Edit_Write": "Detecta si se ha añadido/modificado una skill — flagear para sync en próximo wrap-up (bash scripts/skill-change-detector.sh).",
+    "PostToolUse_Skill": "Registra cada invocación de skill en .claude/skills/usage-tracker.json (last_used + count) para que cache-manager/auto-retire operen sobre datos reales (bash scripts/skill-usage-tracker.sh). Best-effort, async."
   },
   "permissions": {
     "allow": [
@@ -64,6 +65,17 @@
           {
             "type": "command",
             "command": "bash scripts/skill-change-detector.sh",
+            "async": true,
+            "timeout": 3
+          }
+        ]
+      },
+      {
+        "matcher": "Skill",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash scripts/skill-usage-tracker.sh",
             "async": true,
             "timeout": 3
           }
