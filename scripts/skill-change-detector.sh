@@ -10,7 +10,8 @@ FLAG="$REPO_DIR/.claude/.skills-pending.json"
 
 [ -d "$SKILLS_DIR" ] || exit 0
 
-count=$(find "$SKILLS_DIR" -name SKILL.md 2>/dev/null | wc -l | tr -d ' ')
+# exclude _archived/ drafts (matches regen-catalog.mjs): archived isn't a real skill
+count=$(find "$SKILLS_DIR" -name SKILL.md -not -path "*/_archived/*" 2>/dev/null | wc -l | tr -d ' ')
 ts=$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || echo "")
 printf '{"pending":true,"skill_count":%s,"detected_at":"%s"}\n' "${count:-0}" "$ts" > "$FLAG" 2>/dev/null || true
 
