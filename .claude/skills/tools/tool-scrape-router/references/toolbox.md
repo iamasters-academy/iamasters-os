@@ -68,6 +68,21 @@
 - **Cuándo**: **screenshots/PDF/HTML a escala** vía API sin montar tu granja de navegadores. Sobre Puppeteer.
 - **Setup**: self-host (Docker) o su cloud. Alternativa "servicio" a Playwright local.
 
+### 11. Selenium — legacy / stack Java
+- **Cuándo**: integración con stacks **Java/Spring** existentes o proyectos que ya usan Selenium. Muy estable y documentado.
+- **Setup**: `pip install selenium` (Python) o bindings Java; driver por navegador.
+- **Gotcha**: más lento y más maintenance que Playwright. **No lo elijas para algo nuevo** salvo restricción de stack; Playwright lo supera en casi todo.
+
+### 12. Puppeteer — Chrome-only / Node
+- **Cuándo**: stack **Node.js/TypeScript**, Chrome-only, **PDF/screenshots** rápidos. API simple y limpia.
+- **Setup**: `npm i puppeteer`. Node, Chromium.
+- **Gotcha**: solo Chromium (no multi-browser); menos features que Playwright. Browserless corre sobre Puppeteer si quieres servicio.
+
+### 13. MCP browser tools (chrome-devtools / playwright MCP) — prototyping en Claude
+- **Cuándo**: **debugging interactivo** y prototyping de scraping **dentro de Claude Code** sin escribir código. Inspección de DOM, hipótesis ad-hoc, una página concreta.
+- **Setup**: instalar el MCP server vía `/install-mcp` (chrome-devtools o playwright).
+- **Gotcha**: no escalable para batch/producción; ideal para explorar antes de picar el scraper real.
+
 ## Notas Windows
 - Base (httpx+trafilatura+selectolax) = puro-python, va nativo en py3.14. Usa `py -3`, no `python3`
   (el shim de Store daba guerra; ya arreglado, pero `py -3` es lo seguro).

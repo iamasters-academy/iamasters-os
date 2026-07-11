@@ -1,6 +1,6 @@
 ---
 name: tool-scrape-router
-description: Analiza un trabajo de scraping/crawling, elige la mejor herramienta open-source gratis por matriz de decisión (Firecrawl, Playwright, Crawl4AI, Scrapling, Scrapy, ScrapeGraphAI, Colly, Katana, Maxun, Browserless + Apify MCP) y ejecuta la extracción con escalada de coste cero. Úsala cuando el operador diga "scrapea/extrae datos de esta web", "crawlea este sitio", "qué herramienta uso para scrapear X", "saca estos datos a escala" o "convierte esta web en datos/API".
+description: Analiza un trabajo de scraping/crawling, elige la mejor herramienta open-source gratis por matriz de decisión (Firecrawl, Playwright, Crawl4AI, Scrapling, Scrapy, ScrapeGraphAI, Colly, Katana, Maxun, Browserless, Selenium, Puppeteer + Apify MCP / chrome-devtools MCP) y ejecuta la extracción con escalada de coste cero. Úsala cuando el operador diga "scrapea/extrae datos de esta web", "crawlea este sitio", "qué herramienta uso para scrapear X", "saca estos datos a escala" o "convierte esta web en datos/API".
 ---
 
 # tool-scrape-router
@@ -47,6 +47,8 @@ Cruza el perfil con `references/decision-matrix.md`. Resumen:
 - Recon / descubrir todas las URLs / bug bounty → **Katana**.
 - No-code point-and-click (para cliente) → **Maxun**.
 - Redes sociales (IG/TikTok/YT) → **Apify MCP** (ya conectado).
+- Prototyping / debugging interactivo en Claude → **chrome-devtools MCP** o **playwright MCP** (sin código; para explorar, no para extraer a escala).
+- Stack Java legacy o Chrome-only en Node → **Selenium** (legacy) / **Puppeteer** (Node); si no hay restricción de stack, **Playwright** los supera.
 - **Validación**: 1 herramienta elegida (o 2 si el trabajo tiene fases) + el porqué en 1 frase.
 
 ### Paso 3 · Ejecutar (con escalada)

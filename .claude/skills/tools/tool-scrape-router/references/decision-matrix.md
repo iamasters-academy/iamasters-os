@@ -26,6 +26,8 @@
 ¿El sitio bloquea / los selectores se rompen?  → Scrapling (auto-repara)
 ¿Solo mapear URLs / recon?                     → Katana
 ¿Que lo maneje un no-programador (cliente)?    → Maxun (no-code)
+¿Stack Java existente o Chrome-only en Node?   → Selenium (Java) / Puppeteer (Node). Si no, Playwright.
+¿Prototyping interactivo dentro de Claude?     → chrome-devtools MCP / playwright MCP (sin código)
 ```
 
 ## Matriz por ejes
@@ -44,6 +46,9 @@
 | Objetivo | Recon/URLs | Katana | — |
 | Usuario | No-code/cliente | Maxun | — |
 | Stack | Go / máxima velocidad | Colly | Katana |
+| Stack | Java/legacy existente | Selenium | Playwright (si migras) |
+| Stack | Node/Chrome-only | Puppeteer | Playwright (multi-browser) |
+| Contexto | Prototyping en Claude | chrome-devtools/playwright MCP | Playwright (producción) |
 
 ## Forma del dato → formato de salida (`--format`)
 | Lo que sacas | Formato | Nota |
