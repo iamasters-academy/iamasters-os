@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+/* ── Design tokens — IDENTIDAD.md ──────────────────────────────── */
+:root {
+  --primary: #1e0a80;    /* Azul */
+  --primary-dark: #1a1a2e; /* Azul Fuerte */
+  --cyan: #5CD4E6;       /* Acento frío */
+  --yellow: #dee800;     /* Acento cálido */
+  --white: #ffffff;
+  --gray: #6b7280;
+  --gray-light: #f8f9fa;
+  --border: #e5e7eb;
+}
+
+/* ── Reset ──────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body, 'Raleway', system-ui, sans-serif);
+  color: var(--primary-dark);
+  background: var(--white);
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, h4 {
+  font-family: var(--font-display, 'Poppins', system-ui, sans-serif);
+  font-weight: 800;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { color: inherit; text-decoration: none; }
+
+/* ── Utility ────────────────────────────────────────────────────── */
+.container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+@media (min-width: 640px) { .container { padding: 0 40px; } }
