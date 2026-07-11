@@ -6,9 +6,9 @@ export type NicheCard = {
 };
 
 export const NICHES: NicheCard[] = [
-  { slug: 'restaurantes', label: 'Restaurantes', description: 'Reservas, WhatsApp y CRM en un solo sistema.', live: false },
+  { slug: 'restaurantes', label: 'Restaurantes', description: 'Reservas, WhatsApp y CRM en un solo sistema.', live: true },
   { slug: 'hoteles', label: 'Hoteles', description: 'Agente de reservas conversacional 24/7.', live: false },
-  { slug: 'colegios', label: 'Colegios', description: 'Admisiones automatizadas con IA.', live: false },
+  { slug: 'colegios', label: 'Colegios', description: 'Admisiones automatizadas con IA.', live: true },
   { slug: 'inmobiliarias', label: 'Inmobiliarias', description: 'Inventario, WhatsApp y CRM sincronizados.', live: false },
 ];
 
