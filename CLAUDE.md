@@ -74,7 +74,7 @@ Cuando el usuario diga **"actualízate"**, **"actualiza el OS"**, **"tráete los
 
 ## Skills — modelo Core + Biblioteca
 
-**30 core** en `.claude/skills/` (siempre cargadas, el OS las necesita) + **92 en `skills-library/`** instalables a demanda con `/skills` (de ellas **10 instaladas** ahora) → **40 skills activas**. Cada skill instalada consume contexto en cada sesión (recomendación Anthropic: <50 cargadas) — instala solo lo que uses.
+Las **core** viven en `.claude/skills/` (siempre cargadas, el OS las necesita); la **biblioteca** en `skills-library/` es instalable a demanda con `/skills`. **Los recuentos (total/core/instaladas/activas) NO se hardcodean aquí** — viven en la cabecera del índice generado (`synapsis/skills-registry.md`, abajo) y en vivo en `bash scripts/skills.sh list`. Cada skill activa consume contexto en cada sesión (recomendación Anthropic: <50 cargadas) — instala solo lo que uses; en el tope, cada install nueva exige un retiro (swap).
 
 > **Arquitectura (para no confundir en auditorías)**: una skill instalada vive **a la vez** en
 > `skills-library/<cat>/<nombre>/` (fuente, coste cero) y en `.claude/skills/<cat>/<nombre>/` (copia
