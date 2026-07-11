@@ -147,29 +147,6 @@ Este repo está optimizado para Claude Code, pero las skills son markdown están
 
 ---
 
-## Fin de sesión
-
-`meta-wrap-up` se sugiere automáticamente cuando:
-- Llevas >80% del contexto usado (token usage)
-- Son más de las 17:00 (fin del día laboral)
-- Hubo trabajo productivo (commits, ediciones de archivos)
-- Hay hilos activos en `working-memory.md`
-
-Siempre que cierres una sesión productiva, `/wrap-up` guarda:
-- ✅ Daily summary del día en `synapsis/daily-summaries/<HOY>.md`
-- ✅ Working-memory.md consolidado (hilos cerrados, decisiones tomadas)
-- ✅ Skills catalog sync (si hubo cambios de skills)
-- ✅ Git commit propuesto (espera tu aprobación)
-
-Sin wrap-up, la sesión se guarda parcial (solo `_session-learner.sh` de Sinapsis).
-
-**Triggers configurables:**
-- Token threshold: 80%
-- Hora trigger: 17:00 (5 PM) hora local
-- Archivos mínimo: 3 editados
-
-Puedes invocarlo manualmente en cualquier momento: `/wrap-up`
-
 ## Variables clave (cualquier agente)
 
 - **Idioma operativo**: castellano
