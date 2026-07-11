@@ -1,6 +1,6 @@
 ---
 name: meta-wrap-up
-description: Cierre de sesión iAmasters OS. Genera daily summary con qué se hizo, qué quedó pendiente y propuesta para mañana. Sincroniza skills-catalog si hubo cambios. Actualiza CLAUDE.md skills registry. Hace commit Git si el usuario lo aprueba. Se invoca por /wrap-up al final de cualquier sesión productiva.
+description: Cierre de sesión iAmasters OS. Genera daily summary con qué se hizo, qué quedó pendiente y propuesta para mañana. Sincroniza skills-catalog y regenera el índice de routing (skills-registry.md) si hubo cambios. Hace commit Git si el usuario lo aprueba. Se invoca por /wrap-up al final de cualquier sesión productiva.
 ---
 
 # meta-wrap-up
@@ -82,22 +82,23 @@ Estado del caché: 15 skills cacheadas
 - auto-retire-skills.sh lee usage-tracker.json
 - Skills frecuentes se quedan, raras se retiran
 
-### Paso 3 · Update CLAUDE.md skills registry
+### Paso 3 · Regenerar el índice de routing (skills-registry.md)
 
-Localizar la sección `## Skills registry` del CLAUDE.md.
+El índice de skills que CLAUDE.md `@`-importa (`synapsis/skills-registry.md`) es **generado**,
+no se edita a mano. Su tabla de **Biblioteca** lleva la columna `Ofrécela cuando el operador…`
+con los DISPARADORES de cada skill no instalada — eso es lo único que permite ofrecerlas por
+intención (las de biblioteca no se cargan solas).
 
-**Regla de formato (importante para que el routing funcione)**: las sub-tablas de la
-sección **Biblioteca** deben tener la columna intencional `Ofrécela cuando el operador…`
-con los DISPARADORES de cada skill (frases en castellano), NO una descripción de *qué es*.
-Esto pone los triggers de las skills no instaladas en el contexto cargado cada sesión, que es
-lo único que permite ofrecerlas por intención (las de biblioteca no se cargan solas).
+Si en la sesión se añadieron/quitaron/editaron skills, regenera catálogo + índice desde el disco:
 
-Al sincronizar tras añadir/quitar/editar skills:
-- Para cada skill nueva de biblioteca, extrae sus disparadores del `description:` de su
-  `SKILL.md` (la parte "Úsala/Ofrécela cuando…") y crea su fila intencional.
-- Mantén las sub-tablas Core como están (esas sí se cargan; basta el nombre + qué es).
-- Si una skill cambió de descripción, refresca su fila.
-- Fuente de verdad de descripciones: `bash scripts/skills.sh list`.
+```bash
+node scripts/regen-catalog.mjs   # synapsis/skills-catalog.json (fuente de verdad)
+node scripts/regen-registry.mjs  # synapsis/skills-registry.md (índice de routing)
+```
+
+`bash scripts/skills.sh add/remove/sync` ya los regenera solos; este paso es el backup por si se
+tocaron `SKILL.md` a mano. Si cambiaste un `description:` para mejorar sus disparadores, basta
+regenerar: el índice recoge la nueva frase "Úsala/Ofrécela cuando…" automáticamente.
 
 ### Paso 4 · Append learnings (si los hay)
 
@@ -195,7 +196,7 @@ NO ejecutar `/eod` automáticamente — es una invitación.
 - `synapsis/daily-summaries/<TODAY>.md` — actualizado/creado
 - `context/working-memory.md` — consolidado/podado (solo lo vigente)
 - `synapsis/skills-catalog.json` — sincronizado si hubo skill changes
-- `CLAUDE.md` — skills registry actualizado
+- `synapsis/skills-registry.md` — índice de routing regenerado (si hubo cambios de skills)
 - `context/learnings.md` — append si aplica
 - Git commit (con aprobación)
 
@@ -209,7 +210,7 @@ Excepción: si detecta patrón repetido sin skill creada (3+ sesiones haciendo X
 
 - **Usuario hace `/wrap-up` a media tarea sin nada productivo**: aceptable, daily summary registra la sesión incluso si fue exploratoria.
 - **Repo está dirty pero el usuario no quiere commit**: respetarlo, anotar en daily summary que hay cambios sin commitear.
-- **Conflicto al actualizar CLAUDE.md skills registry** (usuario lo modificó manualmente entre medias): mostrar diff, preguntar qué versión mantener.
+- **Índice de routing desincronizado** (se tocaron `SKILL.md` a mano sin `skills.sh`): regenerar con `node scripts/regen-catalog.mjs && node scripts/regen-registry.mjs` (nunca editar `skills-registry.md` a mano).
 - **Sesión muy corta (<5 min)**: omitir daily summary entry, solo limpiar pending flags. No vale la pena bloat.
 
 ## Examples

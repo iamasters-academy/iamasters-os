@@ -90,8 +90,10 @@ regen_catalog() {
     if command -v node >/dev/null 2>&1; then
         if $QUIET; then
             node "$REPO_ROOT/scripts/regen-catalog.mjs" --quiet >/dev/null 2>&1 || true
+            node "$REPO_ROOT/scripts/regen-registry.mjs" --quiet >/dev/null 2>&1 || true
         else
             node "$REPO_ROOT/scripts/regen-catalog.mjs" || say "${YELLOW}  ! no se pudo regenerar el catálogo${NC}"
+            node "$REPO_ROOT/scripts/regen-registry.mjs" || say "${YELLOW}  ! no se pudo regenerar el índice de routing${NC}"
         fi
     else
         say "${YELLOW}  ! node no disponible: catálogo no regenerado (corre 'skills.sh catalog' luego)${NC}"

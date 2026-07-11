@@ -70,7 +70,7 @@ function scan(root) {
       const skillFile = join(skillDir, "SKILL.md");
       if (!existsSync(skillFile)) continue;
       const fm = parseFrontmatter(readFileSync(skillFile, "utf8"));
-      const desc = (fm.description || "").replace(/\s+/g, " ").trim().slice(0, 220);
+      const desc = (fm.description || "").replace(/\s+/g, " ").trim().slice(0, 400);
       found.push({
         name, category,
         path: relative(REPO_ROOT, skillDir).split("\\").join("/"),
