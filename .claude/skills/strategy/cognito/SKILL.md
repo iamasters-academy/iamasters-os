@@ -1,6 +1,6 @@
 ---
 name: cognito
-description: Sistema Operativo de Pensamiento de Luis Pitik. Orquesta 7 modos cognitivos (divergente, verificador, devil's advocate, consolidador, ejecutor, estratega, auditor) según 5 fases de proyecto (discovery, planning, execution, review, shipping). Esta skill vive vendoreada en `vendor/cognito/` (intacta) e instalada globalmente en `~/.claude/skills/cognito/` por el installer. ACTIVAR SIEMPRE que la conversación involucre decisiones con trade-offs, cambios de enfoque, análisis profundo, cambios de fase explícitos, o detección de ancla. Coexiste con Sinapsis sin conflicto.
+description: Sistema Operativo de Pensamiento de Luis Pitik. Orquesta 7 modos cognitivos (divergente, verificador, devil's advocate, consolidador, ejecutor, estratega, auditor) según 5 fases de proyecto (discovery, planning, execution, review, shipping). Esta skill vive vendoreada en `vendor/cognito/` (intacta) e instalada globalmente en `~/.claude/skills/cognito/` por el installer. ACTIVAR SIEMPRE que la conversación involucre decisiones con trade-offs, cambios de enfoque, análisis profundo, cambios de fase explícitos, o detección de ancla. Úsala cuando el operador diga "analiza esto a fondo", "piénsalo desde varios ángulos", "modo verificador/abogado del diablo", "qué se me escapa", "dale una vuelta crítica" o pida un análisis multimodo. NO la uses para desatascar una decisión sesgada puntual (→ seis-sombreros) ni para construir código con agentes (→ conclave). Coexiste con Sinapsis sin conflicto.
 version: 1.0.0
 ---
 

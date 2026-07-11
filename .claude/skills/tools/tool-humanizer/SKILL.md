@@ -1,6 +1,6 @@
 ---
 name: tool-humanizer
-description: Detecta y elimina patrones de escritura AI en cualquier texto. Devuelve score 0-10 (10 = totalmente humano) y reescritura con sugerencias específicas. Usado como gate por skills marketing-* antes de entregar contenido. Invocable solo o en pipeline-mode dentro de otra skill.
+description: Detecta y elimina patrones de escritura AI en cualquier texto. Devuelve score 0-10 (10 = totalmente humano) y reescritura con sugerencias específicas. Úsala cuando el operador diga "esto suena a IA", "humaniza este texto", "quita el tono robot", "que no parezca escrito por ChatGPT", "dale un tono más humano", o antes de entregar copy a cliente (cadena de gates: tool-output-verifier → tool-humanizer → voz de marca). Usada también como gate por skills marketing-* antes de entregar contenido. Invocable sola o en pipeline-mode dentro de otra skill. NO la uses para redactar copy desde cero (→ marketing-copywriting) ni para verificar hechos/formato de entrega (→ tool-output-verifier).
 ---
 
 # tool-humanizer
