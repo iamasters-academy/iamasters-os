@@ -1,0 +1,16 @@
+# tool-scrape-router runner — dependencies
+#
+# Base (light, no browser) — enough for the common rung 1 (static → markdown):
+httpx>=0.27
+trafilatura>=1.8
+selectolax>=0.3        # fast HTML parsing when you need custom selectors
+
+# --- Optional / heavier (install only if you need that rung) ----------------
+# markitdown            # Microsoft: any file (pdf/docx/pptx/html) -> markdown
+# crawl4ai              # local LLM-friendly crawler -> markdown (runs a browser)
+# playwright            # JS render / login / clicks  (then: playwright install)
+# scrapy                # massive static crawls with pipelines
+#
+# Install base:   py -3 -m pip install -r requirements.txt
+# Windows note:   base deps are pure-python and work on py3.14; crawl4ai/playwright
+#                 pull a browser — prefer Docker py3.11 if they misbehave on Windows.
