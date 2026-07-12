@@ -8,8 +8,9 @@ export default function Footer() {
             Sistemas de inteligencia artificial especializados por industria.
           </p>
         </div>
-        <div style={{ fontSize: 13, opacity: 0.7 }}>
-          © {new Date().getFullYear()} Virtuoso IA · Todos los derechos reservados
+        <div style={{ fontSize: 13, opacity: 0.7, display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'flex-end' }}>
+          <a href="/aviso-de-privacidad" style={{ opacity: 0.85 }}>Aviso de privacidad</a>
+          <span>© {new Date().getFullYear()} Virtuoso IA · Todos los derechos reservados</span>
         </div>
       </div>
     </footer>
