@@ -84,28 +84,28 @@ export default function ContactForm() {
   return (
     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 18, background: '#fff', border: '1px solid var(--border)', borderRadius: 12, padding: 32 }}>
       <div>
-        <label style={labelStyle}>Nombre</label>
-        <input name="nombre" placeholder="Tu nombre" style={inputStyle} required minLength={2} />
+        <label style={labelStyle} htmlFor="nombre">Nombre</label>
+        <input id="nombre" name="nombre" placeholder="Tu nombre" style={inputStyle} required minLength={2} />
       </div>
       <div>
-        <label style={labelStyle}>Negocio</label>
-        <input name="negocio" placeholder="Nombre de tu restaurante, hotel, colegio..." style={inputStyle} />
+        <label style={labelStyle} htmlFor="negocio">Negocio</label>
+        <input id="negocio" name="negocio" placeholder="Nombre de tu restaurante, hotel, colegio..." style={inputStyle} />
       </div>
       <div>
-        <label style={labelStyle}>Correo electrónico</label>
-        <input name="email" type="email" placeholder="tu@negocio.com" style={inputStyle} required />
+        <label style={labelStyle} htmlFor="email">Correo electrónico</label>
+        <input id="email" name="email" type="email" placeholder="tu@negocio.com" style={inputStyle} required />
       </div>
       <div>
-        <label style={labelStyle}>Teléfono</label>
-        <input name="telefono" type="tel" placeholder="+52 55 1234 5678" style={inputStyle} />
+        <label style={labelStyle} htmlFor="telefono">Teléfono</label>
+        <input id="telefono" name="telefono" type="tel" placeholder="+52 55 1234 5678" style={inputStyle} />
       </div>
       <div>
-        <label style={labelStyle}>Mensaje</label>
-        <textarea name="mensaje" rows={4} placeholder="Cuéntanos qué necesitas..." style={{ ...inputStyle, resize: 'vertical' }} />
+        <label style={labelStyle} htmlFor="mensaje">Mensaje</label>
+        <textarea id="mensaje" name="mensaje" rows={4} placeholder="Cuéntanos qué necesitas..." style={{ ...inputStyle, resize: 'vertical' }} />
       </div>
 
       {status === 'error' && (
-        <p style={{ fontSize: 13, color: '#b91c1c', background: '#fef2f2', padding: '10px 14px', borderRadius: 7 }}>
+        <p role="alert" style={{ fontSize: 13, color: '#b91c1c', background: '#fef2f2', padding: '10px 14px', borderRadius: 7 }}>
           {errorMsg}
         </p>
       )}
