@@ -59,7 +59,7 @@ export default function SesionCrecimientoPage() {
           <a
             href={BOOKING_URL}
             target="_blank"
-            rel="noopener"
+            rel="noopener noreferrer"
             style={{ background: 'var(--yellow)', color: 'var(--primary-dark)', fontWeight: 700, padding: '16px 32px', borderRadius: 999 }}
           >
             Agendar Growth Session
@@ -67,7 +67,7 @@ export default function SesionCrecimientoPage() {
           <a
             href={WHATSAPP_URL}
             target="_blank"
-            rel="noopener"
+            rel="noopener noreferrer"
             style={{ border: '2px solid var(--primary)', color: 'var(--primary)', fontWeight: 700, padding: '14px 30px', borderRadius: 999 }}
           >
             Preguntar por WhatsApp
