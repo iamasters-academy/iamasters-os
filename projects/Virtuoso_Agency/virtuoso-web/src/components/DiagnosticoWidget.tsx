@@ -173,6 +173,11 @@ export default function DiagnosticoWidget() {
                 className="vp-textarea"
                 value={idea}
                 onChange={(e) => setIdea(e.target.value)}
+                onKeyDown={(e) => {
+                  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                    handleAnalizar();
+                  }
+                }}
                 placeholder="Ej: Tengo un restaurante y pierdo reservas porque nadie responde WhatsApp en la noche. Quiero automatizar eso y que no se me escape ningún cliente..."
                 required
               />
@@ -222,7 +227,7 @@ export default function DiagnosticoWidget() {
 
               <div className="vp-cta-block">
                 <p className="vp-cta-pre">En una demo de 20 minutos te mostramos el sistema funcionando en vivo — con datos reales de tu industria.</p>
-                <button className="vp-btn-demo" onClick={() => window.open(CALENDAR_URL, '_blank')}>
+                <button className="vp-btn-demo" onClick={() => window.open(CALENDAR_URL, '_blank', 'noopener,noreferrer')}>
                   Agendar mi demo gratis
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                 </button>
