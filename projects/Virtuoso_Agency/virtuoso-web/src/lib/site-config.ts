@@ -7,9 +7,9 @@ export type NicheCard = {
 
 export const NICHES: NicheCard[] = [
   { slug: 'restaurantes', label: 'Restaurantes', description: 'Reservas, WhatsApp y CRM en un solo sistema.', live: true },
-  { slug: 'hoteles', label: 'Hoteles', description: 'Agente de reservas conversacional 24/7.', live: false },
+  { slug: 'hoteles', label: 'Hoteles', description: 'Agente de reservas conversacional 24/7.', live: true },
   { slug: 'colegios', label: 'Colegios', description: 'Admisiones automatizadas con IA.', live: true },
-  { slug: 'inmobiliarias', label: 'Inmobiliarias', description: 'Inventario, WhatsApp y CRM sincronizados.', live: false },
+  { slug: 'inmobiliarias', label: 'Inmobiliarias', description: 'Inventario, WhatsApp y CRM sincronizados.', live: true },
 ];
 
 export type CapabilityCard = {
@@ -22,6 +22,8 @@ export type CapabilityCard = {
 export const CAPABILITIES: CapabilityCard[] = [
   { slug: 'reputacion-ia', label: 'Gestión de Reputación con IA', description: 'Responde reseñas y aumenta tu credibilidad online.', live: true },
   { slug: 'sitios-web-seo-geo-aeo', label: 'Sitios Web SEO/GEO/AEO', description: 'Te encuentran en Google y te recomiendan ChatGPT, Gemini y Perplexity.', live: true },
+  { slug: 'automatizacion-financiera', label: 'Automatización Financiera', description: 'Cierre de caja y control financiero sin hojas de cálculo.', live: true },
+  { slug: 'menus-digitales', label: 'Menús Digitales', description: 'Se actualiza en tiempo real y también vende.', live: true },
 ];
 
 export const METRICS = [
