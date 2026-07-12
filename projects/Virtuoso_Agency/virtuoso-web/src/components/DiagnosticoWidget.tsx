@@ -167,10 +167,14 @@ export default function DiagnosticoWidget() {
           {step === 'input' && (
             <div>
               <span className="vp-label">Diagnóstico gratuito · 60 segundos</span>
-              <h2 className="vp-headline">¿Qué problema quieres resolver en tu negocio?</h2>
+              <h1 className="vp-headline">¿Qué problema quieres resolver en tu negocio?</h1>
               <p className="vp-sub">Describe con tus palabras qué está pasando. Nuestro sistema analiza tu situación y te dice exactamente qué solución aplica — y por qué.</p>
+              <label htmlFor="vp-idea" style={{ position: 'absolute', width: 1, height: 1, padding: 0, margin: -1, overflow: 'hidden', clip: 'rect(0,0,0,0)', whiteSpace: 'nowrap', border: 0 }}>
+                ¿Qué problema quieres resolver en tu negocio?
+              </label>
               <textarea
                 className="vp-textarea"
+                id="vp-idea"
                 value={idea}
                 onChange={(e) => setIdea(e.target.value)}
                 onKeyDown={(e) => {
@@ -186,7 +190,7 @@ export default function DiagnosticoWidget() {
                 Analizar mi situación
                 <svg className="vp-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
               </button>
-              {errMsg && <div className="vp-error">{errMsg}</div>}
+              {errMsg && <div className="vp-error" role="alert">{errMsg}</div>}
             </div>
           )}
 
@@ -227,10 +231,10 @@ export default function DiagnosticoWidget() {
 
               <div className="vp-cta-block">
                 <p className="vp-cta-pre">En una demo de 20 minutos te mostramos el sistema funcionando en vivo — con datos reales de tu industria.</p>
-                <button className="vp-btn-demo" onClick={() => window.open(CALENDAR_URL, '_blank', 'noopener,noreferrer')}>
+                <a className="vp-btn-demo" href={CALENDAR_URL} target="_blank" rel="noopener noreferrer">
                   Agendar mi demo gratis
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
-                </button>
+                </a>
                 <br />
                 <button className="vp-btn-ghost" onClick={handleRestart}>← Analizar otra situación</button>
               </div>
