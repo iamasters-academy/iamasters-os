@@ -25,7 +25,6 @@ export default function DiagnosticoWidget() {
 
   useEffect(() => {
     if (step !== 'loading') return;
-    setLitSteps([false, false, false]);
     timers.current = [
       setTimeout(() => setLitSteps([true, false, false]), 400),
       setTimeout(() => setLitSteps([true, true, false]), 1400),
@@ -41,6 +40,7 @@ export default function DiagnosticoWidget() {
       return;
     }
     setErrMsg(null);
+    setLitSteps([false, false, false]);
     setStep('loading');
 
     try {
