@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 const DELIVERY_STEPS = [
   {
     title: 'Auditoría GEO/AEO inicial',
-    description: 'Medimos tu visibilidad actual en buscadores tradicionales y de IA — mismo formato que el caso OPC Latam (68/100 en visibilidad IA).',
+    description: 'Medimos tu visibilidad actual en buscadores tradicionales y de IA — mismo formato que usamos en una auditoría real a una plataforma educativa en LATAM (68/100 en visibilidad IA).',
   },
   {
     title: 'Arquitectura técnica desde cero',
