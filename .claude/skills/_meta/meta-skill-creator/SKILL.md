@@ -8,8 +8,14 @@ description: Crea skills nuevas para iAmasters OS siguiendo el patrón canónico
 ## Cuándo se invoca
 
 - Usuario dice: "crea una skill", "necesito una skill para X", "haz una skill que..."
+- Usuario dice: "audita esta skill", "revisa/optimiza esta skill", "¿está bien hecha esta skill?"
 - Wrap-up detecta un patrón que se ha repetido 3+ sesiones y propone graduar a skill
 - Otro skill detecta un sub-proceso reutilizable y sugiere extraerlo
+
+## Dos modos
+
+- **Modo Crear** (por defecto) → sigue el "Process" completo (Pasos 1-9).
+- **Modo Auditar** → cuando el usuario pide revisar una skill ya existente, salta al "Modo Auditoría" del final. Lee SIEMPRE el SKILL.md antes de proponer cambios.
 
 ## Contrato de calidad
 
@@ -26,18 +32,39 @@ Una skill iAmasters OS BIEN hecha cumple SIEMPRE:
 
 ## Process — pasos para crear una skill
 
-### Paso 1 · Recopilar requisitos
+### Paso 1 · Discovery interview (por rondas)
 
-Pregunta al usuario (usa AskUserQuestion si Claude Code está disponible):
+Usa `AskUserQuestion` (una ronda cada vez, avanza solo cuando responda) hasta tener ~95% de confianza para construir sin más dudas. Si el usuario ya dio contexto suficiente en su primer mensaje, **salta las rondas ya respondidas** — no repreguntes lo que ya sabes.
 
-1. **Nombre y categoría**: ¿en qué categoría va? (`marketing`, `operations`, `strategy`, `tools`, `visualization`, `_meta`). Genera nombre kebab-case con prefijo: `marketing-blog-writer`, `tool-pdf-extractor`, `_meta/meta-X`.
-2. **Cuándo se invoca**: 1-2 frases. ¿Qué dirá el usuario para activarla? ¿Hay otra skill que la llame?
-3. **Qué hace exactamente**: 3-5 puntos del proceso paso a paso.
-4. **Inputs**: ¿qué necesita? Argumentos, archivos, MCPs, brand-context, otras skills.
-5. **Outputs**: ¿qué produce? Archivo en `projects/<skill>/<fecha>-<titulo>/`, edit en archivos existentes, mensaje al usuario.
-6. **Skills que llama**: ¿se apoya en otras? (`tool-humanizer`, `tool-output-verifier`, etc.)
-7. **¿Necesita scripts?**: ¿Python o bash para tareas pesadas? Si sí, ¿qué hace cada script?
-8. **¿Fuente externa?**: ¿Se basa en repo, URL, o fuente externa? Si sí, ¿cuál? (para incluir en sección `## Referencias`)
+**Ronda 1 · Objetivo y nombre** — *Por qué importa: un objetivo claro evita el scope creep; el nombre se vuelve el `/slash-command`.*
+- ¿Qué hace la skill? ¿Qué problema resuelve o qué workflow automatiza?
+- Categoría (`marketing`, `strategy`, `tools`, `automation`, `visualization`, `_meta`…) → propón nombre kebab-case con prefijo: `marketing-blog-writer`, `tool-pdf-extractor`, `_meta/meta-X`.
+
+**Ronda 2 · Disparador (trigger)** — *Por qué importa: la `description` es cómo Claude decide cargarla; malos triggers = nunca se usa; demasiado amplios = se dispara cuando no toca.*
+- 2-3 frases naturales que la activarían.
+- ¿Solo usuario (`/slash-command`), auto-invocable por Claude, o ambos? → si tiene side-effects, marcar `disable-model-invocation: true`.
+- ¿Acepta argumentos? ¿Cuáles? (topic, URL, path)
+
+**Ronda 3 · Proceso paso a paso** — *Por qué importa: Claude sigue literalmente; pasos vagos = resultados vagos.*
+- Recorrido exacto de trigger → output, paso a paso.
+- Por paso: ¿lo hace Claude directo o delega en subagente/script?
+- ¿Conversacional (ida y vuelta) o fire-and-forget?
+
+**Ronda 4 · Inputs, outputs y dependencias** — *Por qué importa: sin especificar de dónde salen inputs y dónde van outputs, la skill es inconsistente.*
+- Inputs: archivos, MCPs, `brand-context/`, `context/`, argumentos, datos en vivo.
+- Outputs: archivo en `projects/<skill>/<fecha>-<titulo>/`, edición de archivos, mensaje al usuario.
+- Dependencias: APIs, scripts, otras skills (`tool-humanizer`, `tool-output-verifier`…), templates/references.
+
+**Ronda 5 · Guardrails y edge cases** — *Por qué importa: sin guardrails hay outputs erróneos, costes de API inesperados o acciones no deseadas.*
+- ¿Qué puede salir mal? Fallos comunes.
+- ¿Qué NO debe hacer? Límites duros.
+- ¿Costes? (llamadas API, generación de imagen/vídeo).
+- ¿Restricciones de orden/dependencia? ("comprobar X antes de Y").
+
+**Ronda 6 · Confirmación** — *Por qué importa: malentendidos cazados aquí evitan reconstruir la skill.*
+Resume tu comprensión (objetivo · trigger · argumentos · proceso · inputs · outputs · dependencias · guardrails) y pregunta "¿lo capta? ¿algo que cambiar?". Solo avanza al Paso 2 con confirmación.
+
+**¿Fuente externa?** — si la skill se basa en repo/URL/fuente externa, anótalo para la sección `## Referencias`.
 
 ### Paso 2 · Validar el nombre y descripción
 
@@ -68,10 +95,26 @@ NO crees `references/` ni `scripts/` si la skill no los necesita. Mantén lo mí
 
 Lee `references/skill-template.md` (incluido en esta skill) y úsalo de base. Estructura obligatoria:
 
+**Frontmatter — campos avanzados (pon SOLO los que necesites, no infles):**
+
+- `name` — kebab-case con prefijo de categoría, coincide con la carpeta.
+- `description` — cuándo se invoca + qué hace (50-500 chars), con verbos de intención del usuario.
+- `disable-model-invocation: true` — **si la skill tiene side-effects** (genera archivos, llama APIs, envía mensajes, cuesta dinero). Evita que Claude la auto-dispare; queda solo como `/slash-command`.
+- `argument-hint: [topic o path]` — si acepta argumentos vía `/name` (se ve en el autocompletado del menú `/`).
+- `context: fork` (+ `agent`) — si la skill es autocontenida y NO necesita el historial de la conversación (output verboso, tarea aislada).
+- `model` — solo si requiere una capacidad de modelo concreta.
+- `allowed-tools` — si la skill NO debe tener acceso a todas las tools (restringe la superficie).
+
+Dentro del cuerpo puedes usar `$ARGUMENTS` / `$N` para input dinámico de argumentos, y `` !`comando` `` para inyección de contexto dinámico (preprocesado).
+
+Detalle completo (matriz de invocación, subagentes, troubleshooting): ver `references/frontmatter-avanzado.md`.
+
 ```markdown
 ---
 name: <prefijo-categoria>-<nombre>
 description: <cuando se invoca + que hace, 50-500 chars>
+# disable-model-invocation: true   # si tiene side-effects
+# argument-hint: [topic o path]    # si acepta argumentos
 ---
 
 # <nombre humano de la skill>
@@ -171,6 +214,42 @@ Ver `references/examples.md` para 3 ejemplos:
 1. Crear `marketing-blog-writer` (skill compleja con references)
 2. Crear `tool-pdf-summarizer` (skill que usa script Python)
 3. Crear `_meta/meta-changelog-bumper` (skill simple sin references)
+
+## Modo Auditoría — revisar/optimizar una skill existente
+
+Cuando el usuario diga "audita esta skill", "revisa/optimiza esta skill" o "¿está bien hecha?": **lee SIEMPRE el SKILL.md primero**, nunca propongas cambios sobre una skill que no has leído. Recorre este checklist y corrige lo que falle antes de cerrar.
+
+### Frontmatter
+- [ ] `name` coincide con el nombre de la carpeta y lleva prefijo de categoría.
+- [ ] `description` usa keywords naturales que el usuario diría de verdad; específica para no dispararse en falso pero amplia para cazar peticiones reales; 50-500 chars.
+- [ ] `disable-model-invocation: true` si tiene side-effects (genera archivos, llama APIs, envía mensajes, cuesta dinero).
+- [ ] `argument-hint` si acepta argumentos vía `/name`.
+- [ ] `allowed-tools` si NO debe tener acceso a todas las tools.
+- [ ] `context: fork` si es autocontenida y produce output verboso.
+- [ ] Sin campos innecesarios (no añadir frontmatter porque sí).
+
+### Contenido
+- [ ] SKILL.md < 500 líneas (lo extenso vive en `references/`).
+- [ ] Workflow numerado y testable; cada paso dice exactamente qué hacer (nada vago).
+- [ ] Formato de output especificado con template/ejemplo.
+- [ ] Todos los paths (inputs, outputs, scripts, references) documentados.
+- [ ] Si delega en subagentes, incluye el prompt exacto a enviar.
+- [ ] Sección de edge cases / qué NO hacer.
+- [ ] Usa `$ARGUMENTS`/`$N` donde recibe input.
+
+### Integración OS (específico iAmasters)
+- [ ] Registrada en `synapsis/skills-catalog.json` (fuente de verdad) — el registry se regenera solo.
+- [ ] Referenciada en `CLAUDE.md` si corresponde (routing/cadenas/desambiguación).
+- [ ] Si genera entregable a cliente/usuario: pasa por `tool-output-verifier` (y `tool-humanizer` si es copy).
+- [ ] `references/`/`scripts/` referenciados desde el SKILL.md, no huérfanos; secrets en `.env`, nunca hardcoded.
+- [ ] No canibaliza a otra skill del catálogo (Paso 2, test de unicidad); no duplica lo que ya vive en `CLAUDE.md` u otra skill.
+
+### Calidad
+- [ ] Un principiante podría seguirla sin contexto previo; instrucciones accionables, no abstractas.
+- [ ] Outputs en ruta predecible (`projects/<skill>/<YYYY-MM-DD>-<titulo>/`).
+- [ ] Delega en subagentes cuando conviene para no ensuciar el contexto principal.
+
+Al cerrar la auditoría, si tocaste el SKILL.md o el catálogo, propón commit en wrap-up y registra la lección en `context/learnings.md`.
 
 ## Plantilla canónica
 
