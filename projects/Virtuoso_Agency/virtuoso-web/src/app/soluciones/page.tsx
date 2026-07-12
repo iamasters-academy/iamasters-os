@@ -22,21 +22,34 @@ export default function SolucionesPage() {
       </section>
       <section className="container" style={{ padding: '0 24px 64px' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 20 }}>
-          {CAPABILITIES.map((c) => (
-            <Link
-              key={c.slug}
-              href={`/soluciones/${c.slug}`}
-              style={{
-                display: 'block',
-                border: '1px solid var(--border)',
-                borderRadius: 16,
-                padding: 28,
-              }}
-            >
-              <h2 style={{ fontSize: 18, marginBottom: 8 }}>{c.label}</h2>
-              <p style={{ fontSize: 14, color: 'var(--gray)' }}>{c.description}</p>
-            </Link>
-          ))}
+          {CAPABILITIES.map((c) => {
+            const card = (
+              <div
+                style={{
+                  border: '1px solid var(--border)',
+                  borderRadius: 16,
+                  padding: 28,
+                  height: '100%',
+                  opacity: c.live ? 1 : 0.6,
+                }}
+              >
+                <h2 style={{ fontSize: 18, marginBottom: 8 }}>{c.label}</h2>
+                <p style={{ fontSize: 14, color: 'var(--gray)' }}>{c.description}</p>
+                {!c.live && (
+                  <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--gray)', textTransform: 'uppercase' }}>
+                    Próximamente
+                  </span>
+                )}
+              </div>
+            );
+            return c.live ? (
+              <Link key={c.slug} href={`/soluciones/${c.slug}`}>
+                {card}
+              </Link>
+            ) : (
+              <div key={c.slug}>{card}</div>
+            );
+          })}
         </div>
       </section>
       <CTASection />
