@@ -49,6 +49,7 @@ Cruza el perfil con `references/decision-matrix.md`. Resumen:
 - Redes sociales (IG/TikTok/YT) → **Apify MCP** (ya conectado).
 - Prototyping / debugging interactivo en Claude → **chrome-devtools MCP** o **playwright MCP** (sin código; para explorar, no para extraer a escala).
 - Stack Java legacy o Chrome-only en Node → **Selenium** (legacy) / **Puppeteer** (Node); si no hay restricción de stack, **Playwright** los supera.
+- Chat de Meta AI (`meta.ai/prompt/*`) → **[[tool-meta-ai-scraper]]** (sesión Facebook persistente; captura el DOM del scroller y parsea offline a Markdown). El runner genérico y Firecrawl no sirven aquí: requiere login y la conversación va en el HTML (RSC), no se pagina.
 - **Validación**: 1 herramienta elegida (o 2 si el trabajo tiene fases) + el porqué en 1 frase.
 
 ### Paso 3 · Ejecutar (con escalada)
@@ -77,12 +78,14 @@ El `--probe` te dice al momento qué está montado.
 
 ## Skills que llama
 - **`tool-firecrawl-scraper`** — ejecución cuando Firecrawl es la mejor opción.
+- **`tool-meta-ai-scraper`** — export del historial de un chat de Meta AI (`meta.ai/prompt/<id>`, login Facebook).
 - **`strategy-web-research`** / **`investigacion-mercado`** — si el objetivo es investigar, no solo extraer datos crudos.
 - **Apify MCP** (`apify--instagram-scraper`, `clockworks--tiktok-scraper`, etc.) — scraping de redes sociales.
 
 ## Edge cases
 - Datos personales / sitio que prohíbe scraping en ToS → NO scrapear; avisa y propón fuente/API oficial.
 - Sitio con login del operador → solo con sus credenciales y consentimiento; Playwright con sesión.
+- Chat de Meta AI (`meta.ai/prompt/<id>`) → **tool-meta-ai-scraper** (no lo intentes con el runner genérico ni Firecrawl: requiere login Facebook y la conversación va embebida en el HTML del scroller).
 - Red social → casi siempre Apify MCP gana a montar Playwright a mano.
 - Trabajo puntual de 1 página → no montes Scrapy/Playwright; WebFetch o Firecrawl bastan (evita over-engineering).
 
