@@ -3,7 +3,7 @@ type UsageItem = { name: string; description: string };
 export default function UsedByGrid({ items }: { items: UsageItem[] }) {
   return (
     <section className="container" style={{ padding: '64px 24px' }}>
-      <h2 style={{ fontSize: 28, marginBottom: 32, textAlign: 'center' }}>Quién ya lo está usando</h2>
+      <h2 style={{ fontSize: 28, marginBottom: 32, textAlign: 'center' }}>Quién ya lo está implementando</h2>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 20 }}>
         {items.map((item) => (
           <div
