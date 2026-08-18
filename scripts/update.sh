@@ -285,6 +285,38 @@ if [ ${#PENDING_CONFLICTS[@]} -gt 0 ]; then
     echo -e "  O dile a Claude: ${CYAN}\"aplica la versión nueva de <archivo>\"${NC}"
 fi
 
+# ── Migración v0.11.0: aplanar skills anidadas ──
+# Hasta v0.10.2 las skills se instalaban en .claude/skills/<categoria>/<nombre>/,
+# donde Claude Code NO las indexa (solo mira un nivel) → "Unknown skill".
+# Este paso mueve lo que exista anidado a .claude/skills/<nombre>/. Idempotente:
+# si no hay nada anidado, no hace nada. No borra: si el destino ya existe, la
+# copia anidada se archiva en .claude/skills/_archived/.
+if [ -d "$REPO_ROOT/.claude/skills" ]; then
+    MIGRATED=0
+    while IFS= read -r nested; do
+        [ -n "$nested" ] || continue
+        case "$nested" in *_archived*) continue ;; esac
+        sk_name="$(basename "$nested")"
+        sk_cat="$(basename "$(dirname "$nested")")"
+        dest="$REPO_ROOT/.claude/skills/$sk_name"
+        if [ -e "$dest" ]; then
+            mkdir -p "$REPO_ROOT/.claude/skills/_archived"
+            mv "$nested" "$REPO_ROOT/.claude/skills/_archived/${sk_name}-anidada-$(date +%Y%m%d%H%M%S)"
+            echo -e "  ${YELLOW}·${NC} $sk_cat/$sk_name ya existía plana → copia anidada archivada"
+        else
+            mv "$nested" "$dest"
+            echo -e "  ${GREEN}✓${NC} $sk_cat/$sk_name → $sk_name (ahora sí la carga Claude Code)"
+        fi
+        MIGRATED=$((MIGRATED+1))
+        rmdir "$REPO_ROOT/.claude/skills/$sk_cat" 2>/dev/null || true
+    done <<EOF
+$(find "$REPO_ROOT/.claude/skills" -mindepth 2 -maxdepth 2 -type d -exec test -f '{}/SKILL.md' \; -print 2>/dev/null)
+EOF
+    if [ "$MIGRATED" -gt 0 ]; then
+        echo -e "${BLUE}[+]${NC} $MIGRATED skill(s) aplanadas (v0.11.0). Reinicia Claude Code para cargarlas."
+    fi
+fi
+
 # ── Sync skills instaladas desde la biblioteca ──
 # Si el update trajo versiones nuevas de skills que el operador tiene
 # instaladas, refrescarlas (SKILL.local.md se preserva siempre)

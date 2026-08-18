@@ -21,7 +21,7 @@ La skill REAL vive en `~/.claude/skills/cognito/SKILL.md` (instalación global d
 **Cuando Claude Code activa la skill `cognito`, lee `~/.claude/skills/cognito/SKILL.md`** — no este archivo. Este wrapper solo existe para:
 
 1. Documentar que la skill está disponible en el OS
-2. Mantener el patrón de "una carpeta por skill en `.claude/skills/_meta/`"
+2. Mantener el patrón de "una carpeta por skill en `.claude/skills/<nombre>/`"
 3. Permitir que `find-skills` y `health-check` la detecten en el inventario
 
 ## Modos cognito (resumen)

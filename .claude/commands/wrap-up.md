@@ -4,7 +4,7 @@ description: Cierre de sesión iAmasters OS. Genera daily summary, sincroniza sk
 
 # /wrap-up
 
-Invoca la skill `meta-wrap-up` que vive en `.claude/skills/_meta/meta-wrap-up/SKILL.md`.
+Invoca la skill `meta-wrap-up` que vive en `.claude/skills/meta-wrap-up/SKILL.md`.
 
 ## Qué hace
 

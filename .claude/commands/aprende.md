@@ -51,7 +51,7 @@ Al cerrar el día, marcar en `learn-progress.json` y proponer:
 
 ### Concepto
 
-Una **skill** es una carpeta `.claude/skills/<categoria>/<nombre>/` con un `SKILL.md` que tiene un `description:`. Claude lee TODOS los `description:` al iniciar la sesión y, según lo que tú escribas, activa automáticamente la skill que encaja. Tú no la llamas — ella te encuentra.
+Una **skill** es una carpeta `.claude/skills/<nombre>/` con un `SKILL.md` que tiene un `description:`. Claude lee TODOS los `description:` al iniciar la sesión y, según lo que tú escribas, activa automáticamente la skill que encaja. Tú no la llamas — ella te encuentra.
 
 **Ejemplo real**: en este repo tienes `marketing-copywriting`. Si escribes *"escríbeme un email frío para un CTO de fintech"*, Claude activa esa skill solo. No necesitas decir "usa la skill de copywriting".
 

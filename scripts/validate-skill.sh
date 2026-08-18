@@ -247,11 +247,11 @@ echo
 echo -e "${BOLD}Para instalar (si decides hacerlo):${NC}"
 if $CONFLICT; then
     echo -e "  ${YELLOW}Hay conflicto de nombre. Decide:${NC}"
-    echo -e "  1) Reemplazar local: ${CYAN}cp -r $SKILL_PATH .claude/skills/<categoria>/$SKILL_NAME/${NC}"
+    echo -e "  1) Reemplazar local: ${CYAN}cp -r $SKILL_PATH .claude/skills/$SKILL_NAME/${NC}"
     echo -e "     (haz backup primero!)"
     echo -e "  2) Instalar con nombre distinto: edita SKILL.md frontmatter 'name:' y luego copia"
 else
-    echo -e "  ${CYAN}cp -r $SKILL_PATH .claude/skills/<categoria>/$SKILL_NAME/${NC}"
+    echo -e "  ${CYAN}cp -r $SKILL_PATH .claude/skills/$SKILL_NAME/${NC}"
     echo -e "  Donde <categoria> es: _meta, marketing, operations, strategy, tools, visualization"
 fi
 echo

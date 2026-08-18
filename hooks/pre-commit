@@ -16,15 +16,22 @@ echo "🔍 Verificando commit..."
 STAGED="$(git diff --cached --name-only --diff-filter=d --no-renames)"
 
 # ─── Secretos (bloqueante, incondicional) ───────────────────────────────────
-# Requiere asignación ([:=]) tras la palabra clave para no autofalsear con el
-# propio patrón ni con comentarios sueltos.
-LEAK=""
-if [ -n "$STAGED" ]; then
-  LEAK="$(printf '%s\n' "$STAGED" | xargs -r grep -IlE '(API_KEY|APIKEY|SECRET|PASSWORD|PRIVATE_KEY|ACCESS_TOKEN|AUTH_TOKEN)[[:space:]]*[:=]' 2>/dev/null || true)"
-fi
+# Se escanean SOLO las líneas AÑADIDAS del diff staged, no el contenido íntegro
+# de cada archivo tocado: de lo contrario un simple rename (o una edición de una
+# línea) vuelve a levantar hallazgos que ya llevaban meses en el repo, y el hook
+# acaba enseñando a usar --no-verify, que es lo peor que le puede pasar a un
+# guardarraíl. Requiere asignación ([:=]) tras la palabra clave y descarta los
+# placeholders de documentación (..., xxxxx, <TU_CLAVE>, $VAR, your-key, vacío).
+PLACEHOLDER='[:=][[:space:]]*[^[:space:]"]{0,24}([.]{3}|[xX]{3,}|<|[$]|[{]|[[]|tu[-_]|TU[-_]|[Yy]our|YOUR|[Ee]xample|EXAMPLE|changeme|CHANGEME|placeholder|dummy|fake|redacted|REDACTED|aqui|AQUI)'
+LEAK="$(git diff --cached -U0 --diff-filter=d \
+  | grep -E '^\+' | grep -vE '^\+\+\+' \
+  | grep -IE '(API_KEY|APIKEY|SECRET|PASSWORD|PRIVATE_KEY|ACCESS_TOKEN|AUTH_TOKEN)[[:space:]]*[:=]' \
+  | grep -vE "$PLACEHOLDER" \
+  | grep -vE '[:=][[:space:]]*("")?(.{0,2})$' \
+  || true)"
 if [ -n "$LEAK" ]; then
-  echo "❌ Posibles secretos hardcodeados en el commit:"
-  echo "$LEAK"
+  echo "❌ Posibles secretos hardcodeados en las líneas nuevas del commit:"
+  echo "$LEAK" | sed 's/^/  /'
   echo "Usa variables de entorno (.env.local), no claves en el código. Revisa y reintenta."
   exit 1
 fi

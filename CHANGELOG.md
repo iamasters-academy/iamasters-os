@@ -21,6 +21,27 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [0.11.0] — 2026-08-18
+
+### Fixed
+- **🔴 NINGUNA skill del OS cargaba en Claude Code.** Reportado por **Andrés Arias** (miembro de la comunidad) con reproducción en dos entornos independientes — [issue #17](https://github.com/iamasters-academy/iamasters-os/issues/17). Toda skill instalada en `.claude/skills/<categoria>/<nombre>/SKILL.md` (las 17 core y cualquiera añadida desde la biblioteca) respondía `Error: Unknown skill: <nombre>` al invocarla, y no aparecía en el listado de la sesión. **Causa raíz**: Claude Code descubre skills a **exactamente un nivel** — `<skills-dir>/<nombre>/SKILL.md`. El loader del CLI lee `<dir>/SKILL.md`, y si no lo encuentra prueba `<dir>/<entrada>/SKILL.md` y se detiene ahí: no hay recursión. Una carpeta de categoría intermedia deja la skill invisible aunque el archivo exista y el frontmatter sea válido. Las subcarpetas de una skill son sus recursos (`references/`, `scripts/`), nunca skills anidadas. **No era un bug de Claude Code ni una regresión de una versión reciente: el patrón nunca funcionó.** Lo que sí cargaba —y ocultaba el problema— eran los `.claude/commands/*.md`.
+- **`/doctor` fallaba con el mismo error** (`.claude/commands/doctor.md`): invocaba la skill por ruta (`_meta/health-check`) en vez de por nombre (`health-check`). Una ruta no es un nombre de skill válido.
+- **Drift en la lista de skills mínimas** (skill `health-check`): declaraba 24 rutas "v0.6 Capa 1" cuando solo 17 son core — 8 pasaron a la biblioteca en v0.10.0 (opt-in) y faltaba `recuerda` (core desde v0.8.1). Provocaba avisos 🟡 fantasma por skills cuya ausencia es normal.
+- **Rutas de instalación rotas dentro de la biblioteca**: `tool-transcribe-social` documentaba un `python3 .claude/skills/tools/tool-transcribe-social/transcribe.py` que no existiría tras instalarse (ruta **ejecutable**, fallaba al correr). Igual en el README de `strategy-investigacion-profunda` y en los wrappers de `arnes` y `cognito`, que además describían el patrón `_optional/` retirado en v0.10.0.
+- **`.github/CODEOWNERS`** apuntaba a `/.claude/skills/_meta/` y `/.claude/skills/marketing/`, rutas que dejan de existir: las reglas quedaban muertas. Ahora cubre `/.claude/skills/` y `/skills-library/`.
+
+### Changed
+- **Estructura de instalación PLANA (breaking).** El destino pasa a `.claude/skills/<nombre>/SKILL.md`. Las 17 core aplanadas con `git mv` (historial preservado) y `scripts/skills.sh` instala, lista, sincroniza y desinstala en plano. **La categoría no se pierde**: sigue viva en la **biblioteca** (`skills-library/<categoria>/<nombre>/`, que es un catálogo y por diseño NO se indexa) y en el **prefijo del nombre** (`marketing-`, `tool-`, `strategy-`, `automation-`).
+- **Documentación corregida en origen.** `docs/skill-creation-guide.md` documentaba el patrón roto como "estructura canónica" — de ahí se propagó a todo el repo. Reescrita explicando el contrato de un nivel, por qué falla el anidamiento y dónde vive la categoría. Actualizadas 20 referencias más en `AGENTS.md`, `CLAUDE.md`, commands, `meta-skill-creator`, `docs/` y `scripts/validate-skill.sh`. `CHANGELOG` histórico intacto a propósito.
+- **El nombre de invocación lo da la CARPETA**, no el `name:` del frontmatter (para skills de proyecto). Documentado y validado.
+
+### Added
+- **Migración automática en `/actualiza`** (`scripts/update.sh`): detecta lo que haya anidado y lo mueve a `.claude/skills/<nombre>/`. Idempotente, preserva `SKILL.local.md` y **no borra nada** — si el destino ya existe, la copia anidada se archiva en `.claude/skills/_archived/`. Quien ya tenga el OS instalado solo tiene que decir **"actualiza"**. Probada en sandbox con los tres casos (anidada, colisión, `_archived` intacto).
+- **Guardarraíl de CI** `scripts/ci/check-skills-depth.sh` (cableado en `validate.yml`): falla si aparece una `SKILL.md` a más de un nivel bajo cualquier `.claude/skills/` del repo, si `skills-library/` pierde su categoría, y avisa si `name:` no coincide con la carpeta. `_archived/` exento: está anidado a propósito para no cargar. Verificado que caza la regresión.
+- **Check de estructura en la skill `health-check`** (`/doctor`): ahora detecta skills anidadas con severidad 🔴 y explica el arreglo. Es el chequeo que habría cazado esto antes de llegar a la comunidad.
+
+---
+
 ## [0.10.2] — 2026-07-17
 
 ### Fixed

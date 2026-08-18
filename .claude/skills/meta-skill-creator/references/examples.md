@@ -18,7 +18,7 @@
 ### Estructura generada
 
 ```
-.claude/skills/marketing/marketing-blog-writer/
+.claude/skills/marketing-blog-writer/
 ├── SKILL.md
 └── references/
     ├── examples.md           (2-3 blog posts de ejemplo)
@@ -96,7 +96,7 @@ Ver references/examples.md
 ### Estructura
 
 ```
-.claude/skills/tools/tool-pdf-summarizer/
+.claude/skills/tool-pdf-summarizer/
 ├── SKILL.md
 ├── scripts/
 │   └── extract.py            # PyPDF2: PDF → texto plano
@@ -121,7 +121,7 @@ Ver references/examples.md
 
 ---
 
-## Ejemplo 3 · Skill simple sin references — `_meta/meta-changelog-bumper`
+## Ejemplo 3 · Skill simple sin references — `meta-changelog-bumper`
 
 **Situación**: cada vez que cierras release, hay que actualizar CHANGELOG.md con los commits desde la versión anterior. Es repetitivo y mecánico.
 
@@ -133,7 +133,7 @@ Ver references/examples.md
 ### Estructura
 
 ```
-.claude/skills/_meta/meta-changelog-bumper/
+.claude/skills/meta-changelog-bumper/
 └── SKILL.md
 ```
 

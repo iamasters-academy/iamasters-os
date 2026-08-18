@@ -128,34 +128,45 @@ Reporte sugerido:
 
 ### Paso 5 · Verificación skills curadas
 
-Lista skills mínimas (v0.6 Capa 1):
+Lista skills CORE (siempre instaladas — 17):
 
 ```
-.claude/skills/_meta/meta-skill-creator/SKILL.md
-.claude/skills/_meta/meta-onboarding-wizard/SKILL.md
-.claude/skills/_meta/meta-deep-dive/SKILL.md
-.claude/skills/_meta/meta-start-here/SKILL.md
-.claude/skills/_meta/meta-wrap-up/SKILL.md
-.claude/skills/_meta/welcome-quick-win/SKILL.md
-.claude/skills/_meta/seis-sombreros/SKILL.md
-.claude/skills/_meta/decisions-log/SKILL.md
-.claude/skills/_meta/health-check/SKILL.md
-.claude/skills/_meta/find-skills/SKILL.md
-.claude/skills/marketing/marketing-brand-voice/SKILL.md
-.claude/skills/marketing/marketing-positioning/SKILL.md
-.claude/skills/marketing/marketing-icp/SKILL.md
-.claude/skills/marketing/marketing-copywriting/SKILL.md
-.claude/skills/marketing/marketing-content-repurposing/SKILL.md
-.claude/skills/marketing/marketing-email-sequence/SKILL.md
-.claude/skills/automation/automation-loop-engine/SKILL.md
-.claude/skills/automation/automation-n8n-to-claude/SKILL.md
-.claude/skills/automation/automation-n8n-builder/SKILL.md
-.claude/skills/strategy/strategy-web-research/SKILL.md
-.claude/skills/tools/tool-firecrawl-scraper/SKILL.md
-.claude/skills/tools/tool-humanizer/SKILL.md
-.claude/skills/tools/tool-output-verifier/SKILL.md
-.claude/skills/visualization/tool-visual-explainer/SKILL.md
+.claude/skills/meta-skill-creator/SKILL.md
+.claude/skills/meta-onboarding-wizard/SKILL.md
+.claude/skills/meta-deep-dive/SKILL.md
+.claude/skills/meta-start-here/SKILL.md
+.claude/skills/meta-wrap-up/SKILL.md
+.claude/skills/welcome-quick-win/SKILL.md
+.claude/skills/decisions-log/SKILL.md
+.claude/skills/health-check/SKILL.md
+.claude/skills/find-skills/SKILL.md
+.claude/skills/recuerda/SKILL.md
+.claude/skills/marketing-brand-voice/SKILL.md
+.claude/skills/marketing-positioning/SKILL.md
+.claude/skills/marketing-icp/SKILL.md
+.claude/skills/automation-loop-engine/SKILL.md
+.claude/skills/tool-firecrawl-scraper/SKILL.md
+.claude/skills/tool-humanizer/SKILL.md
+.claude/skills/tool-output-verifier/SKILL.md
 ```
+
+Las de `skills-library/` NO van en esta lista: son opt-in y su ausencia es normal, no un fallo.
+Para verlas: `bash scripts/skills.sh list`.
+
+**Estructura (🔴 crítico):** toda skill debe estar a UN nivel — `.claude/skills/<nombre>/SKILL.md`.
+Claude Code solo indexa un nivel: una carpeta de categoría intermedia deja la skill invisible para
+el tool Skill (`Unknown skill: <nombre>`) aunque el archivo exista y el frontmatter sea válido.
+
+```bash
+find .claude/skills -mindepth 3 -name SKILL.md -not -path "*_archived*"
+```
+
+Cualquier resultado → 🔴 "skill anidada, no la carga nadie" · acción: mover a `.claude/skills/<nombre>/`
+(o reinstalar con `bash scripts/skills.sh add <nombre>`). `_archived/` está anidado A PROPÓSITO para
+que no cargue: es la excepción esperada.
+
+**Nombre = carpeta (🟡):** para las skills de proyecto el nombre de invocación lo da el NOMBRE DE LA
+CARPETA, no el frontmatter. Si `name:` y la carpeta no coinciden, avisa: se invoca por la carpeta.
 
 Por cada faltante: 🟡 con sugerencia "ejecuta `bash scripts/update.sh` para sincronizar".
 

@@ -22,7 +22,7 @@ Skill para descargar el audio de una URL social, transcribirlo con Groq Whisper 
 Comando único:
 
 ```bash
-python3 .claude/skills/tools/tool-transcribe-social/transcribe.py "<URL>" [--lang es|en|auto] [--out <dir>]
+python3 .claude/skills/tool-transcribe-social/transcribe.py "<URL>" [--lang es|en|auto] [--out <dir>]
 ```
 
 - `--lang` por defecto `es`. Para vídeos en inglés u otros usar `--lang en` o `--lang auto`.
