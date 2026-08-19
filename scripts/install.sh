@@ -469,7 +469,7 @@ validate_sinapsis_deep() {
 
     # ≥1 skill real instalada (SKILL.md, no archivos vacíos)
     local skill_count
-    skill_count=$(find "$SKILLS_DIR" -maxdepth 3 -name "SKILL.md" 2>/dev/null | wc -l | tr -d ' ')
+    skill_count=$(find -L "$SKILLS_DIR" -maxdepth 3 -name "SKILL.md" 2>/dev/null | wc -l | tr -d ' ')
     if [ "$skill_count" -lt 1 ]; then
         warn "  validación: no se encontró ninguna SKILL.md en $SKILLS_DIR"
         issues=$((issues+1))
@@ -515,7 +515,7 @@ record_sinapsis_validation() {
         [ -x "$SKILLS_DIR/$hook" ] || hooks_ok=false
     done
     local skill_count
-    skill_count=$(find "$SKILLS_DIR" -maxdepth 3 -name "SKILL.md" 2>/dev/null | wc -l | tr -d ' ')
+    skill_count=$(find -L "$SKILLS_DIR" -maxdepth 3 -name "SKILL.md" 2>/dev/null | wc -l | tr -d ' ')
     json_set_phase "sinapsis-engine" "validation" \
         "{\"operator_state_json_valid\": $op_valid, \"catalog_json_valid\": $cat_valid, \"hooks_executable\": $hooks_ok, \"skills_count\": ${skill_count:-0}}"
 }
@@ -614,9 +614,9 @@ compute_and_store_checksum() {
     # Hash de los archivos clave de Sinapsis para detectar drift posterior
     local files_hash
     if command -v shasum >/dev/null 2>&1; then
-        files_hash=$(find "$SKILLS_DIR" -maxdepth 1 -type f \( -name "_*.json" -o -name "_*.sh" \) 2>/dev/null | sort | xargs shasum -a 256 2>/dev/null | shasum -a 256 | awk '{print $1}')
+        files_hash=$(find -L "$SKILLS_DIR" -maxdepth 1 -type f \( -name "_*.json" -o -name "_*.sh" \) 2>/dev/null | sort | xargs shasum -a 256 2>/dev/null | shasum -a 256 | awk '{print $1}')
     elif command -v sha256sum >/dev/null 2>&1; then
-        files_hash=$(find "$SKILLS_DIR" -maxdepth 1 -type f \( -name "_*.json" -o -name "_*.sh" \) 2>/dev/null | sort | xargs sha256sum 2>/dev/null | sha256sum | awk '{print $1}')
+        files_hash=$(find -L "$SKILLS_DIR" -maxdepth 1 -type f \( -name "_*.json" -o -name "_*.sh" \) 2>/dev/null | sort | xargs sha256sum 2>/dev/null | sha256sum | awk '{print $1}')
     else
         files_hash="sha-tool-not-found"
     fi
@@ -626,7 +626,7 @@ compute_and_store_checksum() {
   "operator_state_json_valid": true,
   "catalog_json_valid": true,
   "hooks_executable": true,
-  "skills_count": $(find "$SKILLS_DIR" -maxdepth 3 -name "SKILL.md" 2>/dev/null | wc -l | tr -d ' ')
+  "skills_count": $(find -L "$SKILLS_DIR" -maxdepth 3 -name "SKILL.md" 2>/dev/null | wc -l | tr -d ' ')
 }
 EOF
 )
