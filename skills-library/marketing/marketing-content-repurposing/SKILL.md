@@ -9,7 +9,7 @@ description: Convierte una pieza fuente (video YouTube, podcast, transcript reun
 
 - Usuario dice: "repurpose este video", "saca contenido de este podcast", "del último Café Camaleónico, sácame X piezas"
 - Tras una clase / talk / video largo, automatizar la distribución
-- Skill `strategy-trending-research` la sugiere cuando detecta un tema valioso del operador para amplificar
+- Cuando el operador detecta un tema propio que merece amplificarse
 
 ## Process
 
@@ -156,6 +156,6 @@ Paquete completo en `projects/marketing-content-repurposing/<fecha>-<slug>/` con
 
 ## Examples
 
-Ver `references/examples.md` para 2 casos:
+Dos casos de referencia:
 1. Repurpose video YouTube de 25 min sobre Claude Code → 8 piezas
 2. Repurpose transcript reunión cliente sobre case study → 5 piezas con sanitización

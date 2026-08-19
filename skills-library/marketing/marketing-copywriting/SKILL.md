@@ -191,6 +191,3 @@ Aplicar y volver a verificar (Paso 5).
 - **Tema sensible** (política, religión, etc.): generar pero advertir que las plataformas pueden afectar visibilidad.
 - **Output requerido en idioma distinto al voice-profile**: marcar low-confidence; recomendar revisar manualmente.
 
-## Examples
-
-Ver `references/examples.md` para casos LinkedIn, X thread, email, landing hero.

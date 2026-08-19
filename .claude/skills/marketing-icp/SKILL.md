@@ -195,6 +195,6 @@ Ninguna. Es introspectiva + análisis de datos del operador.
 
 ## Examples
 
-Ver `references/examples.md` para 2 ICPs completos:
+Dos ICPs de referencia:
 1. Operador IA freelance servicio a gestorías españolas
 2. Agencia marketing especializada en formadores online

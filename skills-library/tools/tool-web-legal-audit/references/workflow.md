@@ -165,7 +165,7 @@ Crea `remediation.md` con:
 open <output-dir>/Auditoria-Legal-*.docx
 ```
 
-Pregunta al usuario si quiere enviarlo por WhatsApp. Si sí, invoca la skill `whatsapp` con la ruta del docx.
+Entrega la ruta del `.docx` al usuario. Si tiene instalada alguna skill de envío (WhatsApp, email), ofrécele usarla; no asumas que existe.
 
 ## Errores comunes y cómo evitarlos
 

@@ -534,7 +534,7 @@ Plus assets en `brand-context/assets/` (si Firecrawl extrajo).
 
 ## Examples
 
-Ver `references/examples.md` para 3 casos:
+Tres casos de referencia:
 1. Operador con LinkedIn pro + blog → voice profile robusto con ruta artefactos + 3 registers diferenciados
 2. Operador sin presencia online → ruta simulación 100%, voice profile auténtico
 3. Operador mixto (LinkedIn sí, Instagram no) → ruta híbrida, registro A con artefactos + registro C con simulación

@@ -181,6 +181,3 @@ Si el operador no decide: ofrecer hacer un mini test (escribir 1 LinkedIn post e
 - **Operador es tech bueno pero comm malo**: el positioning correcto puede ser "white-label tech para agencias", no servir a clientes finales.
 - **Operador es solo bueno en una vertical**: positioning vertical-first ("Operador IA para clínicas dentales") es legítimo y suele convertir mejor que horizontal.
 
-## Examples
-
-Ver `references/examples.md` para 3 casos completos.

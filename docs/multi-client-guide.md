@@ -183,9 +183,10 @@ cd clients/biggest-client && claude
 - Comprueba `clients/<nombre>/CLAUDE.md` referencia el path correcto
 
 ### "Skills del raíz no aparecen al estar en cliente"
-- Las skills del raíz (`.claude/skills/`) son globales en el repo, deberían estar disponibles
-- Si no se invocan: reinicia Claude Code (Ctrl+C × 2)
-- Si persiste: ejecuta `bash scripts/sync-synapsis.sh` (futura skill v0.5)
+- Las skills del raíz (`.claude/skills/`) se cargan desde el directorio donde arrancas Claude Code y en cada directorio padre hasta la raíz del repo. Si arrancas en `clients/<nombre>/`, las del raíz también entran.
+- Al revés NO es automático: si arrancas en la raíz, las skills de `clients/<nombre>/.claude/skills/` no se cargan hasta que Claude lee o edita un archivo dentro de esa carpeta. Hasta entonces no salen en el autocompletado.
+- Comprueba que cada skill está a UN nivel: `.claude/skills/<nombre>/SKILL.md`. Una carpeta de categoría intermedia la hace invisible (`Unknown skill`). Verifícalo con `bash scripts/ci/check-skills-depth.sh` o con `/doctor`.
+- Tras mover o instalar skills, reinicia Claude Code (Ctrl+C × 2): el índice se construye al arrancar la sesión.
 
 ### "Mezclo info de clientes accidentalmente"
 - Es señal de no respetar `cd clients/X` antes de trabajar
