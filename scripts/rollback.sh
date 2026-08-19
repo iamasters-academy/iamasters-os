@@ -172,6 +172,15 @@ for d in "${USER_DATA_PATHS[@]}"; do
 done
 echo -e "${GREEN}  OK${NC} $RESTORED rutas restauradas desde el backup"
 
+# El rollback deja el árbol en un estado anterior, así que el commit upstream que
+# update.sh tenía registrado como aplicado ya no describe lo que hay en disco.
+# Se invalida: el siguiente /actualiza vuelve a medir contra HEAD (comportamiento
+# de un primer update) en vez de fiarse de una base que ya no es cierta.
+if [ -f "$REPO_ROOT/.claude/.upstream-state" ]; then
+    rm -f "$REPO_ROOT/.claude/.upstream-state"
+    echo -e "${GREEN}  OK${NC} Estado de upstream invalidado (lo recalcula el próximo /actualiza)"
+fi
+
 echo ""
 echo -e "${GREEN}${BOLD}============================================================${NC}"
 echo -e "${GREEN}${BOLD}  Rollback completado${NC}"

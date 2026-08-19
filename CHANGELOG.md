@@ -21,6 +21,19 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [0.11.2] — 2026-08-19
+
+### Fixed
+- **`/actualiza` reportaba como conflicto tuyo lo que él mismo acababa de traer.** `update.sh` no hace merge ni mueve `HEAD` —trae archivos con `git checkout origin/<rama> -- <archivo>` para no pisar nunca los datos del operador—, pero medía **todo** contra `HEAD`, que se queda atrás para siempre. Consecuencia: un archivo traído por una actualización previa parecía "editado por el operador" en cada actualización siguiente. Medido en sandbox: **33 conflictos falsos en una segunda pasada seguida, con el árbol perfectamente al día**, y un `git status` permanentemente sucio. Fue lo que hizo sospechar a `/doctor` de "archivos staged sin commit" al diagnosticar [#17](https://github.com/iamasters-academy/iamasters-os/issues/17), y la raíz que compartía con [#16](https://github.com/iamasters-academy/iamasters-os/issues/16). Ahora `update.sh` registra en `.claude/.upstream-state` (local, gitignored) qué commit upstream aplicó y mide contra **esa base**: si un archivo coincide con la versión ya aplicada, lo trajo el update anterior y no es una edición tuya. Una segunda pasada seguida responde **"Ya estás al día"**.
+- **Los archivos que upstream retira nunca desaparecían de tu repo.** `git checkout origin/<rama> -- <ruta>` falla en silencio para una ruta que ya no existe en remoto (el `|| true` se lo comía), así que cada archivo renombrado o retirado upstream se quedaba para siempre. Ahora se retiran con tres salvaguardas: **nunca** datos del operador (`brand-context/`, `context/`, `projects/`, `clients/`, `.env`, `loops/`, `settings.json`), **nunca** si tú habías editado el archivo (se mantiene y se avisa), y **copia al backup** antes de tocar nada. `.claude/skills/` se excluye a propósito: de ese árbol se encarga `_flatten-skills.sh`, que además rescata los `SKILL.local.md`.
+- **`rollback.sh` invalida el estado de upstream.** Volver atrás deja el árbol en un punto anterior, así que el commit registrado como aplicado ya no describe lo que hay en disco; el siguiente `/actualiza` vuelve a medir contra `HEAD` en vez de fiarse de una base falsa.
+
+### Notas
+- Verificado con 8 escenarios en sandbox: convergencia en dos pasadas, edición real del operador preservada y reportada, datos del operador intocables, primer update sin estado (retrocompatible), retirada de archivos obsoletos con copia en backup, retirada bloqueada cuando el operador editó el archivo, camino completo de migración desde v0.10.2 (0 → 17 skills, 6/6 checks) y rollback.
+- Si vienes de **≤ v0.10.2**: el ruido de conflictos aparece una última vez (tu `update.sh` en disco es el antiguo y no registra la base todavía) y a partir de la actualización siguiente queda limpio.
+
+---
+
 ## [0.11.1] — 2026-08-19
 
 Ronda de auditoría tras la v0.11.0: se revisaron los scripts, las skills, la documentación y los issues/PRs abiertos. Todo lo de aquí son fallos reales encontrados y verificados, no limpieza cosmética.
