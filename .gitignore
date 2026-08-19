@@ -111,3 +111,6 @@ yarn.lock
 
 # Personalizaciones del operador sobre skills curadas — sobreviven updates
 **/SKILL.local.md
+
+# Commit upstream ya aplicado por scripts/update.sh (estado local)
+.claude/.upstream-state
