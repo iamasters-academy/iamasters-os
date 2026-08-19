@@ -73,6 +73,22 @@ done <<EOF
 $(find "$SKILLS_DIR" -mindepth 2 -maxdepth 2 -type d -exec test -f '{}/SKILL.md' \; -print 2>/dev/null)
 EOF
 
+# Archivos archivados que colgaban de una categoría (<categoria>/_archived/...):
+# se consolidan en .claude/skills/_archived/ para no dejar la carpeta de categoría
+# como fantasma. Siguen anidados respecto a skills/, así que no se indexan.
+for cat_archived in "$SKILLS_DIR"/*/_archived; do
+    [ -d "$cat_archived" ] || continue
+    mkdir -p "$ARCHIVE_DIR"
+    for item in "$cat_archived"/*; do
+        [ -e "$item" ] || continue
+        target="$ARCHIVE_DIR/$(basename "$item")"
+        [ -e "$target" ] && target="${target}-$STAMP"
+        mv "$item" "$target"
+        say "${DIM}  · archivado consolidado: $(basename "$item")${NC}"
+    done
+    rmdir "$cat_archived" 2>/dev/null || true
+done
+
 # Carpetas de categoría que quedaron vacías (o solo con .gitkeep)
 for dir in "$SKILLS_DIR"/*/; do
     [ -d "$dir" ] || continue
