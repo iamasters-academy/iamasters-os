@@ -31,14 +31,25 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - **`.github/CODEOWNERS`** apuntaba a `/.claude/skills/_meta/` y `/.claude/skills/marketing/`, rutas que dejan de existir: las reglas quedaban muertas. Ahora cubre `/.claude/skills/` y `/skills-library/`.
 
 ### Changed
+- **`/actualiza` ya no reporta un rename como conflicto del operador** (`scripts/update.sh`). Clasificaba cualquier ruta presente en local como "skill modificada → potencial conflicto", sin comprobar si seguía existiendo upstream. Al mover 17 skills, el informe se llenaba de conflictos falsos y el operador no sabía qué mirar. Ahora una ruta que ya no existe en `origin` se marca como obsoleta y la archiva la migración. Verificado en el E2E: de 5 falsos conflictos a 0.
 - **Estructura de instalación PLANA (breaking).** El destino pasa a `.claude/skills/<nombre>/SKILL.md`. Las 17 core aplanadas con `git mv` (historial preservado) y `scripts/skills.sh` instala, lista, sincroniza y desinstala en plano. **La categoría no se pierde**: sigue viva en la **biblioteca** (`skills-library/<categoria>/<nombre>/`, que es un catálogo y por diseño NO se indexa) y en el **prefijo del nombre** (`marketing-`, `tool-`, `strategy-`, `automation-`).
 - **Documentación corregida en origen.** `docs/skill-creation-guide.md` documentaba el patrón roto como "estructura canónica" — de ahí se propagó a todo el repo. Reescrita explicando el contrato de un nivel, por qué falla el anidamiento y dónde vive la categoría. Actualizadas 20 referencias más en `AGENTS.md`, `CLAUDE.md`, commands, `meta-skill-creator`, `docs/` y `scripts/validate-skill.sh`. `CHANGELOG` histórico intacto a propósito.
 - **El nombre de invocación lo da la CARPETA**, no el `name:` del frontmatter (para skills de proyecto). Documentado y validado.
 
 ### Added
-- **Migración automática en `/actualiza`** (`scripts/update.sh`): detecta lo que haya anidado y lo mueve a `.claude/skills/<nombre>/`. Idempotente, preserva `SKILL.local.md` y **no borra nada** — si el destino ya existe, la copia anidada se archiva en `.claude/skills/_archived/`. Quien ya tenga el OS instalado solo tiene que decir **"actualiza"**. Probada en sandbox con los tres casos (anidada, colisión, `_archived` intacto).
+- **`scripts/_flatten-skills.sh`** — migración de estructura como script autónomo, invocado por `/actualiza`. Idempotente, **no borra nada** (si el destino ya existe, la copia anidada se archiva en `.claude/skills/_archived/`) y **rescata el `SKILL.local.md`** del operador a la ruta nueva antes de archivar. Vive en su propio archivo por dos razones verificadas en un E2E que reproduce una instalación v0.10.2 real: (a) `update.sh` se sobrescribe a sí mismo durante el update y bash sigue ejecutando la versión antigua ya cargada, así que una migración escrita dentro de `update.sh` no corre hasta el update *siguiente*; (b) suelto, da a quien ya tenía el OS instalado un comando único: `bash scripts/_flatten-skills.sh`.
 - **Guardarraíl de CI** `scripts/ci/check-skills-depth.sh` (cableado en `validate.yml`): falla si aparece una `SKILL.md` a más de un nivel bajo cualquier `.claude/skills/` del repo, si `skills-library/` pierde su categoría, y avisa si `name:` no coincide con la carpeta. `_archived/` exento: está anidado a propósito para no cargar. Verificado que caza la regresión.
 - **Check de estructura en la skill `health-check`** (`/doctor`): ahora detecta skills anidadas con severidad 🔴 y explica el arreglo. Es el chequeo que habría cazado esto antes de llegar a la comunidad.
+
+### Cómo actualizar si ya tenías el OS instalado (≤ v0.10.2)
+
+Di **"actualiza"**. Eso te trae ya las skills en la ruta correcta y **empiezan a funcionar**. Como tu `update.sh` en disco era el antiguo, la limpieza de las carpetas viejas necesita una pasada más — cualquiera de las dos:
+
+```bash
+bash scripts/_flatten-skills.sh
+```
+
+o simplemente di **"actualiza"** otra vez. Reinicia Claude Code al terminar. No se borra nada: lo viejo se archiva en `.claude/skills/_archived/` y tus `SKILL.local.md` se rescatan a la ruta nueva. `/doctor` avisa 🔴 si queda algo anidado.
 
 ---
 

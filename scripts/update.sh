@@ -18,6 +18,7 @@ YELLOW='\033[1;33m'
 PURPLE='\033[0;35m'
 NC='\033[0m'
 BOLD='\033[1m'
+DIM='\033[2m'
 
 # Paths
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -165,6 +166,7 @@ SAFE_TO_UPDATE=()
 USER_DATA_CONFLICT=()
 SKILLS_NEW=()
 SKILLS_MODIFIED=()
+SKILLS_OBSOLETE=()
 
 while IFS= read -r file; do
     case "$file" in
@@ -172,9 +174,15 @@ while IFS= read -r file; do
         brand-context/*|context/*|projects/*|clients/*|.env)
             USER_DATA_CONFLICT+=("$file")
             ;;
-        # Skills: detect new vs modified
+        # Skills: obsoleta upstream vs nueva vs modificada
         .claude/skills/*)
-            if [ -f "$REPO_ROOT/$file" ]; then
+            if ! git cat-file -e "origin/$CURRENT_BRANCH:$file" 2>/dev/null; then
+                # La ruta ya NO existe upstream: renombrada o retirada. NO es un
+                # conflicto del operador — marcarla como tal llenaba el informe de
+                # falsos conflictos en cada rename (v0.11.0 movió 17 skills).
+                # La limpia _flatten-skills.sh, archivando y sin borrar nada.
+                SKILLS_OBSOLETE+=("$file")
+            elif [ -f "$REPO_ROOT/$file" ]; then
                 SKILLS_MODIFIED+=("$file")
             else
                 SKILLS_NEW+=("$file")
@@ -197,6 +205,9 @@ echo -e "  ${GREEN}Safe to update${NC}: ${#SAFE_TO_UPDATE[@]} archivos (system, 
 echo -e "  ${CYAN}Skills nuevas${NC}: ${#SKILLS_NEW[@]} archivos"
 echo -e "  ${YELLOW}Skills modificadas${NC}: ${#SKILLS_MODIFIED[@]} archivos (potencial conflicto)"
 echo -e "  ${RED}User data${NC}: ${#USER_DATA_CONFLICT[@]} archivos (NUNCA se tocan, ignoramos upstream)"
+if [ ${#SKILLS_OBSOLETE[@]} -gt 0 ]; then
+    echo -e "  ${DIM}Rutas obsoletas${NC}: ${#SKILLS_OBSOLETE[@]} archivos (renombrados upstream, se archivan)"
+fi
 echo
 
 # ── Step 6: Apply updates ──
@@ -285,36 +296,14 @@ if [ ${#PENDING_CONFLICTS[@]} -gt 0 ]; then
     echo -e "  O dile a Claude: ${CYAN}\"aplica la versión nueva de <archivo>\"${NC}"
 fi
 
-# ── Migración v0.11.0: aplanar skills anidadas ──
-# Hasta v0.10.2 las skills se instalaban en .claude/skills/<categoria>/<nombre>/,
-# donde Claude Code NO las indexa (solo mira un nivel) → "Unknown skill".
-# Este paso mueve lo que exista anidado a .claude/skills/<nombre>/. Idempotente:
-# si no hay nada anidado, no hace nada. No borra: si el destino ya existe, la
-# copia anidada se archiva en .claude/skills/_archived/.
-if [ -d "$REPO_ROOT/.claude/skills" ]; then
-    MIGRATED=0
-    while IFS= read -r nested; do
-        [ -n "$nested" ] || continue
-        case "$nested" in *_archived*) continue ;; esac
-        sk_name="$(basename "$nested")"
-        sk_cat="$(basename "$(dirname "$nested")")"
-        dest="$REPO_ROOT/.claude/skills/$sk_name"
-        if [ -e "$dest" ]; then
-            mkdir -p "$REPO_ROOT/.claude/skills/_archived"
-            mv "$nested" "$REPO_ROOT/.claude/skills/_archived/${sk_name}-anidada-$(date +%Y%m%d%H%M%S)"
-            echo -e "  ${YELLOW}·${NC} $sk_cat/$sk_name ya existía plana → copia anidada archivada"
-        else
-            mv "$nested" "$dest"
-            echo -e "  ${GREEN}✓${NC} $sk_cat/$sk_name → $sk_name (ahora sí la carga Claude Code)"
-        fi
-        MIGRATED=$((MIGRATED+1))
-        rmdir "$REPO_ROOT/.claude/skills/$sk_cat" 2>/dev/null || true
-    done <<EOF
-$(find "$REPO_ROOT/.claude/skills" -mindepth 2 -maxdepth 2 -type d -exec test -f '{}/SKILL.md' \; -print 2>/dev/null)
-EOF
-    if [ "$MIGRATED" -gt 0 ]; then
-        echo -e "${BLUE}[+]${NC} $MIGRATED skill(s) aplanadas (v0.11.0). Reinicia Claude Code para cargarlas."
-    fi
+# ── Migración de estructura: aplanar skills anidadas (v0.11.0) ──
+# Se invoca como script APARTE a propósito: update.sh se sobrescribe a sí mismo
+# durante este update y bash seguiría ejecutando la versión antigua ya cargada,
+# así que una migración escrita aquí dentro no correría hasta el update siguiente.
+# Con `bash <script>` se ejecuta la versión recién descargada.
+if [ -f "$REPO_ROOT/scripts/_flatten-skills.sh" ]; then
+    echo -e "${BLUE}[+]${NC} Verificando estructura de skills (Claude Code solo indexa un nivel)..."
+    bash "$REPO_ROOT/scripts/_flatten-skills.sh" || true
 fi
 
 # ── Sync skills instaladas desde la biblioteca ──
