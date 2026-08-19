@@ -14,8 +14,15 @@ import sys
 errors, warnings = [], []
 
 # 1) Destinos indexados por Claude Code: todo .claude/skills del repo (raíz y clientes)
+# Se excluyen las copias que no son instalaciones vivas: el backup con fecha que
+# crea update.sh (guarda la estructura ANTIGUA, anidada, a propósito), vendor/ y
+# cualquier archivado. Sin esto, /doctor y este check dan 🔴 falsos tras cada
+# /actualiza, apuntando a un backup que debe quedarse tal cual.
+SKIP = ("vendor", ".backup", "_archivado", "node_modules", ".git")
 for root in sorted(Path(".").glob("**/.claude/skills")):
-    if "vendor" in root.parts:
+    if any(part in SKIP or part.startswith(".backup") for part in root.parts):
+        continue
+    if any("_archived" in part for part in root.parts):
         continue
     for path in sorted(root.rglob("SKILL.md")):
         rel = path.relative_to(root)
