@@ -52,11 +52,11 @@ En Windows corre igual vía Git Bash. Solo si `bash` no está disponible para Cl
 Esto es onboarding conversacional. Tú lo ejecutas directamente.
 
 1. Lee `phases.context-files.filesCreated` del state para saber qué ya está hecho.
-2. Invoca la skill `meta-onboarding-wizard` (lee `.claude/skills/_meta/meta-onboarding-wizard/SKILL.md` y sigue su Process al pie de la letra).
+2. Invoca la skill `meta-onboarding-wizard` (lee `.claude/skills/meta-onboarding-wizard/SKILL.md` y sigue su Process al pie de la letra).
 3. La skill se encargará de retomar desde la sub-fase correcta, commitear cada archivo y actualizar el state.
 
 #### Caso D: fase `welcome-completed` pendiente
-Invoca `welcome-quick-win` (skill en `.claude/skills/_meta/welcome-quick-win/SKILL.md`). Esa skill genera el primer entregable y marca la fase como `done`.
+Invoca `welcome-quick-win` (skill en `.claude/skills/welcome-quick-win/SKILL.md`). Esa skill genera el primer entregable y marca la fase como `done`.
 
 #### Caso E: solo queda `deep-dive-completed` pendiente (deferrable)
 Mensaje:

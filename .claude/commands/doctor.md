@@ -6,7 +6,7 @@ description: Health check de iAmasters OS. Verifica entorno, Sinapsis, brand-con
 
 Diagnostica iAmasters OS y propone acciones concretas para corregir desviaciones.
 
-Ejecuta la skill `_meta/health-check` siguiendo todos sus pasos al detalle.
+Ejecuta la skill `health-check` siguiendo todos sus pasos al detalle.
 
 Al terminar, presenta los resultados al usuario en formato:
 

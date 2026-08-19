@@ -27,7 +27,7 @@ La skill real vive en `vendor/arnes/` mientras esta sin activar. Cuando ejecutas
 A partir de ahi, Claude Code lee `~/.claude/skills/arnes/SKILL.md` cuando detecta intent que la activa — no este archivo. Este wrapper solo existe para:
 
 1. Documentar que la skill esta disponible en el OS.
-2. Mantener el patron «una carpeta por skill en `.claude/skills/_meta/_optional/`».
+2. Mantener el patron «una carpeta por skill en `.claude/skills/<nombre>/`».
 3. Permitir que `find-skills` y `health-check` la detecten en el inventario.
 
 ## Los 5 modos (resumen)
@@ -52,7 +52,7 @@ Tras la activacion, reinicia Claude Code. Triggea con frases como «nueva web»,
 
 ## Como desactivar
 
-Mover `.claude/skills/_meta/arnes/` de vuelta a `.claude/skills/_meta/_optional/arnes/` y borrar `~/.claude/skills/arnes/`. La skill no volvera a triggear hasta que la actives de nuevo.
+Ejecuta `bash scripts/skills.sh remove arnes` y borra `~/.claude/skills/arnes/`. La skill no volvera a triggear hasta que la actives de nuevo.
 
 ## Por que es opt-in
 

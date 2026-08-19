@@ -72,13 +72,13 @@ Si hay errores, NO sigas al paso 4. Diagnostica con `/doctor` (se instala junto 
 Una vez `install.sh` termina con éxito, lanza el flujo de configuración:
 
 1. Lee `~/.claude/skills/_operator-state.json` para confirmar que Sinapsis se instaló
-2. Invoca la skill `meta-onboarding-wizard` (en `.claude/skills/_meta/meta-onboarding-wizard/SKILL.md`)
+2. Invoca la skill `meta-onboarding-wizard` (en `.claude/skills/meta-onboarding-wizard/SKILL.md`)
 3. Sigue exactamente sus pasos — entrevista al usuario por secciones (no todo de golpe)
 4. Llena los archivos `context/me.md`, `context/work.md`, `context/team.md`, `context/current-priorities.md`, `context/goals.md`
 
 #### Paso 5 · Welcome quick-win (PRIMER WOW garantizado)
 
-Tras el onboarding, invoca la skill `welcome-quick-win` (en `.claude/skills/_meta/welcome-quick-win/SKILL.md`).
+Tras el onboarding, invoca la skill `welcome-quick-win` (en `.claude/skills/welcome-quick-win/SKILL.md`).
 
 Esta skill:
 - Pide al usuario su URL pública (LinkedIn / web personal / web de su negocio)
@@ -130,14 +130,14 @@ Este repo está optimizado para Claude Code, pero las skills son markdown están
 ### Limitaciones conocidas
 
 1. **No ejecutes los hooks de Sinapsis** — están en `~/.claude/settings.json` y son específicos de Claude Code
-2. **Sí puedes usar las skills** que viven en `.claude/skills/<categoria>/<nombre>/SKILL.md` — son markdown estándar
+2. **Sí puedes usar las skills** que viven en `.claude/skills/<nombre>/SKILL.md` — son markdown estándar
 3. **Sí puedes leer brand-context y context** — son markdown plain
 4. **Skills format**: cada skill tiene `SKILL.md` con YAML frontmatter (name, description) seguido de instrucciones
 5. **Comandos**: viven en `.claude/commands/<nombre>.md` y son slash commands de Claude Code; otros agentes los pueden leer como referencia
 
 ### Cómo invocar una skill genéricamente
 
-1. Lee `.claude/skills/<categoria>/<nombre>/SKILL.md`
+1. Lee `.claude/skills/<nombre>/SKILL.md`
 2. Sigue las instrucciones del bloque "Process" o "Steps"
 3. Si la skill referencia archivos en `references/`, léelos solo cuando los pidan los pasos
 4. Si la skill referencia otra skill (skill-to-skill), invoca esa skill y luego continúa
@@ -145,6 +145,10 @@ Este repo está optimizado para Claude Code, pero las skills son markdown están
 ### Compatibilidad probada
 
 - ✅ **Claude Code** (entorno principal, todos los hooks Sinapsis activos)
+  - ⚠️ Las skills deben estar a **un nivel** (`.claude/skills/<nombre>/SKILL.md`). Claude Code no
+    indexa carpetas de categoría intermedias: una skill anidada responde `Unknown skill` aunque el
+    archivo exista. Hasta v0.10.2 el OS instalaba anidado y NINGUNA skill del repo cargaba; corregido
+    en v0.11.0 (`/actualiza` lo migra solo).
 - 🟡 **Codex (OpenAI)** — skills funcionan, hooks Sinapsis no aplican
 - 🟡 **Cursor** — skills funcionan como prompts, no hay integración directa
 - ❌ **Antigravity / Other** — no probado
@@ -161,7 +165,7 @@ Este repo está optimizado para Claude Code, pero las skills son markdown están
 ## Estructura mínima del repo (no romper)
 
 ```
-.claude/skills/<categoria>/<nombre>/SKILL.md   ← skills curadas
+.claude/skills/<nombre>/SKILL.md                 ← skills curadas (UN nivel, sin categoría)
 .claude/commands/<nombre>.md                    ← slash commands
 brand-context/voice/voice-profile.md            ← Brand Voice del operador
 brand-context/positioning/positioning.md

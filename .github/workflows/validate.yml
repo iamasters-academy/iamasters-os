@@ -16,6 +16,9 @@ jobs:
       - name: Skills bien formadas
         run: bash scripts/ci/check-skills-frontmatter.sh
 
+      - name: Skills indexables (un nivel)
+        run: bash scripts/ci/check-skills-depth.sh
+
       - name: Registry sin fantasmas
         run: bash scripts/ci/check-skills-registry.sh
 

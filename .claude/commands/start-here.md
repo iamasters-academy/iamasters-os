@@ -4,7 +4,7 @@ description: Ritual de inicio de sesión iAmasters OS. Carga contexto, recapitul
 
 # /start-here
 
-Invoca la skill `meta-start-here` que vive en `.claude/skills/_meta/meta-start-here/SKILL.md`.
+Invoca la skill `meta-start-here` que vive en `.claude/skills/meta-start-here/SKILL.md`.
 
 ## Qué hace
 

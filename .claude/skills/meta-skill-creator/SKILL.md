@@ -50,7 +50,7 @@ Si falla algún test, refina con el usuario antes de continuar.
 ### Paso 3 · Generar la estructura de carpetas
 
 ```
-.claude/skills/<categoria>/<nombre>/
+.claude/skills/<nombre>/
 ├── SKILL.md                    # Proceso principal (este patrón)
 ├── references/                 # Knowledge separado
 │   ├── examples.md             # 2-3 ejemplos de uso real
@@ -147,7 +147,7 @@ Antes de declarar la skill terminada:
 
 ## Outputs
 
-- Carpeta `.claude/skills/<categoria>/<nombre>/` con SKILL.md + references/ (+ scripts/ opcional)
+- Carpeta `.claude/skills/<nombre>/` con SKILL.md + references/ (+ scripts/ opcional)
 - Entrada en `synapsis/skills-catalog.json`
 - Entrada en `CLAUDE.md` raíz (skills registry)
 - Append en `context/learnings.md`
@@ -168,7 +168,7 @@ Antes de declarar la skill terminada:
 Ver `references/examples.md` para 3 ejemplos:
 1. Crear `marketing-blog-writer` (skill compleja con references)
 2. Crear `tool-pdf-summarizer` (skill que usa script Python)
-3. Crear `_meta/meta-changelog-bumper` (skill simple sin references)
+3. Crear `meta-changelog-bumper` (skill simple sin references)
 
 ## Plantilla canónica
 

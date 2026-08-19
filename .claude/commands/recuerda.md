@@ -4,7 +4,7 @@ description: Busca en tu memoria (decisiones, eventos, histórico) por keyword/s
 
 # /recuerda
 
-Invoca la skill `recuerda` (en `.claude/skills/_meta/recuerda/SKILL.md`).
+Invoca la skill `recuerda` (en `.claude/skills/recuerda/SKILL.md`).
 
 Uso: `/recuerda <pregunta>`
 Ejemplo: `/recuerda ¿qué decidimos sobre el precio del plan anual?`

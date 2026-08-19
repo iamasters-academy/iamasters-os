@@ -3,6 +3,7 @@ set -euo pipefail
 
 checks=(
   "scripts/ci/check-skills-frontmatter.sh"
+  "scripts/ci/check-skills-depth.sh"
   "scripts/ci/check-skills-registry.sh"
   "scripts/ci/check-internal-links.sh"
   "scripts/ci/check-syntax.sh"

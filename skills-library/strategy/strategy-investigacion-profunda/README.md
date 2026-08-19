@@ -17,7 +17,7 @@ Genera informes con pipeline de 8 fases, triangulación multi-fuente, scoring de
 ### En Claude Code (terminal)
 
 ```bash
-cd .claude/skills/strategy/strategy-investigacion-profunda
+cd .claude/skills/strategy-investigacion-profunda
 pip install -r requirements.txt
 ```
 

@@ -84,7 +84,7 @@ El script valida:
 - ✅ SKILL.md presente
 - ✅ YAML frontmatter correcto
 - ✅ description 187 chars (en rango)
-- ⚠️ Conflicto: ya existe `.claude/skills/tools/tool-humanizer/`
+- ⚠️ Conflicto: ya existe `.claude/skills/tool-humanizer/`
 - ✅ Sin código ejecutable peligroso
 - ✅ Sin credenciales hardcoded
 
@@ -100,7 +100,7 @@ El script valida:
 
 Si el operador acepta:
 1. Si existe local: backup en `.backup/<timestamp>/.claude/skills/...`
-2. Copiar a `.claude/skills/<categoria>/<nombre>/`
+2. Copiar a `.claude/skills/<nombre>/`
 3. Si la categoría es ambigua, preguntar al operador donde categorizar (`_meta` / `marketing` / `tools` / etc.)
 4. Update `synapsis/skills-catalog.json` con nueva entrada
 5. Update `CLAUDE.md` skills registry

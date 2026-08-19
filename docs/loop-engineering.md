@@ -5,7 +5,7 @@ se diseña una vez, se ejecuta muchas veces, se verifica antes de molestar al hu
 de cada corrección.
 
 La skill fuente es
-[`automation-loop-engine`](../.claude/skills/automation/automation-loop-engine/SKILL.md).
+[`automation-loop-engine`](../.claude/skills/automation-loop-engine/SKILL.md).
 Esta guía resume cómo usarla como miembro del OS sin duplicar toda la implementación.
 
 ## Qué es un loop

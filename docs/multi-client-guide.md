@@ -74,7 +74,7 @@ Claude Code arranca en el contexto del cliente:
 Si un cliente requiere una skill que NO aplica a otros:
 
 ```bash
-mkdir -p clients/acme-corp/.claude/skills/marketing/marketing-acme-special
+mkdir -p clients/acme-corp/.claude/skills/marketing-acme-special
 # Crear SKILL.md, references/, etc.
 ```
 

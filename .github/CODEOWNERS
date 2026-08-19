@@ -8,8 +8,8 @@
 # * @iamasters-academy/owners
 
 # Áreas específicas
-/.claude/skills/_meta/  @angelapaia
-/.claude/skills/marketing/ @angelapaia
+/.claude/skills/  @angelapaia
+/skills-library/  @angelapaia
 /vendor/sinapsis/  @angelapaia
 /scripts/  @angelapaia
 /docs/  @angelapaia

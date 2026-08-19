@@ -277,7 +277,7 @@ Si el operador quiere cambiar el comportamiento de una skill curada ("a partir d
 
 ## Cómo registrar skills nuevas (auto)
 
-Cuando se añade una skill nueva en `.claude/skills/<categoria>/<nombre>/`:
+Cuando se añade una skill nueva en `.claude/skills/<nombre>/`:
 - `/start-here` la detecta y registra en catalog
 - `/wrap-up` actualiza el registry de este CLAUDE.md
 - El comando `/install-skill <github-url>` la valida antes de añadirla

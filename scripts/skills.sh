@@ -4,6 +4,14 @@
 #  Gestión de la biblioteca de skills (modelo Core + Biblioteca)
 #
 #  - Core (.claude/skills/): siempre instaladas, el OS las necesita
+#
+#  ⚠️  ESTRUCTURA DE INSTALACION: PLANA, .claude/skills/<nombre>/SKILL.md
+#      Claude Code SOLO indexa un nivel bajo skills/ (verificado en el loader
+#      del CLI y en la doc oficial). Una carpeta de categoria intermedia hace
+#      que la skill NO exista para el tool Skill ("Unknown skill").
+#      La categoria vive en la BIBLIOTECA (skills-library/<categoria>/) y en el
+#      prefijo del nombre (marketing-, tool-, strategy-, automation-). NO la
+#      reintroduzcas en el destino: scripts/ci/check-skills-depth.sh lo bloquea.
 #  - Biblioteca (skills-library/): catálogo curado, se instalan a demanda
 #    (cada skill instalada ocupa contexto; Anthropic recomienda <50 cargadas)
 #
@@ -48,7 +56,7 @@ lib_path() {
 
 inst_path() {
     # $1 = nombre de skill; echoes ruta instalada (vacío si no)
-    find "$INST_DIR" -mindepth 2 -maxdepth 2 -type d -name "$1" ! -path "*_archived*" 2>/dev/null | head -1
+    find "$INST_DIR" -mindepth 1 -maxdepth 1 -type d -name "$1" ! -path "*_archived*" 2>/dev/null | head -1
 }
 
 skill_desc() {
@@ -66,7 +74,7 @@ say() { $QUIET || printf "%b\n" "$1"; }
 
 do_add() {
     local name="$1" as_dep="${2:-}"
-    local src dst category
+    local src dst
 
     if [ -n "$(inst_path "$name")" ]; then
         [ -z "$as_dep" ] && say "${GREEN}  ✓ $name ya está instalada${NC}"
@@ -86,9 +94,9 @@ do_add() {
         do_add "$dep" "dep"
     done
 
-    category="$(basename "$(dirname "$src")")"
-    dst="$INST_DIR/$category/$name"
-    mkdir -p "$(dirname "$dst")"
+    # destino PLANO: la categoria de la biblioteca no se replica aqui (ver header)
+    dst="$INST_DIR/$name"
+    mkdir -p "$INST_DIR"
     cp -R "$src" "$dst"
 
     if [ -n "$as_dep" ]; then
@@ -130,7 +138,7 @@ do_sync() {
     # Las personalizaciones viven en SKILL.local.md → se preservan.
     local refreshed=0
     local dir name src local_md
-    for dir in "$INST_DIR"/*/*/; do
+    for dir in "$INST_DIR"/*/; do
         [ -d "$dir" ] || continue
         case "$dir" in *_archived*) continue ;; esac
         name="$(basename "$dir")"
@@ -167,7 +175,7 @@ do_list() {
 
     printf "%b\n" ""
     printf "%b\n" "${BOLD}INSTALADAS${NC} ${DIM}(cargadas en Claude Code)${NC}"
-    for dir in "$INST_DIR"/*/*/; do
+    for dir in "$INST_DIR"/*/; do
         [ -d "$dir" ] || continue
         case "$dir" in *_archived*) continue ;; esac
         name="$(basename "$dir")"

@@ -4,23 +4,39 @@ Esta guía explica cómo crear una skill nueva sin romper el patrón del OS. Est
 
 ## Estructura canónica
 
-Una skill vive siempre en:
+Una skill instalada vive siempre a **un solo nivel**:
 
 ```bash
-.claude/skills/<categoria>/<nombre>/SKILL.md
+.claude/skills/<nombre>/SKILL.md
 ```
 
-Puede añadir dos carpetas opcionales:
+⚠️ **Sin carpeta de categoría.** Claude Code solo indexa un nivel bajo `skills/`. Si metes una
+carpeta intermedia (`.claude/skills/marketing/marketing-icp/SKILL.md`), la skill **no existe** para
+el tool Skill: al invocarla responde `Unknown skill: marketing-icp`, aunque el archivo esté ahí y el
+frontmatter sea correcto. No es un fallo que se arregle reiniciando: es el contrato de descubrimiento.
+
+La categoría no se pierde, vive en dos sitios:
+
+- **El prefijo del nombre** — `marketing-`, `tool-`, `strategy-`, `automation-`.
+- **La biblioteca** — `skills-library/<categoria>/<nombre>/`, que es un catálogo y **no** se indexa.
+  De ahí `bash scripts/skills.sh add <nombre>` la copia plana a `.claude/skills/<nombre>/`.
+
+Puede añadir dos carpetas opcionales, y **estas sí** van dentro de la skill:
 
 ```bash
-.claude/skills/<categoria>/<nombre>/references/
-.claude/skills/<categoria>/<nombre>/scripts/
+.claude/skills/<nombre>/references/
+.claude/skills/<nombre>/scripts/
 ```
+
+Las subcarpetas de una skill son sus recursos. Nunca son skills anidadas.
+
+El nombre de invocación lo da el **nombre de la carpeta**, no el `name:` del frontmatter. Mantén los
+dos iguales para no confundir a nadie. `bash scripts/ci/check-skills-depth.sh` valida ambas reglas.
 
 Patrón real observado en `marketing-copywriting`:
 
 ```text
-.claude/skills/marketing/marketing-copywriting/
+.claude/skills/marketing-copywriting/
 ├── SKILL.md
 └── references/
     └── examples.md
@@ -31,7 +47,7 @@ Ese tipo de skill orquesta contexto, plantillas, otras skills y gates de calidad
 Patrón real observado en `tool-humanizer`:
 
 ```text
-.claude/skills/tools/tool-humanizer/
+.claude/skills/tool-humanizer/
 ├── SKILL.md
 └── references/
     ├── ai-tells.md
@@ -164,10 +180,10 @@ Si es opcional, colócala en `_meta/_optional/` o en el catálogo de `docs/skill
 Crear carpeta:
 
 ```bash
-mkdir -p .claude/skills/tools/resumen-reuniones/references
+mkdir -p .claude/skills/resumen-reuniones/references
 ```
 
-Crear `.claude/skills/tools/resumen-reuniones/SKILL.md`:
+Crear `.claude/skills/resumen-reuniones/SKILL.md`:
 
 ```markdown
 ---

@@ -18,6 +18,7 @@ YELLOW='\033[1;33m'
 PURPLE='\033[0;35m'
 NC='\033[0m'
 BOLD='\033[1m'
+DIM='\033[2m'
 
 # Paths
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -165,6 +166,7 @@ SAFE_TO_UPDATE=()
 USER_DATA_CONFLICT=()
 SKILLS_NEW=()
 SKILLS_MODIFIED=()
+SKILLS_OBSOLETE=()
 
 while IFS= read -r file; do
     case "$file" in
@@ -172,9 +174,15 @@ while IFS= read -r file; do
         brand-context/*|context/*|projects/*|clients/*|.env)
             USER_DATA_CONFLICT+=("$file")
             ;;
-        # Skills: detect new vs modified
+        # Skills: obsoleta upstream vs nueva vs modificada
         .claude/skills/*)
-            if [ -f "$REPO_ROOT/$file" ]; then
+            if ! git cat-file -e "origin/$CURRENT_BRANCH:$file" 2>/dev/null; then
+                # La ruta ya NO existe upstream: renombrada o retirada. NO es un
+                # conflicto del operador — marcarla como tal llenaba el informe de
+                # falsos conflictos en cada rename (v0.11.0 movió 17 skills).
+                # La limpia _flatten-skills.sh, archivando y sin borrar nada.
+                SKILLS_OBSOLETE+=("$file")
+            elif [ -f "$REPO_ROOT/$file" ]; then
                 SKILLS_MODIFIED+=("$file")
             else
                 SKILLS_NEW+=("$file")
@@ -197,6 +205,9 @@ echo -e "  ${GREEN}Safe to update${NC}: ${#SAFE_TO_UPDATE[@]} archivos (system, 
 echo -e "  ${CYAN}Skills nuevas${NC}: ${#SKILLS_NEW[@]} archivos"
 echo -e "  ${YELLOW}Skills modificadas${NC}: ${#SKILLS_MODIFIED[@]} archivos (potencial conflicto)"
 echo -e "  ${RED}User data${NC}: ${#USER_DATA_CONFLICT[@]} archivos (NUNCA se tocan, ignoramos upstream)"
+if [ ${#SKILLS_OBSOLETE[@]} -gt 0 ]; then
+    echo -e "  ${DIM}Rutas obsoletas${NC}: ${#SKILLS_OBSOLETE[@]} archivos (renombrados upstream, se archivan)"
+fi
 echo
 
 # ── Step 6: Apply updates ──
@@ -283,6 +294,16 @@ if [ ${#PENDING_CONFLICTS[@]} -gt 0 ]; then
     echo -e "  Para aceptar la versión nueva de un archivo concreto:"
     echo -e "    ${CYAN}git checkout origin/$CURRENT_BRANCH -- <archivo>${NC}"
     echo -e "  O dile a Claude: ${CYAN}\"aplica la versión nueva de <archivo>\"${NC}"
+fi
+
+# ── Migración de estructura: aplanar skills anidadas (v0.11.0) ──
+# Se invoca como script APARTE a propósito: update.sh se sobrescribe a sí mismo
+# durante este update y bash seguiría ejecutando la versión antigua ya cargada,
+# así que una migración escrita aquí dentro no correría hasta el update siguiente.
+# Con `bash <script>` se ejecuta la versión recién descargada.
+if [ -f "$REPO_ROOT/scripts/_flatten-skills.sh" ]; then
+    echo -e "${BLUE}[+]${NC} Verificando estructura de skills (Claude Code solo indexa un nivel)..."
+    bash "$REPO_ROOT/scripts/_flatten-skills.sh" || true
 fi
 
 # ── Sync skills instaladas desde la biblioteca ──
