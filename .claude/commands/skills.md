@@ -37,3 +37,16 @@ Cuando el usuario pida algo que una skill de la **biblioteca** resuelve y no la 
 ## Disparadores en lenguaje natural
 
 "qué skills hay", "qué skills tengo", "lista de skills", "catálogo de skills", "instala <nombre>", "instálame la skill de <tema>", "quita/desinstala <nombre>", "qué más sabe hacer el OS".
+
+## Retirar una skill CORE
+
+Las core no se desinstalan con `remove` (el OS las necesita). Si quieres que una
+deje de cargarse —para no gastar contexto por sesión— muévela a
+`.claude/skills/_archived/<nombre>/` con el nombre exacto:
+
+```bash
+mv .claude/skills/<nombre> .claude/skills/_archived/<nombre>
+```
+
+`/actualiza` respeta ese archivado y no la reinstala. Nada se borra: para
+recuperarla, muévela de vuelta y reinicia Claude Code.

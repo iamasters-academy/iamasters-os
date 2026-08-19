@@ -164,11 +164,7 @@ La skill caller decide:
 - **Texto multi-idioma**: validar cada idioma por separado, dar score promedio.
 - **Threshold conflicting con purpose**: ej. email "personal a un amigo" no requiere humanizer 8. Pedir al usuario que confirme purpose si humanizer falla por threshold.
 
-## Examples
-
-Ver `references/examples.md` para casos completos.
 
 ## Knowledge
 
 - `references/platform-limits.md` — tabla mantenida de límites por plataforma
-- `references/examples.md` — casos pase / fallo / borderline

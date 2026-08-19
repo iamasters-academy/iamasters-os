@@ -614,9 +614,9 @@ compute_and_store_checksum() {
     # Hash de los archivos clave de Sinapsis para detectar drift posterior
     local files_hash
     if command -v shasum >/dev/null 2>&1; then
-        files_hash=$(find -L "$SKILLS_DIR" -maxdepth 1 -type f -name "_*.json" -o -name "_*.sh" 2>/dev/null | sort | xargs shasum -a 256 2>/dev/null | shasum -a 256 | awk '{print $1}')
+        files_hash=$(find -L "$SKILLS_DIR" -maxdepth 1 -type f \( -name "_*.json" -o -name "_*.sh" \) 2>/dev/null | sort | xargs shasum -a 256 2>/dev/null | shasum -a 256 | awk '{print $1}')
     elif command -v sha256sum >/dev/null 2>&1; then
-        files_hash=$(find -L "$SKILLS_DIR" -maxdepth 1 -type f -name "_*.json" -o -name "_*.sh" 2>/dev/null | sort | xargs sha256sum 2>/dev/null | sha256sum | awk '{print $1}')
+        files_hash=$(find -L "$SKILLS_DIR" -maxdepth 1 -type f \( -name "_*.json" -o -name "_*.sh" \) 2>/dev/null | sort | xargs sha256sum 2>/dev/null | sha256sum | awk '{print $1}')
     else
         files_hash="sha-tool-not-found"
     fi

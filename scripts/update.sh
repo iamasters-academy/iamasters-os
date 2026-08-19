@@ -156,6 +156,20 @@ fi
 
 echo -e "${CYAN}  ->${NC} Hay cambios upstream. Analizando..."
 
+# ¿El operador retiró esta skill a propósito? (issue #16)
+# Retirar = mover la carpeta a .claude/skills/_archived/<nombre>/ con el nombre
+# EXACTO. Se exige exacto para no confundirla con las copias que archiva
+# _flatten-skills.sh, que llevan sufijo "-anidada-<fecha>".
+skill_archived_by_operator() {
+    local rest name
+    case "$1" in .claude/skills/*) ;; *) return 1 ;; esac
+    rest="${1#.claude/skills/}"
+    name="${rest%%/*}"
+    [ -n "$name" ] || return 1
+    case "$name" in _archived) return 1 ;; esac
+    [ -d "$REPO_ROOT/.claude/skills/_archived/$name" ]
+}
+
 # ── Step 5: Categorize changes ──
 echo -e "${BLUE}[5/6]${NC} Clasificando cambios..."
 
@@ -222,8 +236,15 @@ echo -e "${BLUE}[6/6]${NC} Aplicando updates..."
 # Apply safe updates (sin pisar archivos con cambios locales sin commitear)
 PENDING_CONFLICTS=()
 UPDATED=0
+RESPECTED_ARCHIVED=()
 for file in "${SAFE_TO_UPDATE[@]}" "${SKILLS_NEW[@]}"; do
     [ -z "$file" ] && continue
+    if skill_archived_by_operator "$file"; then
+        # El operador la archivó para no cargarla (contexto por sesión). Antes se
+        # restauraba en cada /actualiza y había que volver a quitarla a mano.
+        RESPECTED_ARCHIVED+=("$file")
+        continue
+    fi
     if is_locally_modified "$file"; then
         PENDING_CONFLICTS+=("$file")
         continue
@@ -231,6 +252,11 @@ for file in "${SAFE_TO_UPDATE[@]}" "${SKILLS_NEW[@]}"; do
     git checkout "origin/$CURRENT_BRANCH" -- "$file" 2>/dev/null || true
     UPDATED=$((UPDATED+1))
 done
+
+if [ ${#RESPECTED_ARCHIVED[@]} -gt 0 ]; then
+    ARCHIVED_NAMES=$(printf '%s\n' "${RESPECTED_ARCHIVED[@]}" | sed 's|^.claude/skills/||; s|/.*||' | sort -u | tr '\n' ' ')
+    echo -e "  ${DIM}·${NC} Respetadas como archivadas (no se reinstalan): ${ARCHIVED_NAMES}"
+fi
 
 if [ "$UPDATED" -gt 0 ]; then
     echo -e "${GREEN}  OK${NC} $UPDATED archivos actualizados (safe + new skills)"

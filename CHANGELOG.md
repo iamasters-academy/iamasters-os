@@ -21,6 +21,28 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [0.11.1] — 2026-08-19
+
+Ronda de auditoría tras la v0.11.0: se revisaron los scripts, las skills, la documentación y los issues/PRs abiertos. Todo lo de aquí son fallos reales encontrados y verificados, no limpieza cosmética.
+
+### Fixed
+- **Las skills que el operador archiva reaparecían en cada `/actualiza`** ([#16](https://github.com/iamasters-academy/iamasters-os/issues/16), reportado por un miembro el 21-jul). Quien retira una skill core de `.claude/skills/` (para no gastar contexto por sesión) la veía volver en cada actualización y tenía que quitarla otra vez a mano. La causa **no** era `skills.sh sync` como suponía el reporte —ese salta las core a propósito— sino el `git checkout origin/<branch> -- <archivo>` de `update.sh`: al no existir la ruta en local, la clasificaba como "skill nueva" y la restauraba. Ahora `update.sh` comprueba si la skill está en `.claude/skills/_archived/<nombre>/` y respeta la decisión del operador, informando de cuáles ha respetado. Verificado en sandbox: las archivadas no vuelven y el resto se actualiza con normalidad.
+- **`/doctor` daba errores rojos falsos justo después de actualizar** ([#19](https://github.com/iamasters-academy/iamasters-os/pull/19)). El check de profundidad recorría también el `.backup/<fecha>/` que crea `update.sh`, que guarda **a propósito** la estructura antigua anidada. Se excluyen los roots `.backup*/`, `vendor/`, `_archivado/`, `node_modules/` y `.git/`.
+- **El escáner de secretos crasheaba con un traceback de Python** ([#20](https://github.com/iamasters-academy/iamasters-os/pull/20)). Leía todas las rutas de `git ls-files` sin tolerar que un archivo esté en el índice pero ya no en disco — exactamente el estado que deja la migración de estructura antes de commitear.
+- **Seis skills remitían a un `references/examples.md` que nunca se creó**: `marketing-icp`, `marketing-positioning`, `marketing-brand-voice` y `tool-output-verifier` (core), `marketing-copywriting` y `marketing-content-repurposing` (biblioteca). Claude seguía la instrucción, intentaba leer el archivo y fallaba en silencio. Donde los casos ya estaban enumerados en el propio `SKILL.md` se conservan; donde la sección quedaba vacía se retira. Los ejemplos de ICP, posicionamiento y voz salen del criterio del operador: no se inventan aquí.
+- **Una skill de la biblioteca invocaba una skill personal del autor que no existe en el repo**: `tool-web-legal-audit` hacía "invoca la skill `whatsapp`" con el `.docx` de la auditoría. Ningún miembro tiene esa skill. Ahora entrega la ruta y ofrece usar la skill de envío que el operador tenga, sin asumirla.
+- **`marketing-content-repurposing` citaba `strategy-trending-research`** como si existiera; esa skill nunca se creó (aparece como "futura" en la presentación de equipo). Reformulado sin la dependencia fantasma.
+- **`docs/multi-client-guide.md` mandaba ejecutar `bash scripts/sync-synapsis.sh`** ("futura skill v0.5") — script que no existe, y con "Sinapsis" mal escrito. Reescrito el troubleshooting con el comportamiento real: las skills se cargan desde el directorio de arranque hacia arriba, las de un subdirectorio (`clients/<nombre>/`) no entran hasta que Claude toca un archivo de ahí, y toda skill debe estar a un nivel.
+- **Precedencia de `find` en `scripts/install.sh`**: `-type f -name "_*.json" -o -name "_*.sh"` no aplicaba `-type f` al segundo patrón, así que un directorio llamado `_algo.sh` entraba en el checksum de integridad de Sinapsis y podía provocar un falso positivo de drift. Agrupado con paréntesis.
+
+### Added
+- **`skill_archived_by_operator()`** en `scripts/update.sh`: para retirar una skill core, mueve su carpeta a `.claude/skills/_archived/<nombre>/` con el nombre exacto. Las copias que archiva `_flatten-skills.sh` llevan sufijo `-anidada-<fecha>` y no cuentan como decisión del operador, así que no interfieren.
+
+### Notas
+- Los arreglos de `update.sh` viajan dentro de `update.sh`, que se sobrescribe a sí mismo durante `/actualiza`: **empiezan a aplicar a partir de la actualización siguiente**. Si vienes de ≤ v0.10.2 y tenías skills archivadas, en la primera pasada pueden volver una vez; vuelve a archivarlas y no reaparecerán más.
+
+---
+
 ## [0.11.0] — 2026-08-18
 
 ### Fixed
