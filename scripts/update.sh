@@ -214,6 +214,7 @@ USER_DATA_CONFLICT=()
 SKILLS_NEW=()
 SKILLS_MODIFIED=()
 SKILLS_OBSOLETE=()
+OPERATOR_CONFIG=()
 
 while IFS= read -r file; do
     case "$file" in
@@ -235,6 +236,14 @@ while IFS= read -r file; do
                 SKILLS_NEW+=("$file")
             fi
             ;;
+        # Archivos de configuracion que el OPERADOR personaliza. Upstream tambien
+        # los toca, asi que no son 'system files': pisarlos borra su trabajo.
+        # El 24-ago-2026 un update se llevo por delante el bloque de exclusiones
+        # del .gitignore (dejando secrets/ committeable), la tabla de routing de
+        # CLAUDE.md, los permisos de settings.json y dos secciones de documentacion.
+        .gitignore|CLAUDE.md|AGENTS.md|.env.example|.claude/settings.json)
+            OPERATOR_CONFIG+=("$file")
+            ;;
         # Sinapsis vendored: safe to update (es upstream del repo de Luis)
         vendor/sinapsis/*)
             SAFE_TO_UPDATE+=("$file")
@@ -252,6 +261,7 @@ echo -e "  ${GREEN}Safe to update${NC}: ${#SAFE_TO_UPDATE[@]} archivos (system, 
 echo -e "  ${CYAN}Skills nuevas${NC}: ${#SKILLS_NEW[@]} archivos"
 echo -e "  ${YELLOW}Skills modificadas${NC}: ${#SKILLS_MODIFIED[@]} archivos (potencial conflicto)"
 echo -e "  ${RED}User data${NC}: ${#USER_DATA_CONFLICT[@]} archivos (NUNCA se tocan, ignoramos upstream)"
+echo -e "  ${YELLOW}Config del operador${NC}: ${#OPERATOR_CONFIG[@]} archivos (keep local; los revisas tu)"
 if [ ${#SKILLS_OBSOLETE[@]} -gt 0 ]; then
     echo -e "  ${DIM}Rutas obsoletas${NC}: ${#SKILLS_OBSOLETE[@]} archivos (renombrados upstream, se archivan)"
 fi
@@ -340,6 +350,13 @@ fi
 # Skip user data (always keep local — that's the contract)
 if [ ${#USER_DATA_CONFLICT[@]} -gt 0 ]; then
     echo -e "${CYAN}  ->${NC} ${#USER_DATA_CONFLICT[@]} archivos de user data ignorados (siempre keep local)"
+fi
+
+# La config del operador (.gitignore, CLAUDE.md, settings.json…) se mantiene SIEMPRE
+# local y se reporta por el mismo canal que el resto de pendientes, para que el
+# operador decida archivo a archivo si quiere la version de upstream.
+if [ ${#OPERATOR_CONFIG[@]} -gt 0 ]; then
+    PENDING_CONFLICTS+=("${OPERATOR_CONFIG[@]}")
 fi
 
 # Report pending conflicts (modo no-interactivo: nada se pisó, todo se lista)
