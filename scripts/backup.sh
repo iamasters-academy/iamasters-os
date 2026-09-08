@@ -27,6 +27,7 @@ GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 CYAN='\033[0;36m'
 YELLOW='\033[1;33m'
+RED='\033[0;31m'
 PURPLE='\033[0;35m'
 NC='\033[0m'
 BOLD='\033[1m'
@@ -68,6 +69,51 @@ detect_cloud() {
     return 0
 }
 
+# ── ¿Esta carpeta de nube sincroniza DE VERDAD? ──
+# Que exista una carpeta llamada "OneDrive" no prueba nada: puede ser el resto
+# de una cuenta desconectada, y entonces el backup no sale nunca de la máquina.
+# Devuelve: live | dead | unknown  (unknown = no lo puedo verificar, aviso y sigo)
+cloud_status() {
+    local dir="$1"
+    [ -d "$dir" ] || { echo "dead"; return 0; }
+
+    # Mac: lo que cuelga de CloudStorage/Mobile Documents es un montaje real
+    case "$dir" in
+        "$HOME/Library/CloudStorage/"*|"$HOME/Library/Mobile Documents/"*)
+            echo "live"; return 0 ;;
+    esac
+
+    # Windows + OneDrive: el registro lista las carpetas realmente montadas
+    case "$(printf '%s' "$dir" | tr 'A-Z' 'a-z')" in
+        *onedrive*)
+            if command -v reg >/dev/null 2>&1 && command -v cygpath >/dev/null 2>&1; then
+                local win norm mounted m
+                win="$(cygpath -w "$dir" 2>/dev/null)" || win=""
+                if [ -n "$win" ]; then
+                    norm="$(printf '%s' "$win" | tr 'A-Z\\' 'a-z/' | sed 's:/*$::')"
+                    # MSYS_NO_PATHCONV: sin esto Git Bash convierte /s y /v en rutas
+                    # de Windows y reg contesta "sintaxis incorrecta"
+                    mounted="$(MSYS_NO_PATHCONV=1 reg query 'HKCU\Software\Microsoft\OneDrive\Accounts' \
+                               /s /v UserFolder 2>/dev/null \
+                               | tr -d '\r' | sed -n 's/.*REG_SZ[[:space:]]*//p' \
+                               | tr 'A-Z\\' 'a-z/' | sed 's:/*$::')"
+                    if [ -n "$mounted" ]; then
+                        while IFS= read -r m; do
+                            [ -z "$m" ] && continue
+                            case "$norm" in
+                                "$m"|"$m"/*) echo "live"; return 0 ;;
+                            esac
+                        done <<< "$mounted"
+                        echo "dead"; return 0
+                    fi
+                fi
+            fi
+            ;;
+    esac
+
+    echo "unknown"
+}
+
 # ── Resolver destino ──
 # Prioridad: --dest > IAMASTERS_BACKUP_DIR (.env) > iCloud > Google Drive
 #            > Dropbox > OneDrive > $HOME (local)
@@ -93,7 +139,8 @@ else
     DEST_ROOT=""
     for cloud in icloud gdrive dropbox onedrive; do
         base="$(detect_cloud "$cloud")"
-        if [ -n "$base" ]; then
+        # Una nube desconectada no es un destino: se salta
+        if [ -n "$base" ] && [ "$(cloud_status "$base")" != "dead" ]; then
             DEST_ROOT="$base/iAmasters-Backup"
             break
         fi
@@ -114,7 +161,12 @@ if [ "${1:-}" = "--where" ]; then
                 dropbox)  label="Dropbox      " ;;
                 onedrive) label="OneDrive     " ;;
             esac
-            echo "  $label → $base"
+            case "$(cloud_status "$base")" in
+                live)    mark="${GREEN}sincroniza${NC}" ;;
+                dead)    mark="${RED}DESCONECTADA — no sale de esta máquina${NC}" ;;
+                *)       mark="${YELLOW}no he podido comprobar si sincroniza${NC}" ;;
+            esac
+            echo -e "  $label → $base  [$mark]"
             found=1
         fi
     done
@@ -205,6 +257,25 @@ echo -e "${GREEN}${BOLD}  Backup completado ($SIZE)${NC}"
 echo -e "${GREEN}${BOLD}============================================================${NC}"
 echo ""
 echo -e "  Guardado en: ${CYAN}$DEST${NC}"
+
+# ── ¿Ha salido de esta máquina? Decirlo SIEMPRE, aunque el destino venga del .env ──
+case "$(cloud_status "$DEST_ROOT")" in
+    live)
+        echo -e "  Copia fuera de la máquina: ${GREEN}sí${NC} (la nube lo está sincronizando)"
+        ;;
+    dead)
+        echo ""
+        echo -e "  ${RED}${BOLD}AVISO: esta copia NO ha salido del ordenador.${NC}"
+        echo -e "  ${RED}$DEST_ROOT parece una nube, pero la cuenta está desconectada.${NC}"
+        echo -e "  ${RED}Si se rompe este disco, se pierde también el backup.${NC}"
+        echo -e "  Reconecta la cuenta o elige otro destino: ${CYAN}bash scripts/backup.sh --where${NC}"
+        ;;
+    *)
+        echo -e "  Copia fuera de la máquina: ${YELLOW}no he podido verificarlo${NC} — compruébalo en la web de tu nube"
+        ;;
+esac
+
+echo ""
 echo -e "  Para restaurar en una máquina nueva: clona el repo, instala el OS"
 echo -e "  y dile a Claude: ${CYAN}\"restaura mis datos desde el backup de $STAMP\"${NC}"
 echo ""
