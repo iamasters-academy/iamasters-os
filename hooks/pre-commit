@@ -22,10 +22,13 @@ STAGED="$(git diff --cached --name-only --diff-filter=d --no-renames)"
 # acaba enseñando a usar --no-verify, que es lo peor que le puede pasar a un
 # guardarraíl. Requiere asignación ([:=]) tras la palabra clave y descarta los
 # placeholders de documentación (..., xxxxx, <TU_CLAVE>, $VAR, your-key, vacío).
+# El sufijo (_[A-Za-z0-9]+)* tras la palabra clave cubre la familia AWS:
+# AWS_SECRET_ACCESS_KEY= y AWS_ACCESS_KEY_ID= llevan texto entre SECRET/
+# ACCESS_KEY y el signo igual, y sin el sufijo se escapaban del escaneo.
 PLACEHOLDER='[:=][[:space:]]*[^[:space:]"]{0,24}([.]{3}|[xX]{3,}|<|[$]|[{]|[[]|tu[-_]|TU[-_]|[Yy]our|YOUR|[Ee]xample|EXAMPLE|changeme|CHANGEME|placeholder|dummy|fake|redacted|REDACTED|aqui|AQUI)'
 LEAK="$(git diff --cached -U0 --diff-filter=d \
   | grep -E '^\+' | grep -vE '^\+\+\+' \
-  | grep -IE '(API_KEY|APIKEY|SECRET|PASSWORD|PRIVATE_KEY|ACCESS_TOKEN|AUTH_TOKEN)[[:space:]]*[:=]' \
+  | grep -IE '(API_KEY|APIKEY|SECRET|ACCESS_KEY|PASSWORD|PRIVATE_KEY|ACCESS_TOKEN|AUTH_TOKEN)(_[A-Za-z0-9]+)*[[:space:]]*[:=]' \
   | grep -vE "$PLACEHOLDER" \
   | grep -vE '[:=][[:space:]]*("")?(.{0,2})$' \
   || true)"
