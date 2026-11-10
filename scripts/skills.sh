@@ -38,6 +38,11 @@ BOLD='\033[1m'
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 LIB_DIR="$REPO_ROOT/skills-library"
+
+# v0.12.0 · Esta versión está retirada. El update.sh ANTIGUO de la v0.10.x llama a
+# «skills.sh sync» después de traer ficheros sueltos (cuando `git pull` falla), así
+# que es el único sitio por el que el aviso les llega a esas instalaciones.
+[ "${1:-}" = "sync" ] && trap 'tr -d "\r" < "$REPO_ROOT/scripts/_aviso-version-nueva.txt" 2>/dev/null || true' EXIT #
 INST_DIR="$REPO_ROOT/.claude/skills"
 
 # Dependencias entre skills de la biblioteca: "skill:dep1 dep2"

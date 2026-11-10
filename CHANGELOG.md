@@ -8,6 +8,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+> **Esta versión está retirada (noviembre de 2026).** La sustituye **IA Masters OS**, la versión nueva de la comunidad. `/actualiza` ya no actualiza esta carpeta: la pasa a IA Masters OS sin reinstalar y sin perder nada. Lee otra vez `.claude/commands/actualiza.md` y sigue sus pasos. La hoja de ruta de abajo ya no se hará.
+
 ### Roadmap
 - **P2 captura de contenido** (opcional) — resumen legible por sesión que engorda el corpus. Bajo valor incremental: ya hay daily summaries indexados; pendiente de decidir si aporta.
 - **Team OS** — memoria/permisos compartidos para equipo. Módulo AVANZADO opcional (no core), decisión de negocio pendiente. (Antes etiquetado como v0.9.0; re-planificado al dedicar la v0.9.0 a Loop Engineering.)
@@ -18,6 +20,24 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Loops desatendidos (ejecución programada sin sesión abierta) — decisión pendiente para v1.0.
 - Test end-to-end de instalación en máquina limpia antes de v1.0.
 - v1.0.0: release pública estable + vídeos Loom + landing en iamastersacademy.com/os.
+
+---
+
+## [0.12.0] — 2026-11-10 · Puente a IA Masters OS
+
+Última versión de iAmasters OS. El sistema sigue en **IA Masters OS**, la versión nueva de la comunidad (repositorio privado para miembros).
+
+### Cambiado
+- **`/actualiza` pasa la carpeta a IA Masters OS** en vez de actualizarla. Pide el token de la comunidad y ejecuta `scripts/pasar-a-ia-masters-os.sh`, que:
+  - comprueba el token y descarga la versión nueva **antes** de tocar nada;
+  - aparta la carpeta antigua **entera** (con su historial de git) a `.backup/version-antigua-<fecha>/` y deja listo en ese momento `.backup/volver-a-la-version-antigua-<fecha>.sh`, que la devuelve tal cual;
+  - instala IA Masters OS limpio en la misma carpeta;
+  - trae de vuelta todo lo que no venía tal cual (misma ruta y mismo contenido) en este repositorio: `brand-context/` y `context/` a `mi-negocio/version-antigua/`, cada proyecto y cada cliente entero a `proyectos/<nombre>/` (las dependencias como `node_modules` se mueven, no se copian), las skills, comandos y agentes propios a su sitio, las claves `.env` y `.mcp.json`, y el resto a `proyectos/version-antigua/`;
+  - vuelve a activar las skills de la biblioteca que la persona había instalado y que siguen en la caja nueva.
+  Si falla antes de instalar, deja la carpeta como estaba. Si se corta a medias, la siguiente ejecución lo detecta (`[A_MEDIAS]`) y explica cómo volver atrás.
+- `scripts/update.sh` solo avisa de la versión nueva (no toca nada). También avisan `scripts/_flatten-skills.sh` y `scripts/skills.sh sync`, que es lo que ejecuta el `update.sh` antiguo cuando `git pull` falla por cambios locales.
+- `scripts/_ensure-sinapsis-hooks.sh` ya no hace nada. El `update.sh` antiguo lo ejecutaba en cada `/actualiza` y volvía a enganchar los hooks de Sinapsis en `~/.claude/settings.json`, también en quien ya los había limpiado: sus ficheros ya no existen y cada acción de Claude daría error.
+- `README.md`, `AGENTS.md` y un `.claude/CLAUDE.md` nuevo avisan de que esta versión está retirada (Claude Code carga `.claude/CLAUDE.md` además del `CLAUDE.md` de la raíz). El `CLAUDE.md` de la raíz no se toca a propósito: muchas instalaciones lo tienen modificado y cambiarlo haría fallar su `git pull`.
 
 ---
 
