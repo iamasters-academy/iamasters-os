@@ -28,6 +28,11 @@ GREEN='\033[0;32m'; YELLOW='\033[1;33m'; CYAN='\033[0;36m'; DIM='\033[2m'; NC='\
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+# v0.12.0 · Esta versión está retirada. El update.sh ANTIGUO llama a este script
+# después de traer ficheros sueltos (cuando `git pull` falla por cambios locales),
+# así que es el único sitio por el que el aviso le llega a esas instalaciones.
+trap 'tr -d "\r" < "$REPO_ROOT/scripts/_aviso-version-nueva.txt" 2>/dev/null || true' EXIT #
 SKILLS_DIR="$REPO_ROOT/.claude/skills"
 ARCHIVE_DIR="$SKILLS_DIR/_archived"
 

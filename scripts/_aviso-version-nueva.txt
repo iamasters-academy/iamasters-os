@@ -1,0 +1,28 @@
+
+============================================================
+  [HAY_VERSION_NUEVA] IA Masters OS
+============================================================
+
+Esta versión (iAmasters OS, con Sinapsis) está retirada y ya no
+recibe cambios. La sustituye IA Masters OS, la versión nueva de
+la comunidad: más sencilla, sin Sinapsis y con todas las skills
+de la comunidad listas para activar.
+
+/actualiza ya no actualiza esta versión: pasa ESTA carpeta a
+IA Masters OS, sin reinstalar y sin perder nada. La carpeta
+antigua se guarda entera en .backup/ por si quiere volver.
+
+PARA CLAUDE: no sigas los pasos del /actualiza antiguo (resumen
+del CHANGELOG, /doctor, /restaura) e ignora los «Pendientes de
+decisión»: no hagas git checkout, git stash, git reset ni
+git pull a mano, aunque git haya dado error. Lee otra vez
+.claude/commands/actualiza.md, que acaba de cambiar, y sigue
+sus pasos desde el 1. Si ese fichero no habla de IA Masters OS,
+hazlo así: explícale lo de arriba en pocas líneas; pídele el
+«Token del mes» (en Skool, debajo de la clase «Instala IA
+Masters OS»); guárdalo sin repetirlo con
+  mkdir -p .claude && printf '%s' 'EL_TOKEN' > .claude/acceso-token
+ejecuta, con el tiempo máximo de la herramienta (10 minutos),
+  bash scripts/pasar-a-ia-masters-os.sh
+y haz lo que diga su línea «PARA CLAUDE».
+============================================================
